@@ -10,64 +10,13 @@
  * governing permissions and limitations under the License.
  */
 
-:root {
-  /* colors */
-  --background-color: white;
-  --light-color: #f8f8f8;
-  --dark-color: #505050;
-  --text-color: #131313;
-  --link-color: #3b63fb;
-  --link-hover-color: #1d3ecf;
+@import url('brand.css');
 
-  /* fonts */
-  --body-font-family: roboto, roboto-fallback, sans-serif;
-  --heading-font-family: roboto-condensed, roboto-condensed-fallback, sans-serif;
-
-  /* body sizes */
-  --body-font-size-m: 22px;
-  --body-font-size-s: 19px;
-  --body-font-size-xs: 17px;
-
-  /* heading sizes */
-  --heading-font-size-xxl: 55px;
-  --heading-font-size-xl: 44px;
-  --heading-font-size-l: 34px;
-  --heading-font-size-m: 27px;
-  --heading-font-size-s: 24px;
-  --heading-font-size-xs: 22px;
-
-  /* nav height */
-  --nav-height: 64px;
-}
-
-/* fallback fonts */
+/* fallback font: metrics-adjusted Arial while BradescoSans loads */
 @font-face {
-  font-family: roboto-condensed-fallback;
-  size-adjust: 88.82%;
+  font-family: bradescosans-fallback;
+  size-adjust: 100%;
   src: local('Arial');
-}
-
-@font-face {
-  font-family: roboto-fallback;
-  size-adjust: 99.529%;
-  src: local('Arial');
-}
-
-@media (width >= 900px) {
-  :root {
-    /* body sizes */
-    --body-font-size-m: 18px;
-    --body-font-size-s: 16px;
-    --body-font-size-xs: 14px;
-
-    /* heading sizes */
-    --heading-font-size-xxl: 45px;
-    --heading-font-size-xl: 36px;
-    --heading-font-size-l: 28px;
-    --heading-font-size-m: 22px;
-    --heading-font-size-s: 20px;
-    --heading-font-size-xs: 18px;
-  }
 }
 
 body {
@@ -77,15 +26,17 @@ body {
   color: var(--text-color);
   font-family: var(--body-font-family);
   font-size: var(--body-font-size-m);
-  line-height: 1.6;
+  line-height: 1.65;
 }
 
 body.appear {
   display: block;
 }
 
+/* header overlays the hero; it reserves space itself when it renders solid */
 header {
-  height: var(--nav-height);
+  position: relative;
+  z-index: 100;
 }
 
 header .header,
@@ -104,11 +55,11 @@ h3,
 h4,
 h5,
 h6 {
-  margin-top: 0.8em;
-  margin-bottom: 0.25em;
+  margin-top: 0;
+  margin-bottom: 19.6px;
   font-family: var(--heading-font-family);
-  font-weight: 600;
-  line-height: 1.25;
+  font-weight: 400;
+  line-height: 1.15;
   scroll-margin: 40px;
 }
 
@@ -143,7 +94,7 @@ pre {
 }
 
 main > div {
-  margin: 40px 16px;
+  margin: 0;
 }
 
 input,
@@ -179,11 +130,13 @@ button.button {
   max-width: 100%;
   margin: 0;
   border: 2px solid transparent;
-  border-radius: 2.4em;
-  padding: 0.5em 1.2em;
+  border-radius: var(--button-radius);
+  padding: 13px 40px;
   font: inherit;
   font-weight: 500;
-  line-height: 1.25;
+  line-height: 1;
+  letter-spacing: var(--button-letter-spacing);
+  text-transform: uppercase;
   text-decoration: none;
   cursor: pointer;
   overflow: hidden;
@@ -199,18 +152,18 @@ button.button:disabled {
 
 a.button.primary,
 button.button.primary {
-  border-color: var(--text-color);
-  background-color: var(--text-color);
-  color: var(--background-color);
+  border-color: var(--brand-red);
+  background-color: var(--brand-red);
+  color: #fff;
 }
 
 a.button.primary:hover,
 a.button.primary:focus-visible,
 button.button.primary:hover,
 button.button.primary:focus-visible {
-  border-color: var(--dark-color);
-  background-color: var(--dark-color);
-  color: var(--light-color);
+  border-color: var(--brand-red-dark);
+  background-color: var(--brand-red-dark);
+  color: #fff;
 }
 
 a.button.primary[aria-disabled="true"],
@@ -254,17 +207,18 @@ button.button.secondary:disabled:focus-visible {
 /* high-impact call-to-action */
 a.button.accent,
 button.button.accent {
-  border-color: var(--link-color);
-  background-color: var(--link-color);
-  color: var(--background-color);
+  border-color: var(--brand-red);
+  background-color: var(--brand-red);
+  color: #fff;
 }
 
 a.button.accent:hover,
 a.button.accent:focus-visible,
 button.button.accent:hover,
 button.button.accent:focus-visible {
-  border-color: var(--link-hover-color);
-  background-color: var(--link-hover-color);
+  border-color: var(--brand-red-dark);
+  background-color: var(--brand-red-dark);
+  color: #fff;
 }
 
 a.button.accent[aria-disabled="true"],
@@ -295,26 +249,471 @@ main img {
   width: 100%;
 }
 
-/* sections */
+/* sections: full-bleed, stacked with no gaps (source sections abut) */
 main > .section {
-  margin: 40px 0;
+  margin: 0;
 }
 
 main > .section > div {
-  max-width: 1200px;
+  max-width: 1140px;
   margin: auto;
-  padding: 0 24px;
+  padding: 0 10px;
 }
 
-main > .section:first-of-type {
-  margin-top: 0;
+/* default content intro headings (source bands: 86px mobile, 97px tablet, 180px desktop) */
+main > .section > .default-content-wrapper {
+  padding-top: 20px;
+  padding-bottom: 20.4px;
+  text-align: center;
+}
+
+main > .section > .default-content-wrapper h2 {
+  max-width: 946px;
+  margin: 0 auto 16.6px;
+  line-height: 29px;
+}
+
+@media (width >= 768px) {
+  main > .section > .default-content-wrapper h2 {
+    margin-bottom: 19.6px;
+    line-height: 37px;
+  }
+}
+
+@media (width >= 1081px) {
+  main > .section > .default-content-wrapper {
+    padding-top: 62px;
+    padding-bottom: 61.4px;
+  }
+}
+
+/*
+ * article template (Template: article metadata -> body.article)
+ * Source post column: 88% wide (90% from 700px), max 1150px, left aligned;
+ * date 35px below the title banner, 40px gap to the footer.
+ * Spacer paragraphs are dropped on import, so p carries the 26.4px gap.
+ */
+body.article main > .section:not(.hero-article-container) > div {
+  box-sizing: border-box;
+  width: 88%;
+  max-width: 1150px;
+  padding: 0;
+}
+
+/* video posts use a narrower 880px column */
+body.article main > .section:has(.embed-video-wrapper) > div {
+  max-width: 880px;
+}
+
+body.article main > .section:not(.hero-article-container) > div:first-child {
+  padding-top: 35px;
+}
+
+body.article main > .section:not(.hero-article-container) > div:last-child {
+  padding-bottom: 40px;
+}
+
+body.article main > .section > .default-content-wrapper {
+  text-align: start;
+}
+
+body.article main .default-content-wrapper p,
+body.article main .default-content-wrapper ul,
+body.article main .default-content-wrapper ol {
+  margin: 0 0 26.4px;
+}
+
+body.article main .default-content-wrapper ul,
+body.article main .default-content-wrapper ol {
+  margin-bottom: 24px;
+  padding-left: 40px;
+}
+
+body.article main .default-content-wrapper li {
+  margin: 0;
+}
+
+body.article main .default-content-wrapper > :last-child {
+  margin-bottom: 0;
+}
+
+/* publication date row */
+body.article main > .section:not(.hero-article-container) > div:first-child > p:first-child {
+  margin-bottom: 24px;
+}
+
+body.article main .default-content-wrapper a:any-link {
+  color: var(--brand-red);
+}
+
+body.article main .default-content-wrapper h1,
+body.article main .default-content-wrapper h2,
+body.article main .default-content-wrapper h3,
+body.article main .default-content-wrapper h4,
+body.article main .default-content-wrapper h5,
+body.article main .default-content-wrapper h6 {
+  max-width: none;
+  margin: 0;
+  color: var(--text-color);
+}
+
+body.article main .default-content-wrapper h1 {
+  margin-bottom: 19px;
+  font-size: 30px;
+  line-height: 36px;
+}
+
+body.article main .default-content-wrapper h2 {
+  margin-bottom: 16.6px;
+  font-size: 22px;
+  line-height: 29px;
+}
+
+/* source h3 headings are authored bold */
+body.article main .default-content-wrapper h3 {
+  margin-bottom: 16.6px;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 29px;
+}
+
+body.article main .default-content-wrapper h4 {
+  margin-bottom: 17.5px;
+  font-size: 25px;
+  font-weight: 700;
+  line-height: 37.5px;
+}
+
+body.article main .default-content-wrapper h5 {
+  margin-bottom: 16px;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 30px;
+}
+
+body.article main .default-content-wrapper h6 {
+  margin-bottom: 14.8px;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+}
+
+@media (width >= 700px) {
+  body.article main > .section:not(.hero-article-container) > div {
+    width: 90%;
+  }
+}
+
+@media (width > 768px) {
+  body.article main .default-content-wrapper h1 {
+    margin-bottom: 22px;
+    font-size: 40px;
+    line-height: 45px;
+  }
+
+  body.article main .default-content-wrapper h2 {
+    margin-bottom: 19.6px;
+    font-size: 32px;
+    line-height: 37px;
+  }
+
+  body.article main .default-content-wrapper h3 {
+    margin-bottom: 17.8px;
+    font-size: 26px;
+    line-height: 32px;
+  }
+}
+
+/*
+ * landing + info-page templates (template metadata -> body.landing / body.info-page)
+ * Source: Elementor landing pages; the informational/legal pages share the same
+ * conventions, so the rules apply to both (:is() keeps the body.landing specificity).
+ * Boxed content 1296px (72px gutters at 1440),
+ * centred section intros (h2 32px/37px, lead text 22px/30px), sections abut.
+ * Section styles: grey, red, dark, navy, split, full-bleed, notes (combinable).
+ * Rules are grouped by section style rather than specificity; they only ever
+ * apply under body.landing / body.info-page, so ordering against body.article rules is moot.
+ * info-page-only adjustments follow after this group.
+ */
+/* stylelint-disable no-descending-specificity */
+
+/* :where() keeps this at the global wrapper specificity so block wrapper rules
+   (e.g. full-bleed heroes) still win */
+:where(body.landing, body.info-page) main > .section > div {
+  box-sizing: border-box;
+  max-width: 1336px;
+  padding: 0 20px;
+}
+
+:is(body.landing, body.info-page) main > .section > .default-content-wrapper {
+  padding-top: 48px;
+  padding-bottom: 48px;
+  text-align: center;
+}
+
+/* intro directly above a block: the block supplies the gap below */
+:is(body.landing, body.info-page) main > .section > .default-content-wrapper:not(:last-child) {
+  padding-bottom: 32px;
+}
+
+/* copy directly below a block (footnotes, CTA) */
+:is(body.landing, body.info-page) main > .section > div:not(.default-content-wrapper) + .default-content-wrapper {
+  padding-top: 24px;
+}
+
+:is(body.landing, body.info-page) main .default-content-wrapper h2 {
+  max-width: 900px;
+  margin: 0 auto 20px;
+  font-size: 26px;
+  line-height: 32px;
+}
+
+:is(body.landing, body.info-page) main .default-content-wrapper h3 {
+  max-width: 900px;
+  margin: 0 auto 16px;
+  font-size: 22px;
+  line-height: 28px;
+}
+
+:is(body.landing, body.info-page) main .default-content-wrapper p,
+:is(body.landing, body.info-page) main .default-content-wrapper ul,
+:is(body.landing, body.info-page) main .default-content-wrapper ol {
+  max-width: 1000px;
+  margin: 0 auto 16px;
+  font-size: 18px;
+  line-height: 26px;
+}
+
+:is(body.landing, body.info-page) main .default-content-wrapper ul,
+:is(body.landing, body.info-page) main .default-content-wrapper ol {
+  padding-left: 0;
+  list-style-position: inside;
+}
+
+:is(body.landing, body.info-page) main .default-content-wrapper > :last-child {
+  margin-bottom: 0;
+}
+
+/* footnotes / disclaimers after a block (not CTAs, not the closing line after steps) */
+:is(body.landing, body.info-page) main > .section:not(:has(.cards-feature.steps)) > div:not(.default-content-wrapper) + .default-content-wrapper p:not(.button-wrapper) {
+  font-size: 14px;
+  line-height: 18px;
+}
+
+:is(body.landing, body.info-page) main .default-content-wrapper p.button-wrapper {
+  margin-top: 24px;
+}
+
+:is(body.landing, body.info-page) main .default-content-wrapper img {
+  display: block;
+  margin: 0 auto;
 }
 
 @media (width >= 900px) {
-  main > .section > div {
-    padding: 0 32px;
+  :where(body.landing, body.info-page) main > .section > div {
+    padding: 0 30px;
+  }
+
+  :is(body.landing, body.info-page) main > .section > .default-content-wrapper {
+    padding-top: 80px;
+    padding-bottom: 72px;
+  }
+
+  :is(body.landing, body.info-page) main > .section > .default-content-wrapper:not(:last-child) {
+    padding-bottom: 40px;
+  }
+
+  :is(body.landing, body.info-page) main .default-content-wrapper h2 {
+    font-size: 32px;
+    line-height: 37px;
+  }
+
+  :is(body.landing, body.info-page) main .default-content-wrapper h3 {
+    font-size: 28px;
+    line-height: 33px;
+  }
+
+  :is(body.landing, body.info-page) main .default-content-wrapper p,
+  :is(body.landing, body.info-page) main .default-content-wrapper ul,
+  :is(body.landing, body.info-page) main .default-content-wrapper ol {
+    font-size: 22px;
+    line-height: 30px;
   }
 }
+
+/* section backgrounds */
+:is(body.landing, body.info-page) main > .section.grey {
+  background-color: #f6f6f6;
+}
+
+:is(body.landing, body.info-page) main > .section.red {
+  background-color: #cc092f;
+}
+
+:is(body.landing, body.info-page) main > .section.dark {
+  background-color: #1e1e1e;
+}
+
+/* private-bank slate-blue band */
+:is(body.landing, body.info-page) main > .section.dark.navy {
+  background-image: linear-gradient(180deg, #496078 0%, #162b3f 100%);
+}
+
+:is(body.landing, body.info-page) main > .section.red .default-content-wrapper,
+:is(body.landing, body.info-page) main > .section.dark .default-content-wrapper,
+:is(body.landing, body.info-page) main > .section.red .default-content-wrapper :is(h1, h2, h3, h4, h5, h6, a:any-link),
+:is(body.landing, body.info-page) main > .section.dark .default-content-wrapper :is(h1, h2, h3, h4, h5, h6, a:any-link) {
+  color: #fff;
+}
+
+/* short text-only bands (red APY band, single CTA band) are compact on the source */
+:is(body.landing, body.info-page) main > .section.red > .default-content-wrapper:only-child {
+  padding-top: 30px;
+  padding-bottom: 28px;
+}
+
+:is(body.landing, body.info-page) main > .section.red > .default-content-wrapper:only-child p {
+  margin-bottom: 8px;
+}
+
+:is(body.landing, body.info-page) main > .section > .default-content-wrapper:only-child:has(> p.button-wrapper:only-child) {
+  padding-top: 44px;
+  padding-bottom: 44px;
+}
+
+:is(body.landing, body.info-page) main > .section > .default-content-wrapper:only-child > p.button-wrapper:only-child {
+  margin: 0 auto;
+}
+
+/* heading band: small icon inline before the title (corporate "Cash Management") */
+:is(body.landing, body.info-page) main > .section.red > .default-content-wrapper:only-child:has(> p:first-child > picture:only-child) {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding-top: 40px;
+  padding-bottom: 40px;
+}
+
+:is(body.landing, body.info-page) main > .section.red > .default-content-wrapper:only-child > p:first-child > picture:only-child img {
+  width: auto;
+  height: 40px;
+}
+
+:is(body.landing, body.info-page) main > .section.red > .default-content-wrapper:only-child:has(> p:first-child > picture:only-child) > * {
+  margin: 0;
+}
+
+:is(body.landing, body.info-page) main > .section.red .default-content-wrapper a.button:any-link {
+  border-color: #fff;
+  background-color: #fff;
+  color: var(--brand-red);
+}
+
+/* full-bleed: edge-to-edge image band (no text) */
+:is(body.landing, body.info-page) main > .section.full-bleed > .default-content-wrapper {
+  max-width: none;
+  padding: 0;
+}
+
+:is(body.landing, body.info-page) main > .section.full-bleed .default-content-wrapper p {
+  max-width: none;
+  margin: 0;
+}
+
+:is(body.landing, body.info-page) main > .section.full-bleed .default-content-wrapper img {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+}
+
+/* notes: legal footnotes band */
+:is(body.landing, body.info-page) main > .section.notes > .default-content-wrapper {
+  padding-top: 32px;
+  padding-bottom: 40px;
+  text-align: start;
+}
+
+:is(body.landing, body.info-page) main > .section.notes .default-content-wrapper p {
+  max-width: none;
+  margin: 0 0 8px;
+  font-size: 14px;
+  line-height: 18px;
+}
+
+/* split: intro copy on the left, block (or more copy) on the right */
+@media (width >= 900px) {
+  :is(body.landing, body.info-page) main > .section.full-bleed .default-content-wrapper img {
+    height: 400px;
+  }
+
+  :is(body.landing, body.info-page) main > .section.split {
+    display: grid;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+    align-items: center;
+    column-gap: 60px;
+    max-width: 1336px;
+    margin: 0 auto;
+    padding: 72px 30px;
+    box-sizing: border-box;
+  }
+
+  :is(body.landing, body.info-page) main > .section.split.grey,
+  :is(body.landing, body.info-page) main > .section.split.red,
+  :is(body.landing, body.info-page) main > .section.split.dark {
+    max-width: none;
+    padding-inline: max(30px, calc((100% - 1276px) / 2));
+  }
+
+  :is(body.landing, body.info-page) main > .section.split > div {
+    max-width: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  :is(body.landing, body.info-page) main > .section.split > .default-content-wrapper {
+    text-align: start;
+  }
+
+  :is(body.landing, body.info-page) main > .section.split > .default-content-wrapper:first-child {
+    grid-column: 1;
+  }
+
+  :is(body.landing, body.info-page) main > .section.split > :not(:first-child) {
+    grid-column: 2;
+  }
+
+  /* text-only split sections: heading left, copy right */
+  :is(body.landing, body.info-page) main > .section.split > .default-content-wrapper:only-child {
+    display: grid;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+    column-gap: 60px;
+    align-items: center;
+    grid-column: 1 / -1;
+  }
+
+  :is(body.landing, body.info-page) main > .section.split > .default-content-wrapper:only-child > :is(h2, h3) {
+    grid-column: 1;
+    grid-row: 1 / span 10;
+  }
+
+  :is(body.landing, body.info-page) main > .section.split > .default-content-wrapper:only-child > :not(h2, h3) {
+    grid-column: 2;
+  }
+
+  :is(body.landing, body.info-page) main > .section.split .default-content-wrapper :is(h2, h3, p, ul, ol) {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  /* footnote rows after the block span the right column */
+  :is(body.landing, body.info-page) main > .section.split > div:not(.default-content-wrapper) + .default-content-wrapper {
+    grid-column: 2;
+  }
+}
+
+/* stylelint-enable no-descending-specificity */
 
 /* section metadata */
 main .section.light,

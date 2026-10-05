@@ -1,0 +1,19 @@
+{
+  "status": "success",
+  "url": "https://bradescobank.com/en/private-bank/",
+  "path": "en/private-bank",
+  "timestamp": "2026-10-03T06:03:51.472Z",
+  "title": "Private Bank – Bradesco Bank",
+  "template": "landing",
+  "fragment": "",
+  "blocks": [
+    "hero-video",
+    "cards-audience",
+    "cards-feature",
+    "hero-promo",
+    "hero-promo",
+    "hero-promo",
+    "columns-media",
+    "columns-media"
+  ]
+}

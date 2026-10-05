@@ -1,0 +1,16 @@
+{
+  "status": "success",
+  "url": "https://bradescobank.com/en/institutional/",
+  "path": "en/institutional",
+  "timestamp": "2026-10-03T06:55:25.789Z",
+  "title": "Business – Institutional – Bradesco Bank",
+  "template": "info-page",
+  "fragment": "",
+  "blocks": [
+    "hero-video",
+    "hero-promo",
+    "columns-media",
+    "cards-feature",
+    "cards-feature"
+  ]
+}

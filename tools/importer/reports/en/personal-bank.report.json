@@ -1,0 +1,19 @@
+{
+  "status": "success",
+  "url": "https://bradescobank.com/en/personal-bank/",
+  "path": "en/personal-bank",
+  "timestamp": "2026-10-03T06:02:53.398Z",
+  "title": "Personal Bank – Bradesco Bank",
+  "template": "landing",
+  "fragment": "",
+  "blocks": [
+    "hero-video",
+    "cards-audience",
+    "cards-feature",
+    "cards-feature",
+    "cards-feature",
+    "cards-product",
+    "hero-promo",
+    "hero-promo"
+  ]
+}

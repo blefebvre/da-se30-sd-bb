@@ -1,0 +1,40 @@
+{
+  "variantName": "tabs",
+  "baseBlock": "tabs",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "colorScheme": "light-with-photo",
+    "density": "medium",
+    "purpose": "benefit-switcher",
+    "imagePattern": "photo-tiles-overlay",
+    "structure": "tab labels + image + h3 + paragraph grid"
+  },
+  "contentPattern": "one row per tab, 2 columns: [tab label | panel content]; fragments option: panel = single link to a fragment page (e.g. /en/careers/fragments/jobs); tiles option: panel = repeated image + h3 + p groups; vertical option: panel = image + paragraph(s)",
+  "usage": {
+    "pagesUsing": [
+      "https://bradescobank.com/en/careers/",
+      "https://bradescobank.com/en/credit-card-signature-gold/",
+      "https://bradescobank.com/en/real-estate/",
+      "/en/privacy-and-cookies/index"
+    ],
+    "reuseCount": 3,
+    "lastUsed": "2026-10-03"
+  },
+  "options": [
+    {
+      "class": "fragments",
+      "label": "Fragments"
+    },
+    {
+      "class": "tiles",
+      "label": "Tiles"
+    },
+    {
+      "class": "vertical",
+      "label": "Vertical"
+    }
+  ],
+  "memberVariantIds": [
+    "tabs"
+  ]
+}

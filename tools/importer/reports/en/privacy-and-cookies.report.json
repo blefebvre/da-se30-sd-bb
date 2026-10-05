@@ -1,0 +1,22 @@
+{
+  "status": "success",
+  "url": "https://bradescobank.com/en/privacy-and-cookies/",
+  "path": "en/privacy-and-cookies",
+  "timestamp": "2026-10-03T06:56:20.571Z",
+  "title": "Privacy and Cookies – Bradesco Bank",
+  "template": "info-page",
+  "fragment": "",
+  "blocks": [
+    "hero-banner",
+    "table-article",
+    "table-article",
+    "table-article",
+    "table-article",
+    "table-article",
+    "table-article",
+    "table-article",
+    "table-article",
+    "table-article",
+    "tabs"
+  ]
+}

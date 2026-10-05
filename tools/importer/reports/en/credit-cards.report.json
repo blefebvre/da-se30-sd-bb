@@ -1,0 +1,16 @@
+{
+  "status": "success",
+  "url": "https://bradescobank.com/en/credit-cards/",
+  "path": "en/credit-cards",
+  "timestamp": "2026-10-03T06:06:00.578Z",
+  "title": "Credit Cards – Bradesco Bank",
+  "template": "landing",
+  "fragment": "",
+  "blocks": [
+    "hero-video",
+    "cards-feature",
+    "hero-promo",
+    "hero-promo",
+    "hero-promo"
+  ]
+}

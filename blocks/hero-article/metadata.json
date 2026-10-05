@@ -1,0 +1,20 @@
+{
+  "variantName": "hero-article",
+  "baseBlock": "hero",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "colorScheme": "dark-overlay",
+    "density": "minimal",
+    "purpose": "post-title-banner",
+    "imagePattern": "background-image",
+    "structure": "image + h1"
+  },
+  "contentPattern": "1 column: row 1 [featured image], row 2 [h1 post title]",
+  "usage": {
+    "pagesUsing": ["https://bradescobank.com/en/reits/"],
+    "reuseCount": 0,
+    "lastUsed": "2026-10-02"
+  },
+  "options": [],
+  "memberVariantIds": ["hero-article"]
+}

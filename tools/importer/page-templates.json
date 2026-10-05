@@ -1,0 +1,1963 @@
+{
+  "metadata": {
+    "projectType": "da"
+  },
+  "templates": [
+    {
+      "name": "home",
+      "urls": [
+        "https://bradescobank.com/"
+      ],
+      "representativeUrl": "https://bradescobank.com/",
+      "description": "Homepage: video hero, audience tiles, statement video banner, product tile grid, promo banner",
+      "urlPattern": "/",
+      "blocks": [
+        {
+          "name": "hero-video",
+          "instances": [
+            ".elementor-element-b079a4a"
+          ]
+        },
+        {
+          "name": "cards-audience",
+          "instances": [
+            "section.services.elementor-element-6ff733d",
+            "section.services"
+          ]
+        },
+        {
+          "name": "hero-statement",
+          "instances": [
+            ".elementor-element-e5bf88e"
+          ]
+        },
+        {
+          "name": "cards-product",
+          "instances": [
+            ".elementor-element-c28d200"
+          ]
+        },
+        {
+          "name": "hero-promo",
+          "instances": [
+            ".elementor-element-f4e421d"
+          ]
+        }
+      ],
+      "sections": [
+        {
+          "id": "1",
+          "name": "hero",
+          "selector": [
+            ".elementor-element-b079a4a"
+          ],
+          "style": null,
+          "blocks": [
+            "hero-video"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "2",
+          "name": "audience-offerings",
+          "selector": [
+            ".elementor-element-c766b99"
+          ],
+          "style": null,
+          "blocks": [
+            "cards-audience"
+          ],
+          "defaultContent": [
+            ".elementor-element-c766b99 h2"
+          ]
+        },
+        {
+          "id": "3",
+          "name": "statement",
+          "selector": [
+            ".elementor-element-e5bf88e"
+          ],
+          "style": null,
+          "blocks": [
+            "hero-statement"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "4",
+          "name": "products",
+          "selector": [
+            ".elementor-element-0faff3c"
+          ],
+          "style": null,
+          "blocks": [
+            "cards-product"
+          ],
+          "defaultContent": [
+            ".elementor-element-0faff3c h2",
+            ".elementor-element-77e13de p"
+          ]
+        },
+        {
+          "id": "5",
+          "name": "market-insights",
+          "selector": [
+            ".elementor-element-3326291"
+          ],
+          "style": null,
+          "blocks": [
+            "hero-promo"
+          ],
+          "defaultContent": [
+            ".elementor-element-3326291 h2"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "article",
+      "urls": [
+        "https://bradescobank.com/en/financial-habits/",
+        "https://bradescobank.com/en/gold-as-a-portfolio-diversifier/",
+        "https://bradescobank.com/en/how-to-buy-assets/",
+        "https://bradescobank.com/en/how-to-sell-assets/",
+        "https://bradescobank.com/en/investments-at-bradesco-bank/",
+        "https://bradescobank.com/en/mutual-funds/",
+        "https://bradescobank.com/en/open-an-investment-account/",
+        "https://bradescobank.com/en/portfolio-considerations-the-role-of-staying-invested/",
+        "https://bradescobank.com/en/reits/",
+        "https://bradescobank.com/en/thematic-etfs/",
+        "https://bradescobank.com/en/u-s-stocks/",
+        "https://bradescobank.com/en/what-are-asset-allocation-and-diversification/",
+        "https://bradescobank.com/en/why-invest-abroad/"
+      ],
+      "representativeUrl": "https://bradescobank.com/en/reits/",
+      "description": "Blog/insight article (single post, theme post content)",
+      "blocks": [
+        {
+          "name": "hero-article",
+          "instances": [
+            ".elementor-location-single > .elementor-element-b710887"
+          ]
+        },
+        {
+          "name": "table-article",
+          "instances": [
+            ".elementor-widget-theme-post-content table"
+          ]
+        },
+        {
+          "name": "embed-video",
+          "instances": [
+            ".elementor-widget-theme-post-content iframe[src*=\"youtube.com\"]",
+            ".elementor-widget-theme-post-content iframe[src*=\"youtu.be\"]",
+            ".elementor-widget-theme-post-content iframe[src*=\"vimeo.com\"]"
+          ]
+        }
+      ],
+      "urlPattern": "/en/*",
+      "sections": [
+        {
+          "id": "1",
+          "name": "post-title-banner",
+          "selector": [
+            ".elementor-location-single > .elementor-element-b710887"
+          ],
+          "style": null,
+          "blocks": [
+            "hero-article"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "2",
+          "name": "decorative-gradient-line",
+          "selector": [
+            ".elementor-location-single > .elementor-element-df751d4"
+          ],
+          "style": null,
+          "blocks": [],
+          "defaultContent": []
+        },
+        {
+          "id": "3",
+          "name": "blog-sub-menu",
+          "selector": [
+            ".elementor-location-single > .bb-blog-menu"
+          ],
+          "style": null,
+          "blocks": [],
+          "defaultContent": []
+        },
+        {
+          "id": "4",
+          "name": "article-body",
+          "selector": [
+            ".elementor-location-single > .elementor-element-0fa6826"
+          ],
+          "style": null,
+          "blocks": [
+            "table-article",
+            "embed-video"
+          ],
+          "defaultContent": [
+            ".elementor-element-235adcb .elementor-shortcode",
+            ".elementor-widget-theme-post-content h1",
+            ".elementor-widget-theme-post-content h2",
+            ".elementor-widget-theme-post-content h3",
+            ".elementor-widget-theme-post-content h4",
+            ".elementor-widget-theme-post-content h5",
+            ".elementor-widget-theme-post-content h6",
+            ".elementor-widget-theme-post-content p",
+            ".elementor-widget-theme-post-content ul",
+            ".elementor-widget-theme-post-content ol"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "article-rich",
+      "urls": [
+        "https://bradescobank.com/en/exploring-investment-products-in-the-u-s/",
+        "https://bradescobank.com/en/investing-for-different-client-profiles/",
+        "https://bradescobank.com/en/the-power-of-compounding/"
+      ],
+      "representativeUrl": "https://bradescobank.com/en/exploring-investment-products-in-the-u-s/",
+      "description": "Single post built with rich Elementor layout (tabs/accordions/carousels/charts)",
+      "blocks": [],
+      "urlPattern": "/en/*"
+    },
+    {
+      "name": "landing",
+      "urls": [
+        "https://bradescobank.com/en/personal-bank/",
+        "https://bradescobank.com/en/private-bank/",
+        "https://bradescobank.com/en/corporate/",
+        "https://bradescobank.com/en/real-estate/",
+        "https://bradescobank.com/en/credit-cards/",
+        "https://bradescobank.com/en/credit-card-signature-gold/",
+        "https://bradescobank.com/en/certificate-of-deposit-bradesco/",
+        "https://bradescobank.com/en/zelle/",
+        "https://bradescobank.com/en/credit-card/visa-infinite/",
+        "https://bradescobank.com/en/personal-bank/investments/",
+        "https://bradescobank.com/en/investments-content/bradesco-investments-app/",
+        "https://bradescobank.com/en/careers/"
+      ],
+      "representativeUrl": "https://bradescobank.com/en/personal-bank/",
+      "description": "Product/segment landing page (banner hero, feature rows, cards, CTAs)",
+      "blocks": [
+        {
+          "name": "hero-video",
+          "instances": [
+            ".elementor-2745 .elementor-element-112f6d8",
+            ".elementor-2871 .elementor-element-5c6ea91",
+            ".elementor-1799 .elementor-element-cb27143",
+            ".elementor-1861 .elementor-element-c9f3a87",
+            ".elementor-22451 .elementor-element-5d04821",
+            ".elementor-22830 .elementor-element-ae7b4e1"
+          ]
+        },
+        {
+          "name": "cards-audience",
+          "instances": [
+            ".elementor-2745 .elementor-element-d6ecb0a",
+            ".elementor-2871 .elementor-element-035d061",
+            ".elementor-1799 .elementor-element-4b846a8"
+          ]
+        },
+        {
+          "name": "cards-feature",
+          "instances": [
+            ".elementor-2745 .elementor-element-aa7e11f",
+            ".elementor-2745 .elementor-element-3f6e18f",
+            ".elementor-2745 .elementor-element-9d8b971",
+            ".elementor-2871 .elementor-element-38ecf0e",
+            ".elementor-1799 .elementor-element-73bb45e",
+            ".elementor-1799 .elementor-element-c6606bc",
+            ".elementor-1861 .elementor-element-b5cf05e",
+            ".elementor-22451 .elementor-element-9c6aacd",
+            ".elementor-22830 .elementor-element-2eeed79",
+            ".elementor-3099 .elementor-element-062be19",
+            ".elementor-3099 .elementor-element-b8dc142",
+            ".elementor-13944 .elementor-element-14cf9d6",
+            ".elementor-13944 .elementor-element-93ede8a",
+            ".elementor-19290 .elementor-element-710cfdd",
+            ".elementor-19290 .elementor-element-9ab5255",
+            ".elementor-6840 .elementor-element-c158bfb",
+            ".elementor-6840 .elementor-element-9d25ef1",
+            ".elementor-12803 .elementor-element-5edeb97",
+            ".elementor-12803 .elementor-element-6c234bd"
+          ]
+        },
+        {
+          "name": "cards-product",
+          "instances": [
+            ".elementor-2745 .elementor-element-00e6b5c",
+            ".elementor-19290 .elementor-element-9cc3acd"
+          ]
+        },
+        {
+          "name": "hero-promo",
+          "instances": [
+            ".elementor-2745 .elementor-element-912870a",
+            ".elementor-2745 .elementor-element-ca5306d",
+            ".elementor-2871 .elementor-element-986ffe9",
+            ".elementor-2871 .elementor-element-6378b6b",
+            ".elementor-2871 .elementor-element-84b88d0",
+            ".elementor-1799 .elementor-element-5330a3e",
+            ".elementor-22451 .elementor-element-b24133b",
+            ".elementor-22451 .elementor-element-c94aa6a",
+            ".elementor-22451 .elementor-element-607c7dd",
+            ".elementor-22830 .elementor-element-8f44234",
+            ".elementor-22830 .elementor-element-b9ba7d7",
+            ".elementor-13944 .elementor-element-3bb0ed2",
+            ".elementor-19290 .elementor-element-9b2d1d7",
+            ".elementor-19290 .elementor-element-635bb7b",
+            ".elementor-19290 .elementor-element-6e85c13",
+            ".elementor-6840 .elementor-element-26517c1",
+            ".elementor-6840 .elementor-element-af9d94e",
+            ".elementor-6840 .elementor-element-0ec23cb",
+            ".elementor-12803 .elementor-element-130823e",
+            ".elementor-6573 .elementor-element-782d0f83",
+            ".elementor-6573 .elementor-element-5a456f9f"
+          ]
+        },
+        {
+          "name": "columns-media",
+          "instances": [
+            ".elementor-2871 .elementor-element-d4d42ec",
+            ".elementor-2871 .elementor-element-74401a0",
+            ".elementor-1861 .elementor-element-1fcc151",
+            ".elementor-12803 .elementor-element-66369c7",
+            ".elementor-6573 .elementor-element-4ce5f23e",
+            ".elementor-6573 .elementor-element-3d3948f2"
+          ]
+        },
+        {
+          "name": "tabs",
+          "instances": [
+            ".elementor-1861 .elementor-element-bccf07d",
+            ".elementor-22830 .elementor-element-4b630b1",
+            ".elementor-6573 .elementor-element-88d9683"
+          ]
+        },
+        {
+          "name": "table-article",
+          "instances": [
+            ".elementor-22830 .elementor-element-240ef93",
+            ".elementor-19290 .elementor-element-2be8725 .tabela-beneficios"
+          ]
+        },
+        {
+          "name": "accordion",
+          "instances": [
+            ".elementor-22830 .elementor-element-96c7314",
+            ".elementor-13944 .elementor-element-f1f23bb",
+            ".elementor-19290 .elementor-element-fd74825"
+          ]
+        },
+        {
+          "name": "hero-banner",
+          "instances": [
+            ".elementor-3099 .elementor-element-59c64c7",
+            ".elementor-13944 .elementor-element-eb18198",
+            ".elementor-19290 .elementor-element-0fedced",
+            ".elementor-6840 .elementor-element-b7e6335",
+            ".elementor-12803 .elementor-element-72971f4",
+            ".elementor-6573 .elementor-element-eb18198"
+          ]
+        }
+      ],
+      "urlPattern": "/en/*",
+      "sections": [
+        {
+          "id": "personal-bank-1",
+          "name": "personal-bank-1",
+          "selector": [
+            ".elementor-2745 .elementor-element-112f6d8"
+          ],
+          "style": null,
+          "blocks": [
+            "hero-video"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "personal-bank-2",
+          "name": "personal-bank-2",
+          "selector": [
+            ".elementor-2745 .elementor-element-d6ecb0a"
+          ],
+          "style": null,
+          "blocks": [
+            "cards-audience"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "personal-bank-3",
+          "name": "personal-bank-3",
+          "selector": [
+            ".elementor-2745 .elementor-element-3406f07"
+          ],
+          "style": "grey, split",
+          "blocks": [
+            "cards-feature"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "personal-bank-4",
+          "name": "personal-bank-4",
+          "selector": [
+            ".elementor-2745 .elementor-element-00e6b5c"
+          ],
+          "style": null,
+          "blocks": [
+            "cards-product"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "personal-bank-5",
+          "name": "personal-bank-5",
+          "selector": [
+            ".elementor-2745 .elementor-element-912870a"
+          ],
+          "style": null,
+          "blocks": [
+            "hero-promo"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "personal-bank-6",
+          "name": "personal-bank-6",
+          "selector": [
+            ".elementor-2745 .elementor-element-ca5306d"
+          ],
+          "style": null,
+          "blocks": [
+            "hero-promo"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "personal-bank-7",
+          "name": "personal-bank-7",
+          "selector": [
+            ".elementor-2745 .elementor-element-03be253"
+          ],
+          "style": "red, split",
+          "blocks": [
+            "cards-feature"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "personal-bank-8",
+          "name": "personal-bank-8",
+          "selector": [
+            ".elementor-2745 .elementor-element-6ead701"
+          ],
+          "style": "grey, split",
+          "blocks": [
+            "cards-feature"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "personal-bank-9",
+          "name": "personal-bank-9",
+          "selector": [
+            ".elementor-2745 .elementor-element-26b7e01"
+          ],
+          "style": "split",
+          "blocks": [],
+          "defaultContent": []
+        },
+        {
+          "id": "private-bank-1",
+          "name": "private-bank-1",
+          "selector": [
+            ".elementor-2871 .elementor-element-5c6ea91"
+          ],
+          "style": null,
+          "blocks": [
+            "hero-video"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "private-bank-2",
+          "name": "private-bank-2",
+          "selector": [
+            ".elementor-2871 .elementor-element-dd8aea9"
+          ],
+          "style": null,
+          "blocks": [],
+          "defaultContent": []
+        },
+        {
+          "id": "private-bank-3",
+          "name": "private-bank-3",
+          "selector": [
+            ".elementor-2871 .elementor-element-986ffe9"
+          ],
+          "style": null,
+          "blocks": [
+            "hero-promo"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "private-bank-4",
+          "name": "private-bank-4",
+          "selector": [
+            ".elementor-2871 .elementor-element-62e3401"
+          ],
+          "style": "dark, navy",
+          "blocks": [
+            "cards-feature"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "private-bank-5",
+          "name": "private-bank-5",
+          "selector": [
+            ".elementor-2871 .elementor-element-d4d42ec"
+          ],
+          "style": null,
+          "blocks": [
+            "columns-media"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "private-bank-6",
+          "name": "private-bank-6",
+          "selector": [
+            ".elementor-2871 .elementor-element-74401a0"
+          ],
+          "style": "grey",
+          "blocks": [
+            "columns-media"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "private-bank-7",
+          "name": "private-bank-7",
+          "selector": [
+            ".elementor-2871 .elementor-element-e196ad0"
+          ],
+          "style": null,
+          "blocks": [
+            "cards-audience"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "private-bank-8",
+          "name": "private-bank-8",
+          "selector": [
+            ".elementor-2871 .elementor-element-8a3140e"
+          ],
+          "style": null,
+          "blocks": [
+            "hero-promo"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "private-bank-9",
+          "name": "private-bank-9",
+          "selector": [
+            ".elementor-2871 .elementor-element-84b88d0"
+          ],
+          "style": null,
+          "blocks": [
+            "hero-promo"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "private-bank-10",
+          "name": "private-bank-10",
+          "selector": [
+            ".elementor-2871 .elementor-element-505c3da"
+          ],
+          "style": "grey",
+          "blocks": [],
+          "defaultContent": []
+        },
+        {
+          "id": "private-bank-11",
+          "name": "private-bank-11",
+          "selector": [
+            ".elementor-2871 .elementor-element-ce42cc2"
+          ],
+          "style": "dark, navy",
+          "blocks": [],
+          "defaultContent": []
+        },
+        {
+          "id": "corporate-1",
+          "name": "corporate-1",
+          "selector": [
+            ".elementor-1799 .elementor-element-cb27143"
+          ],
+          "style": null,
+          "blocks": [
+            "hero-video"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "corporate-2",
+          "name": "corporate-2",
+          "selector": [
+            ".elementor-1799 .elementor-element-e21ddf3"
+          ],
+          "style": null,
+          "blocks": [],
+          "defaultContent": []
+        },
+        {
+          "id": "corporate-3",
+          "name": "corporate-3",
+          "selector": [
+            ".elementor-1799 .elementor-element-ceba38a"
+          ],
+          "style": "full-bleed",
+          "blocks": [],
+          "defaultContent": []
+        },
+        {
+          "id": "corporate-3b",
+          "name": "corporate-3b",
+          "selector": [
+            ".elementor-1799 .elementor-element-1cd2ca1"
+          ],
+          "style": "red",
+          "blocks": [],
+          "defaultContent": []
+        },
+        {
+          "id": "corporate-4",
+          "name": "corporate-4",
+          "selector": [
+            ".elementor-1799 .elementor-element-73bb45e"
+          ],
+          "style": "grey",
+          "blocks": [
+            "cards-feature"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "corporate-5",
+          "name": "corporate-5",
+          "selector": [
+            ".elementor-1799 .elementor-element-5330a3e"
+          ],
+          "style": null,
+          "blocks": [
+            "hero-promo"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "corporate-6",
+          "name": "corporate-6",
+          "selector": [
+            ".elementor-1799 .elementor-element-c6606bc"
+          ],
+          "style": "grey",
+          "blocks": [
+            "cards-feature"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "corporate-7",
+          "name": "corporate-7",
+          "selector": [
+            ".elementor-1799 .elementor-element-4b846a8"
+          ],
+          "style": null,
+          "blocks": [
+            "cards-audience"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "real-estate-1",
+          "name": "real-estate-1",
+          "selector": [
+            ".elementor-1861 .elementor-element-c9f3a87"
+          ],
+          "style": null,
+          "blocks": [
+            "hero-video"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "real-estate-2",
+          "name": "real-estate-2",
+          "selector": [
+            ".elementor-1861 .elementor-element-185cf88"
+          ],
+          "style": "grey",
+          "blocks": [
+            "cards-feature"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "real-estate-3",
+          "name": "real-estate-3",
+          "selector": [
+            ".elementor-1861 .elementor-element-1fcc151"
+          ],
+          "style": null,
+          "blocks": [
+            "columns-media"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "real-estate-4",
+          "name": "real-estate-4",
+          "selector": [
+            ".elementor-1861 .elementor-element-750c69f"
+          ],
+          "style": "grey",
+          "blocks": [
+            "tabs"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "real-estate-5",
+          "name": "real-estate-5",
+          "selector": [
+            ".elementor-1861 .elementor-element-81add60"
+          ],
+          "style": "split",
+          "blocks": [],
+          "defaultContent": []
+        },
+        {
+          "id": "credit-cards-1",
+          "name": "credit-cards-1",
+          "selector": [
+            ".elementor-22451 .elementor-element-5d04821"
+          ],
+          "style": null,
+          "blocks": [
+            "hero-video"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "credit-cards-2",
+          "name": "credit-cards-2",
+          "selector": [
+            ".elementor-22451 .elementor-element-b24133b"
+          ],
+          "style": null,
+          "blocks": [
+            "hero-promo"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "credit-cards-3",
+          "name": "credit-cards-3",
+          "selector": [
+            ".elementor-22451 .elementor-element-a79f9f8"
+          ],
+          "style": "full-bleed",
+          "blocks": [],
+          "defaultContent": []
+        },
+        {
+          "id": "credit-cards-4",
+          "name": "credit-cards-4",
+          "selector": [
+            ".elementor-22451 .elementor-element-9c6aacd"
+          ],
+          "style": null,
+          "blocks": [
+            "cards-feature"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "credit-cards-5",
+          "name": "credit-cards-5",
+          "selector": [
+            ".elementor-22451 .elementor-element-c94aa6a"
+          ],
+          "style": null,
+          "blocks": [
+            "hero-promo"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "credit-cards-6",
+          "name": "credit-cards-6",
+          "selector": [
+            ".elementor-22451 .elementor-element-607c7dd"
+          ],
+          "style": null,
+          "blocks": [
+            "hero-promo"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "credit-cards-7",
+          "name": "credit-cards-7",
+          "selector": [
+            ".elementor-22451 .elementor-element-65d7f31"
+          ],
+          "style": "notes",
+          "blocks": [],
+          "defaultContent": []
+        },
+        {
+          "id": "credit-card-signature-gold-1",
+          "name": "credit-card-signature-gold-1",
+          "selector": [
+            ".elementor-22830 .elementor-element-ae7b4e1"
+          ],
+          "style": null,
+          "blocks": [
+            "hero-video"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "credit-card-signature-gold-2",
+          "name": "credit-card-signature-gold-2",
+          "selector": [
+            ".elementor-22830 .elementor-element-8f44234"
+          ],
+          "style": null,
+          "blocks": [
+            "hero-promo"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "credit-card-signature-gold-3",
+          "name": "credit-card-signature-gold-3",
+          "selector": [
+            ".elementor-22830 .elementor-element-f5908ca"
+          ],
+          "style": null,
+          "blocks": [
+            "tabs"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "credit-card-signature-gold-4",
+          "name": "credit-card-signature-gold-4",
+          "selector": [
+            ".elementor-22830 .elementor-element-ed47c36"
+          ],
+          "style": "notes",
+          "blocks": [],
+          "defaultContent": []
+        },
+        {
+          "id": "credit-card-signature-gold-5",
+          "name": "credit-card-signature-gold-5",
+          "selector": [
+            ".elementor-22830 .elementor-element-f87d030"
+          ],
+          "style": "grey",
+          "blocks": [
+            "table-article"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "credit-card-signature-gold-6",
+          "name": "credit-card-signature-gold-6",
+          "selector": [
+            ".elementor-22830 .elementor-element-a00c704"
+          ],
+          "style": "notes",
+          "blocks": [],
+          "defaultContent": []
+        },
+        {
+          "id": "credit-card-signature-gold-7",
+          "name": "credit-card-signature-gold-7",
+          "selector": [
+            ".elementor-22830 .elementor-element-b9ba7d7"
+          ],
+          "style": null,
+          "blocks": [
+            "hero-promo"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "credit-card-signature-gold-8",
+          "name": "credit-card-signature-gold-8",
+          "selector": [
+            ".elementor-22830 .elementor-element-b312b1c"
+          ],
+          "style": null,
+          "blocks": [
+            "accordion"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "credit-card-signature-gold-9",
+          "name": "credit-card-signature-gold-9",
+          "selector": [
+            ".elementor-22830 .elementor-element-f0c294f"
+          ],
+          "style": "grey",
+          "blocks": [
+            "cards-feature"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "certificate-of-deposit-bradesco-1",
+          "name": "certificate-of-deposit-bradesco-1",
+          "selector": [
+            ".elementor-3099 .elementor-element-59c64c7"
+          ],
+          "style": null,
+          "blocks": [
+            "hero-banner"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "certificate-of-deposit-bradesco-2",
+          "name": "certificate-of-deposit-bradesco-2",
+          "selector": [
+            ".elementor-3099 .elementor-element-36e3fe9"
+          ],
+          "style": "grey, split",
+          "blocks": [],
+          "defaultContent": []
+        },
+        {
+          "id": "certificate-of-deposit-bradesco-3",
+          "name": "certificate-of-deposit-bradesco-3",
+          "selector": [
+            ".elementor-3099 .elementor-element-1068bbf"
+          ],
+          "style": "red",
+          "blocks": [],
+          "defaultContent": []
+        },
+        {
+          "id": "certificate-of-deposit-bradesco-4",
+          "name": "certificate-of-deposit-bradesco-4",
+          "selector": [
+            ".elementor-3099 .elementor-element-062be19"
+          ],
+          "style": "grey, split",
+          "blocks": [
+            "cards-feature"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "certificate-of-deposit-bradesco-5",
+          "name": "certificate-of-deposit-bradesco-5",
+          "selector": [
+            ".elementor-3099 .elementor-element-0babd61"
+          ],
+          "style": "grey",
+          "blocks": [],
+          "defaultContent": []
+        },
+        {
+          "id": "certificate-of-deposit-bradesco-6",
+          "name": "certificate-of-deposit-bradesco-6",
+          "selector": [
+            ".elementor-3099 .elementor-element-b878909"
+          ],
+          "style": null,
+          "blocks": [
+            "cards-feature"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "zelle-1",
+          "name": "zelle-1",
+          "selector": [
+            ".elementor-13944 .elementor-element-eb18198"
+          ],
+          "style": null,
+          "blocks": [
+            "hero-banner"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "zelle-2",
+          "name": "zelle-2",
+          "selector": [
+            ".elementor-13944 .elementor-element-4d27485"
+          ],
+          "style": null,
+          "blocks": [
+            "cards-feature"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "zelle-3",
+          "name": "zelle-3",
+          "selector": [
+            ".elementor-13944 .elementor-element-3bb0ed2"
+          ],
+          "style": null,
+          "blocks": [
+            "hero-promo"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "zelle-4",
+          "name": "zelle-4",
+          "selector": [
+            ".elementor-13944 .elementor-element-22adc58"
+          ],
+          "style": null,
+          "blocks": [
+            "cards-feature"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "zelle-5",
+          "name": "zelle-5",
+          "selector": [
+            ".elementor-13944 .elementor-element-c6ae99e"
+          ],
+          "style": "grey",
+          "blocks": [
+            "accordion"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "zelle-6",
+          "name": "zelle-6",
+          "selector": [
+            ".elementor-13944 .elementor-element-19ecbe4"
+          ],
+          "style": "notes",
+          "blocks": [],
+          "defaultContent": []
+        },
+        {
+          "id": "visa-infinite-1",
+          "name": "visa-infinite-1",
+          "selector": [
+            ".elementor-19290 .elementor-element-0fedced"
+          ],
+          "style": null,
+          "blocks": [
+            "hero-banner"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "visa-infinite-2",
+          "name": "visa-infinite-2",
+          "selector": [
+            ".elementor-19290 .elementor-element-9b2d1d7"
+          ],
+          "style": null,
+          "blocks": [
+            "hero-promo"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "visa-infinite-3",
+          "name": "visa-infinite-3",
+          "selector": [
+            ".elementor-19290 .elementor-element-df407d2"
+          ],
+          "style": "grey",
+          "blocks": [
+            "cards-product"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "visa-infinite-4",
+          "name": "visa-infinite-4",
+          "selector": [
+            ".elementor-19290 .elementor-element-e0cf2e4"
+          ],
+          "style": "dark, split",
+          "blocks": [
+            "cards-feature"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "visa-infinite-5",
+          "name": "visa-infinite-5",
+          "selector": [
+            ".elementor-19290 .elementor-element-225b2a0"
+          ],
+          "style": "grey",
+          "blocks": [
+            "accordion"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "visa-infinite-6",
+          "name": "visa-infinite-6",
+          "selector": [
+            ".elementor-19290 .elementor-element-edbae3f"
+          ],
+          "style": "dark",
+          "blocks": [
+            "table-article"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "visa-infinite-7",
+          "name": "visa-infinite-7",
+          "selector": [
+            ".elementor-19290 .elementor-element-635bb7b"
+          ],
+          "style": null,
+          "blocks": [
+            "hero-promo"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "visa-infinite-8",
+          "name": "visa-infinite-8",
+          "selector": [
+            ".elementor-19290 .elementor-element-eaaebca"
+          ],
+          "style": "grey",
+          "blocks": [
+            "cards-feature"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "visa-infinite-9",
+          "name": "visa-infinite-9",
+          "selector": [
+            ".elementor-19290 .elementor-element-6e85c13"
+          ],
+          "style": null,
+          "blocks": [
+            "hero-promo"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "visa-infinite-10",
+          "name": "visa-infinite-10",
+          "selector": [
+            ".elementor-19290 .elementor-element-0d349da"
+          ],
+          "style": "notes",
+          "blocks": [],
+          "defaultContent": []
+        },
+        {
+          "id": "personal-bank-investments-1",
+          "name": "personal-bank-investments-1",
+          "selector": [
+            ".elementor-6840 .elementor-element-b7e6335"
+          ],
+          "style": null,
+          "blocks": [
+            "hero-banner"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "personal-bank-investments-2",
+          "name": "personal-bank-investments-2",
+          "selector": [
+            ".elementor-6840 .elementor-element-245c4ba"
+          ],
+          "style": "split",
+          "blocks": [
+            "cards-feature"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "personal-bank-investments-3",
+          "name": "personal-bank-investments-3",
+          "selector": [
+            ".elementor-6840 .elementor-element-26517c1"
+          ],
+          "style": null,
+          "blocks": [
+            "hero-promo"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "personal-bank-investments-4",
+          "name": "personal-bank-investments-4",
+          "selector": [
+            ".elementor-6840 .elementor-element-af9d94e"
+          ],
+          "style": null,
+          "blocks": [
+            "hero-promo"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "personal-bank-investments-5",
+          "name": "personal-bank-investments-5",
+          "selector": [
+            ".elementor-6840 .elementor-element-16b4893"
+          ],
+          "style": "grey, split",
+          "blocks": [
+            "cards-feature"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "personal-bank-investments-6",
+          "name": "personal-bank-investments-6",
+          "selector": [
+            ".elementor-6840 .elementor-element-0ec23cb"
+          ],
+          "style": null,
+          "blocks": [
+            "hero-promo"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "bradesco-investments-app-1",
+          "name": "bradesco-investments-app-1",
+          "selector": [
+            ".elementor-12803 .elementor-element-72971f4"
+          ],
+          "style": null,
+          "blocks": [
+            "hero-banner"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "bradesco-investments-app-2",
+          "name": "bradesco-investments-app-2",
+          "selector": [
+            ".elementor-12803 .elementor-element-64988fd"
+          ],
+          "style": null,
+          "blocks": [],
+          "defaultContent": []
+        },
+        {
+          "id": "bradesco-investments-app-3",
+          "name": "bradesco-investments-app-3",
+          "selector": [
+            ".elementor-12803 .elementor-element-cb9b4cd"
+          ],
+          "style": "grey",
+          "blocks": [
+            "columns-media"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "bradesco-investments-app-4",
+          "name": "bradesco-investments-app-4",
+          "selector": [
+            ".elementor-12803 .elementor-element-130823e"
+          ],
+          "style": null,
+          "blocks": [
+            "hero-promo"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "bradesco-investments-app-5",
+          "name": "bradesco-investments-app-5",
+          "selector": [
+            ".elementor-12803 .elementor-element-5edeb97"
+          ],
+          "style": null,
+          "blocks": [
+            "cards-feature"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "bradesco-investments-app-6",
+          "name": "bradesco-investments-app-6",
+          "selector": [
+            ".elementor-12803 .elementor-element-6dd48ff"
+          ],
+          "style": "grey",
+          "blocks": [
+            "cards-feature"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "careers-1",
+          "name": "careers-1",
+          "selector": [
+            ".elementor-6573 .elementor-element-eb18198"
+          ],
+          "style": null,
+          "blocks": [
+            "hero-banner"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "careers-2",
+          "name": "careers-2",
+          "selector": [
+            ".elementor-6573 .elementor-element-398179c"
+          ],
+          "style": null,
+          "blocks": [
+            "tabs"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "careers-F1.1",
+          "name": "jobs-fragment-careers-F1.1",
+          "selector": [
+            ".elementor-6573 .elementor-element-1e7711b"
+          ],
+          "style": null,
+          "blocks": [],
+          "defaultContent": []
+        },
+        {
+          "id": "careers-F1.2",
+          "name": "jobs-fragment-careers-F1.2",
+          "selector": [
+            ".elementor-6573 .elementor-element-3c765362"
+          ],
+          "style": "grey, notes",
+          "blocks": [],
+          "defaultContent": []
+        },
+        {
+          "id": "careers-F2.1",
+          "name": "internship-fragment-careers-F2.1",
+          "selector": [
+            ".elementor-6573 .elementor-element-213ddcfe"
+          ],
+          "style": "red",
+          "blocks": [],
+          "defaultContent": []
+        },
+        {
+          "id": "careers-F2.2",
+          "name": "internship-fragment-careers-F2.2",
+          "selector": [
+            ".elementor-6573 .elementor-element-64d8e2e"
+          ],
+          "style": null,
+          "blocks": [
+            "hero-promo"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "careers-F2.3",
+          "name": "internship-fragment-careers-F2.3",
+          "selector": [
+            ".elementor-6573 .elementor-element-4ce5f23e"
+          ],
+          "style": null,
+          "blocks": [
+            "columns-media"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "careers-F2.4",
+          "name": "internship-fragment-careers-F2.4",
+          "selector": [
+            ".elementor-6573 .elementor-element-54325338"
+          ],
+          "style": null,
+          "blocks": [
+            "columns-media"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "careers-F2.5",
+          "name": "internship-fragment-careers-F2.5",
+          "selector": [
+            ".elementor-6573 .elementor-element-5a456f9f"
+          ],
+          "style": null,
+          "blocks": [
+            "hero-promo"
+          ],
+          "defaultContent": []
+        }
+      ]
+    },
+    {
+      "name": "info-page",
+      "urls": [
+        "https://bradescobank.com/en/about-us/",
+        "https://bradescobank.com/en/institutional/",
+        "https://bradescobank.com/en/help/",
+        "https://bradescobank.com/en/bank-holidays/",
+        "https://bradescobank.com/en/bradesco-lounge/",
+        "https://bradescobank.com/en/security/",
+        "https://bradescobank.com/en/privacy-and-cookies/",
+        "https://bradescobank.com/en/other-disclosures/",
+        "https://bradescobank.com/en/cra-public-file/"
+      ],
+      "representativeUrl": "https://bradescobank.com/en/security/",
+      "description": "Informational/legal text page (title banner + rich text, documents, accordions)",
+      "blocks": [
+        {
+          "name": "hero-banner",
+          "instances": [
+            ".elementor-1178 .elementor-element-8ea493e",
+            ".elementor-2212 .elementor-element-eb18198",
+            ".elementor-1481 .elementor-element-93efab2",
+            ".elementor-1401 .elementor-element-1c4cdd8",
+            ".elementor-2391 .elementor-element-2ac1894",
+            ".elementor-2498 .elementor-element-cc804cd",
+            ".elementor-467 .elementor-element-2530a90",
+            ".elementor-631 .elementor-element-2d43f3e"
+          ]
+        },
+        {
+          "name": "hero-video",
+          "instances": [
+            ".elementor-6834 .elementor-element-cb27143"
+          ]
+        },
+        {
+          "name": "hero-promo",
+          "instances": [
+            ".elementor-6834 .elementor-element-0796a69"
+          ]
+        },
+        {
+          "name": "columns-media",
+          "instances": [
+            ".elementor-6834 .elementor-element-cbfa80c",
+            ".elementor-1178 .elementor-element-5358476",
+            ".elementor-1481 .elementor-element-81ae845"
+          ]
+        },
+        {
+          "name": "cards-feature",
+          "instances": [
+            ".elementor-1178 .elementor-element-a2edf52",
+            ".elementor-1178 .elementor-element-ba0258e",
+            ".elementor-2212 .elementor-element-14cf9d6",
+            ".elementor-6834 .elementor-element-5776fec",
+            ".elementor-6834 .elementor-element-1980f3f",
+            ".elementor-1481 .elementor-element-6aca6cb",
+            ".elementor-2391 .elementor-element-bd525e6",
+            ".elementor-467 .elementor-element-4fc6a9d",
+            ".elementor-631 .elementor-element-220b4b9"
+          ]
+        },
+        {
+          "name": "accordion",
+          "instances": [
+            ".elementor-1178 .elementor-element-349fe54"
+          ]
+        },
+        {
+          "name": "tabs",
+          "instances": [
+            ".elementor-2498 .elementor-element-7041282"
+          ]
+        },
+        {
+          "name": "table-article",
+          "instances": [
+            ".elementor-1401 .elementor-element-c5bea59",
+            ".elementor-2456 .elementor-element-697c7f0",
+            ".elementor-2456 .elementor-element-765f5e0",
+            ".elementor-2456 .elementor-element-fb5dcaf",
+            ".elementor-2456 .elementor-element-e65f866",
+            ".elementor-2514 .elementor-element-8ecd117",
+            ".elementor-2514 .elementor-element-08b3406",
+            ".elementor-2514 .elementor-element-ccbc17b",
+            ".elementor-2514 .elementor-element-ecaad1f",
+            ".elementor-2527 .elementor-element-a43783e"
+          ]
+        }
+      ],
+      "urlPattern": "/en/*",
+      "sections": [
+        {
+          "id": "about-us-1",
+          "name": "about-us-1",
+          "selector": [
+            ".elementor-2212 .elementor-element-eb18198"
+          ],
+          "style": null,
+          "blocks": [
+            "hero-banner"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "about-us-2",
+          "name": "about-us-2",
+          "selector": [
+            ".elementor-2212 .elementor-element-4d27485"
+          ],
+          "style": null,
+          "blocks": [],
+          "defaultContent": []
+        },
+        {
+          "id": "about-us-3",
+          "name": "about-us-3",
+          "selector": [
+            ".elementor-2212 .elementor-element-bb22c62"
+          ],
+          "style": "full-bleed",
+          "blocks": [],
+          "defaultContent": []
+        },
+        {
+          "id": "about-us-4",
+          "name": "about-us-4",
+          "selector": [
+            ".elementor-2212 .elementor-element-adbc8f3"
+          ],
+          "style": null,
+          "blocks": [
+            "cards-feature"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "institutional-1",
+          "name": "institutional-1",
+          "selector": [
+            ".elementor-6834 .elementor-element-cb27143"
+          ],
+          "style": null,
+          "blocks": [
+            "hero-video"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "institutional-2",
+          "name": "institutional-2",
+          "selector": [
+            ".elementor-6834 .elementor-element-a5e28e3"
+          ],
+          "style": null,
+          "blocks": [
+            "columns-media"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "institutional-3",
+          "name": "institutional-3",
+          "selector": [
+            ".elementor-6834 .elementor-element-a4630b6"
+          ],
+          "style": "grey",
+          "blocks": [
+            "cards-feature"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "institutional-4",
+          "name": "institutional-4",
+          "selector": [
+            ".elementor-6834 .elementor-element-a6c4a49"
+          ],
+          "style": "split",
+          "blocks": [],
+          "defaultContent": []
+        },
+        {
+          "id": "institutional-5",
+          "name": "institutional-5",
+          "selector": [
+            ".elementor-6834 .elementor-element-0796a69"
+          ],
+          "style": null,
+          "blocks": [
+            "hero-promo",
+            "cards-feature"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "help-1",
+          "name": "help-1",
+          "selector": [
+            ".elementor-1481 .elementor-element-93efab2"
+          ],
+          "style": null,
+          "blocks": [
+            "hero-banner"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "help-2",
+          "name": "help-2",
+          "selector": [
+            ".elementor-1481 .elementor-element-3012ebd"
+          ],
+          "style": null,
+          "blocks": [
+            "columns-media",
+            "cards-feature"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "help-3",
+          "name": "help-3",
+          "selector": [
+            ".elementor-1481 .elementor-element-58cd61f"
+          ],
+          "style": null,
+          "blocks": [],
+          "defaultContent": []
+        },
+        {
+          "id": "bank-holidays-1",
+          "name": "bank-holidays-1",
+          "selector": [
+            ".elementor-1401 .elementor-element-1c4cdd8"
+          ],
+          "style": null,
+          "blocks": [
+            "hero-banner"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "bank-holidays-2",
+          "name": "bank-holidays-2",
+          "selector": [
+            ".elementor-1401 .elementor-element-ba583de"
+          ],
+          "style": "grey",
+          "blocks": [
+            "table-article"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "bradesco-lounge-1",
+          "name": "bradesco-lounge-1",
+          "selector": [
+            ".elementor-2391 .elementor-element-2ac1894"
+          ],
+          "style": null,
+          "blocks": [
+            "hero-banner"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "bradesco-lounge-2",
+          "name": "bradesco-lounge-2",
+          "selector": [
+            ".elementor-2391 .elementor-element-bd525e6"
+          ],
+          "style": null,
+          "blocks": [
+            "cards-feature"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "security-1",
+          "name": "security-1",
+          "selector": [
+            ".elementor-1178 .elementor-element-8ea493e"
+          ],
+          "style": null,
+          "blocks": [
+            "hero-banner"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "security-2",
+          "name": "security-2",
+          "selector": [
+            ".elementor-1178 .elementor-element-985c385"
+          ],
+          "style": null,
+          "blocks": [
+            "cards-feature"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "security-3",
+          "name": "security-3",
+          "selector": [
+            ".elementor-1178 .elementor-element-14b83e7"
+          ],
+          "style": "grey",
+          "blocks": [
+            "accordion"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "security-4",
+          "name": "security-4",
+          "selector": [
+            ".elementor-1178 .elementor-element-60799a5"
+          ],
+          "style": null,
+          "blocks": [
+            "columns-media",
+            "cards-feature"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "privacy-and-cookies-1",
+          "name": "privacy-and-cookies-1",
+          "selector": [
+            ".elementor-2498 .elementor-element-cc804cd"
+          ],
+          "style": null,
+          "blocks": [
+            "hero-banner"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "privacy-and-cookies-2",
+          "name": "privacy-and-cookies-2",
+          "selector": [
+            ".elementor-2498 .elementor-element-e7024a1"
+          ],
+          "style": null,
+          "blocks": [
+            "tabs"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "privacy-and-cookies-F1.1",
+          "name": "consumer-privacy-notice-fragment-privacy-and-cookies-F1.1",
+          "selector": [
+            ".elementor-2456 .elementor-element-59e75f6"
+          ],
+          "style": null,
+          "blocks": [
+            "table-article"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "privacy-and-cookies-F1.2",
+          "name": "consumer-privacy-notice-fragment-privacy-and-cookies-F1.2",
+          "selector": [
+            ".elementor-2456 .elementor-element-618c759"
+          ],
+          "style": "grey",
+          "blocks": [],
+          "defaultContent": []
+        },
+        {
+          "id": "privacy-and-cookies-F2.1",
+          "name": "bradesco-investments-privacy-notice-fragment-privacy-and-cookies-F2.1",
+          "selector": [
+            ".elementor-2514 .elementor-element-a5e7d51"
+          ],
+          "style": null,
+          "blocks": [
+            "table-article"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "privacy-and-cookies-F2.2",
+          "name": "bradesco-investments-privacy-notice-fragment-privacy-and-cookies-F2.2",
+          "selector": [
+            ".elementor-2514 .elementor-element-677b880"
+          ],
+          "style": "grey",
+          "blocks": [],
+          "defaultContent": []
+        },
+        {
+          "id": "other-disclosures-1",
+          "name": "other-disclosures-1",
+          "selector": [
+            ".elementor-467 .elementor-element-2530a90"
+          ],
+          "style": null,
+          "blocks": [
+            "hero-banner"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "other-disclosures-2",
+          "name": "other-disclosures-2",
+          "selector": [
+            ".elementor-467 .elementor-element-0e286b0"
+          ],
+          "style": null,
+          "blocks": [
+            "cards-feature"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "other-disclosures-3",
+          "name": "other-disclosures-3",
+          "selector": [
+            ".elementor-467 .elementor-element-d721a61"
+          ],
+          "style": null,
+          "blocks": [],
+          "defaultContent": []
+        },
+        {
+          "id": "cra-public-file-1",
+          "name": "cra-public-file-1",
+          "selector": [
+            ".elementor-631 .elementor-element-2d43f3e"
+          ],
+          "style": null,
+          "blocks": [
+            "hero-banner"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "cra-public-file-2",
+          "name": "cra-public-file-2",
+          "selector": [
+            ".elementor-631 .elementor-element-518a5cc"
+          ],
+          "style": null,
+          "blocks": [
+            "cards-feature"
+          ],
+          "defaultContent": []
+        }
+      ]
+    },
+    {
+      "name": "listing",
+      "urls": [
+        "https://bradescobank.com/en/articles-archive/",
+        "https://bradescobank.com/en/insights-archive/",
+        "https://bradescobank.com/en/investments-content/",
+        "https://bradescobank.com/en/investments-content/saved-articles/"
+      ],
+      "representativeUrl": "https://bradescobank.com/en/investments-content/",
+      "description": "Article listing/archive (loop grid of post cards)",
+      "blocks": [],
+      "urlPattern": "/en/*"
+    },
+    {
+      "name": "category-listing",
+      "urls": [
+        "https://bradescobank.com/en/category/educational/",
+        "https://bradescobank.com/en/category/market-insight/",
+        "https://bradescobank.com/en/category/videos/"
+      ],
+      "representativeUrl": "https://bradescobank.com/en/category/videos/",
+      "description": "Blog category archive",
+      "blocks": [],
+      "urlPattern": "/en/*"
+    },
+    {
+      "name": "faq-hub",
+      "urls": [
+        "https://bradescobank.com/en/personal-bank/faq/",
+        "https://bradescobank.com/en/personal-bank/investments/faq/"
+      ],
+      "representativeUrl": "https://bradescobank.com/en/personal-bank/faq/",
+      "description": "FAQ hub with category tabs and Q&A accordion",
+      "blocks": [],
+      "urlPattern": "/en/*"
+    },
+    {
+      "name": "card-activation",
+      "urls": [
+        "https://bradescobank.com/en/visa-gold-activation/",
+        "https://bradescobank.com/en/visa-infinite-activation/",
+        "https://bradescobank.com/en/visa-signature-activation/"
+      ],
+      "representativeUrl": "https://bradescobank.com/en/visa-gold-activation/",
+      "description": "Credit card activation instructions page",
+      "blocks": [],
+      "urlPattern": "/en/*"
+    },
+    {
+      "name": "job-posting",
+      "urls": [
+        "https://bradescobank.com/en/careers/relantionship-officer/",
+        "https://bradescobank.com/en/careers/transformation-office-team-lead/"
+      ],
+      "representativeUrl": "https://bradescobank.com/en/careers/relantionship-officer/",
+      "description": "Career job posting detail",
+      "blocks": [],
+      "urlPattern": "/en/*"
+    },
+    {
+      "name": "form",
+      "urls": [
+        "https://bradescobank.com/en/opt-out-form/"
+      ],
+      "representativeUrl": "https://bradescobank.com/en/opt-out-form/",
+      "description": "Form page (opt-out request form)",
+      "blocks": [],
+      "urlPattern": "/en/*"
+    }
+  ]
+}

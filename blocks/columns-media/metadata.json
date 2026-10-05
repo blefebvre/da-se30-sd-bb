@@ -1,0 +1,51 @@
+{
+  "variantName": "columns-media",
+  "baseBlock": "columns",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "colorScheme": "light-on-grey",
+    "density": "medium",
+    "purpose": "image-text-split",
+    "imagePattern": "side-image",
+    "structure": "image + heading + paragraph"
+  },
+  "contentPattern": "1 row per band, 2 columns: [image | heading + text / list / h3+p pairs]; either cell may be text, cells in any order; steps option: ordered list items = <strong>title</strong> + text",
+  "usage": {
+    "pagesUsing": [
+      "https://bradescobank.com/en/investments-content/bradesco-investments-app/",
+      "https://bradescobank.com/en/careers/",
+      "https://bradescobank.com/en/private-bank/",
+      "https://bradescobank.com/en/real-estate/",
+      "https://bradescobank.com/en/security/",
+      "/en/institutional/index",
+      "/en/help/index"
+    ],
+    "reuseCount": 6,
+    "lastUsed": "2026-10-03T00:00:00Z"
+  },
+  "options": [
+    {
+      "class": "reverse",
+      "label": "Reverse"
+    },
+    {
+      "class": "panel",
+      "label": "Panel"
+    },
+    {
+      "class": "steps",
+      "label": "Steps"
+    },
+    {
+      "class": "numbered",
+      "label": "Numbered"
+    },
+    {
+      "class": "filled",
+      "label": "Filled"
+    }
+  ],
+  "memberVariantIds": [
+    "columns-media"
+  ]
+}

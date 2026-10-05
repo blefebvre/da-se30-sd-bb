@@ -1,0 +1,12 @@
+{
+  "status": "success",
+  "url": "https://bradescobank.com/en/open-an-investment-account/",
+  "path": "en/open-an-investment-account",
+  "timestamp": "2026-10-03T06:00:49.886Z",
+  "title": "Open an investment account – Bradesco Bank",
+  "template": "article",
+  "blocks": [
+    "hero-article",
+    "embed-video"
+  ]
+}

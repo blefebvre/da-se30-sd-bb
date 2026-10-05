@@ -1,0 +1,13 @@
+{
+  "status": "success",
+  "url": "https://bradescobank.com/en/cra-public-file/",
+  "path": "en/cra-public-file",
+  "timestamp": "2026-10-03T06:56:43.728Z",
+  "title": "CRA Public File – Bradesco Bank",
+  "template": "info-page",
+  "fragment": "",
+  "blocks": [
+    "hero-banner",
+    "cards-feature"
+  ]
+}

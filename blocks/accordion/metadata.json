@@ -1,0 +1,36 @@
+{
+  "variantName": "accordion",
+  "baseBlock": "accordion",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "medium",
+    "purpose": "benefit-details",
+    "imagePattern": "noimg",
+    "structure": "title + answer x9"
+  },
+  "contentPattern": "one row per item, 2 cols: [label | answer rich text]; one item open at a time, first item opens by default; more option (+ optional visible-N class, default 3): items after N hidden behind a Show more toggle (removed once clicked); premium option: all closed, stronger shadow, grey open item, line chevron, dark-red See more pill",
+  "usage": {
+    "pagesUsing": [
+      "https://bradescobank.com/en/credit-card-signature-gold/",
+      "https://bradescobank.com/en/credit-card/visa-infinite/",
+      "https://bradescobank.com/en/zelle/",
+      "https://bradescobank.com/en/security/"
+    ],
+    "reuseCount": 3,
+    "lastUsed": "2026-10-03"
+  },
+  "options": [
+    {
+      "class": "more",
+      "label": "More"
+    },
+    {
+      "class": "premium",
+      "label": "Premium"
+    }
+  ],
+  "memberVariantIds": [
+    "accordion"
+  ]
+}

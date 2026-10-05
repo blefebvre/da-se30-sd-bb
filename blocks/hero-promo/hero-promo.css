@@ -1,0 +1,579 @@
+/* full-bleed: escape the global 1140px section column */
+main > .section > .hero-promo-wrapper {
+  max-width: none;
+  padding: 0;
+}
+
+/* mobile (source <= 767px) */
+.hero-promo {
+  position: relative;
+  display: flex;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 140px 10px 40px;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.hero-promo .hero-promo-media {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  line-height: 0;
+}
+
+.hero-promo .hero-promo-media picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-promo .hero-promo-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+}
+
+.hero-promo .hero-promo-content {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 10px;
+  width: 100%;
+  padding: 10px;
+}
+
+.hero-promo:not(.no-image) .hero-promo-content {
+  color: #fff;
+}
+
+.hero-promo .hero-promo-content > * {
+  margin: 0;
+}
+
+.hero-promo .hero-promo-content h3 {
+  font-family: var(--heading-font-family);
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 30px;
+  color: inherit;
+}
+
+.hero-promo .hero-promo-content p {
+  font-size: 16px;
+  line-height: 20px;
+}
+
+.hero-promo .hero-promo-content p.hero-promo-cta {
+  display: flex;
+  padding-top: 10px;
+}
+
+.hero-promo .hero-promo-cta a:any-link {
+  display: inline-block;
+  border-radius: var(--button-radius);
+  padding: 10px 30px;
+  background-color: var(--brand-red);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: var(--button-letter-spacing);
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: all 0.3s;
+}
+
+.hero-promo .hero-promo-cta a:any-link:hover,
+.hero-promo .hero-promo-cta a:any-link:focus-visible {
+  background-color: rgb(146 8 32);
+  color: #fff;
+  text-decoration: none;
+}
+
+/* desktop (source >= 768px) */
+@media (width >= 768px) {
+  .hero-promo {
+    margin-bottom: 30px;
+    padding: 200px 20px 50px 30px;
+  }
+
+  .hero-promo .hero-promo-media img {
+    object-position: right center;
+  }
+
+  .hero-promo .hero-promo-content {
+    width: 50%;
+    gap: 20px;
+  }
+
+  .hero-promo .hero-promo-content h3 {
+    font-size: 40px;
+    line-height: 42px;
+  }
+
+  .hero-promo .hero-promo-content p {
+    font-size: 18px;
+    line-height: 1.5;
+  }
+
+  .hero-promo .hero-promo-content p.hero-promo-cta {
+    padding-top: 0;
+  }
+
+  .hero-promo .hero-promo-cta a:any-link {
+    padding: 13px 40px;
+    font-size: 16px;
+  }
+}
+
+@media (width >= 1081px) {
+  .hero-promo .hero-promo-content {
+    width: 40%;
+  }
+}
+
+
+/*
+ * Landing-template additions (additive: the homepage rendering above is unchanged).
+ * Base landing look is scoped to body.landing; option classes are landing-only.
+ * Source: Elementor banners, boxed 1296px column (72px gutters at 1440),
+ * copy vertically centred, h2 32/40, copy 22/30.
+ */
+
+/* additive overrides are grouped by option, not by specificity */
+/* stylelint-disable no-descending-specificity */
+.hero-promo .hero-promo-content h2 {
+  font-family: var(--heading-font-family);
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 30px;
+  color: inherit;
+}
+
+.hero-promo .hero-promo-content ul,
+.hero-promo .hero-promo-content ol {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-left: 20px;
+}
+
+.hero-promo .hero-promo-content small {
+  font-size: var(--body-font-size-xs);
+}
+
+.hero-promo .hero-promo-content p.hero-promo-logos {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 20px;
+  line-height: 0;
+}
+
+.hero-promo .hero-promo-logos picture,
+.hero-promo .hero-promo-logos img {
+  display: block;
+  width: auto;
+  max-height: 48px;
+}
+
+/* landing base (mobile): copy at the top of a tall photo band */
+body.landing .hero-promo {
+  align-items: flex-start;
+  min-height: 480px;
+  margin: 0;
+  padding: 50px 10px;
+}
+
+body.landing .hero-promo .hero-promo-content {
+  gap: 20px;
+}
+
+body.landing .hero-promo .hero-promo-content p {
+  font-size: 16px;
+  line-height: 24px;
+}
+
+body.landing .hero-promo .hero-promo-content p.hero-promo-cta {
+  padding-top: 0;
+}
+
+/* lists: red-dot bullets */
+body.landing .hero-promo .hero-promo-content ul {
+  padding-left: 0;
+  list-style: none;
+}
+
+body.landing .hero-promo .hero-promo-content ul > li {
+  position: relative;
+  padding-left: 28px;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+body.landing .hero-promo .hero-promo-content ul > li::before {
+  content: '';
+  position: absolute;
+  top: 7px;
+  left: 3px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: var(--brand-red);
+}
+
+/* checks: red check-circle bullets */
+body.landing .hero-promo.checks .hero-promo-content ul > li {
+  min-height: 30px;
+  padding-left: 40px;
+  font-size: 18px;
+  line-height: 30px;
+}
+
+body.landing .hero-promo.checks .hero-promo-content ul > li::before {
+  top: 0;
+  left: 0;
+  width: 30px;
+  height: 30px;
+  background: rgb(204 9 47) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='16' viewBox='0 0 18 16' fill='none'%3E%3Cpath d='M1.46155 8.51853L7.4874 14.2187L16.5262 1.03711' stroke='white' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") center / 12px 12px no-repeat;
+}
+
+/* footnotes after a list */
+body.landing .hero-promo .hero-promo-content :is(ul, ol) + p {
+  margin-top: 10px;
+}
+
+/* wallet logos (plain images) / app-store badges (linked images) */
+body.landing .hero-promo .hero-promo-logos > picture img,
+body.landing .hero-promo .hero-promo-logos > img {
+  width: 47px;
+  height: auto;
+  max-height: none;
+}
+
+body.landing .hero-promo .hero-promo-content p.hero-promo-badges {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+body.landing .hero-promo .hero-promo-badges img {
+  width: 120px;
+  height: auto;
+  max-height: none;
+}
+
+/* "Available on:" label above a wallet-logo row */
+body.landing .hero-promo .hero-promo-content p:has(+ p.hero-promo-logos:not(.hero-promo-badges)) {
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 18px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+/* center: centred heading/copy */
+.hero-promo.center {
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-promo.center .hero-promo-content {
+  align-items: center;
+  margin: 0 auto;
+  text-align: center;
+}
+
+body.landing .hero-promo.center {
+  align-items: center;
+  min-height: 280px;
+}
+
+/* light: dark copy over a light photo */
+.hero-promo.light:not(.no-image) .hero-promo-content {
+  color: var(--text-color);
+}
+
+/* end: copy aligned to the end edge */
+.hero-promo.end .hero-promo-content {
+  align-items: flex-end;
+  text-align: end;
+}
+
+/* dim: flat 50% black scrim over the photo */
+.hero-promo.dim .hero-promo-media::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: rgb(0 0 0 / 50%);
+}
+
+/* card: [title + text | foreground image | text + CTA] (stacked on mobile) */
+.hero-promo.card .hero-promo-media::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(0deg, #000 8%, rgb(0 0 0 / 0%) 58%);
+  opacity: 0.68;
+}
+
+body.landing .hero-promo.card {
+  min-height: 424px;
+  padding-top: 20px;
+}
+
+.hero-promo.card .hero-promo-col,
+.hero-promo.split .hero-promo-col {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.hero-promo.card .hero-promo-lead {
+  gap: 0;
+}
+
+.hero-promo.card .hero-promo-col > *,
+.hero-promo.split .hero-promo-col > * {
+  margin: 0;
+}
+
+.hero-promo.card .hero-promo-content :is(h2, h3) {
+  font-size: 22px;
+  line-height: 1.65;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+body.landing .hero-promo.card .hero-promo-lead p {
+  line-height: 1.3;
+}
+
+body.landing .hero-promo.card .hero-promo-body p {
+  line-height: 23px;
+}
+
+.hero-promo.card .hero-promo-figure {
+  align-items: center;
+  line-height: 0;
+}
+
+.hero-promo.card .hero-promo-figure img {
+  display: block;
+  width: 281px;
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+}
+
+.hero-promo.card .hero-promo-cta a:any-link {
+  background-color: transparent;
+  background-image: linear-gradient(90deg, rgb(73 96 120) 0%, rgb(22 43 63) 100%);
+}
+
+/* split: heading | vertical rule | copy, at the bottom of the photo */
+body.landing .hero-promo.split {
+  align-items: flex-end;
+  min-height: 550px;
+  padding-bottom: 28px;
+}
+
+body.landing .hero-promo.split .hero-promo-content {
+  gap: 5px;
+}
+
+.hero-promo.split .hero-promo-body {
+  gap: 20px;
+}
+
+body.landing .hero-promo.split .hero-promo-body p {
+  line-height: 21px;
+}
+
+@media (width >= 768px) {
+  .hero-promo .hero-promo-content h2 {
+    font-size: 40px;
+    line-height: 42px;
+  }
+
+  body.landing .hero-promo {
+    align-items: center;
+    min-height: 540px;
+    padding: 60px max(20px, calc((100% - 1296px) / 2 - 10px));
+  }
+
+  body.landing .hero-promo .hero-promo-content h2 {
+    font-size: 32px;
+    line-height: 40px;
+  }
+
+  body.landing .hero-promo .hero-promo-content p {
+    font-size: 22px;
+    line-height: 30px;
+  }
+
+  body.landing .hero-promo .hero-promo-content ul > li {
+    font-size: 24px;
+    line-height: 30px;
+  }
+
+  body.landing .hero-promo .hero-promo-content ul > li::before {
+    top: 10px;
+  }
+
+  body.landing .hero-promo.checks .hero-promo-content ul > li {
+    font-size: 24px;
+  }
+
+  body.landing .hero-promo.checks .hero-promo-content ul > li::before {
+    top: 0;
+  }
+
+  body.landing .hero-promo .hero-promo-content :is(ul, ol) ~ p {
+    font-size: 14px;
+    line-height: 19px;
+  }
+
+  body.landing .hero-promo .hero-promo-content :is(ul, ol) + p {
+    margin-top: 30px;
+  }
+
+  body.landing .hero-promo .hero-promo-logos > picture img,
+  body.landing .hero-promo .hero-promo-logos > img {
+    width: 96px;
+  }
+
+  body.landing .hero-promo .hero-promo-content p.hero-promo-logos:not(.hero-promo-badges) {
+    gap: 50px;
+  }
+
+  body.landing .hero-promo .hero-promo-content p.hero-promo-badges {
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+  }
+
+  body.landing .hero-promo .hero-promo-badges img {
+    width: 184px;
+  }
+
+  body.landing .hero-promo .hero-promo-content p:has(+ p.hero-promo-logos:not(.hero-promo-badges)) {
+    font-size: 22px;
+    line-height: 22px;
+  }
+
+  .hero-promo.center .hero-promo-content {
+    width: min(100%, 900px);
+  }
+
+  body.landing .hero-promo.center {
+    min-height: 0;
+    padding-block: 140px;
+  }
+
+  body.landing .hero-promo.center .hero-promo-content {
+    width: min(100%, 520px);
+  }
+
+  .hero-promo.right .hero-promo-content {
+    margin-left: auto;
+  }
+
+  .hero-promo.card .hero-promo-content,
+  .hero-promo.split .hero-promo-content {
+    flex-direction: row;
+    align-items: center;
+    gap: 50px;
+    width: 100%;
+  }
+
+  body.landing .hero-promo.card {
+    min-height: 439px;
+    padding-top: 60px;
+  }
+
+  .hero-promo.card .hero-promo-content :is(h2, h3) {
+    font-size: 29px;
+  }
+
+  .hero-promo.card .hero-promo-lead {
+    flex: 0 1 324px;
+    gap: 20px;
+  }
+
+  .hero-promo.card .hero-promo-figure {
+    flex: 0 1 368px;
+  }
+
+  .hero-promo.card .hero-promo-body {
+    flex: 0 1 389px;
+  }
+
+  body.landing .hero-promo.card .hero-promo-col p {
+    font-size: 18px;
+    line-height: 29px;
+  }
+
+  .hero-promo.card .hero-promo-figure img {
+    width: 368px;
+  }
+
+  .hero-promo.card .hero-promo-cta a:any-link {
+    padding-inline: 45px;
+  }
+
+  body.landing .hero-promo.split {
+    align-items: flex-end;
+    min-height: 556px;
+    padding: 60px max(20px, calc((100% - 1296px) / 2)) 72px;
+  }
+
+  .hero-promo.split .hero-promo-content {
+    align-items: stretch;
+    gap: 0;
+  }
+
+  .hero-promo.split .hero-promo-lead {
+    flex: 0 0 35%;
+    justify-content: center;
+    border-right: 1px solid currentcolor;
+  }
+
+  .hero-promo.split .hero-promo-body {
+    flex: 1 1 0;
+    min-width: 0;
+    justify-content: center;
+    padding-left: 45px;
+  }
+
+  body.landing .hero-promo.split .hero-promo-content h2 {
+    font-size: 35px;
+    line-height: 47px;
+  }
+
+  body.landing .hero-promo.split .hero-promo-body p {
+    line-height: 30px;
+  }
+}
+
+@media (width >= 1081px) {
+  body.landing .hero-promo .hero-promo-content {
+    width: 36%;
+  }
+
+  body.landing .hero-promo.checks .hero-promo-content {
+    width: 52%;
+  }
+
+  body.landing .hero-promo:is(.card, .split) .hero-promo-content {
+    width: 100%;
+  }
+
+  body.landing .hero-promo.center .hero-promo-content {
+    width: min(100%, 520px);
+  }
+}

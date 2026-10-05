@@ -1,0 +1,12 @@
+{
+  "status": "success",
+  "url": "https://bradescobank.com/en/reits/",
+  "path": "en/reits",
+  "timestamp": "2026-10-03T06:01:11.826Z",
+  "title": "REITs – Bradesco Bank",
+  "template": "article",
+  "blocks": [
+    "hero-article",
+    "table-article"
+  ]
+}

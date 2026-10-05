@@ -1,0 +1,13 @@
+{
+  "status": "success",
+  "url": "https://bradescobank.com/en/about-us/",
+  "path": "en/about-us",
+  "timestamp": "2026-10-03T06:54:26.934Z",
+  "title": "About us – Bradesco Bank",
+  "template": "info-page",
+  "fragment": "",
+  "blocks": [
+    "hero-banner",
+    "cards-feature"
+  ]
+}

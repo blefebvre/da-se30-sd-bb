@@ -1,0 +1,452 @@
+/*
+ * tabs — rows [tab label | panel].
+ * Option values measured from the source pages (computed styles):
+ * vertical  = bradescobank.com/en/real-estate/ (custom shortcode tabs, full width)
+ * tiles     = bradescobank.com/en/credit-card-signature-gold/ (Elementor nested tabs)
+ * fragments = bradescobank.com/en/careers/ (Elementor nested tabs + templates)
+ */
+
+/* ---------- base: horizontal tab bar + panel ---------- */
+.tabs {
+  padding: 30px 0;
+}
+
+.tabs .tabs-list {
+  display: flex;
+  overflow-x: auto;
+  gap: 0;
+  scrollbar-width: thin;
+}
+
+.tabs .tabs-tab {
+  flex: 1 1 0;
+  min-width: max-content;
+  margin: 0;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  padding: 14px 20px;
+  background-color: var(--light-color);
+  color: var(--dark-color);
+  font-family: var(--body-font-family);
+  font-size: var(--body-font-size-s);
+  line-height: 1.3;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.tabs .tabs-tab[aria-selected="true"] {
+  border-bottom-color: var(--brand-red);
+  background-color: var(--background-color);
+}
+
+.tabs .tabs-tab:focus-visible {
+  outline: 2px solid var(--brand-red);
+  outline-offset: -2px;
+}
+
+.tabs .tabs-tab p {
+  margin: 0;
+}
+
+.tabs .tabs-panel {
+  padding: 24px 0 0;
+}
+
+.tabs .tabs-panel[hidden] {
+  display: none;
+}
+
+.tabs .tabs-panel:focus-visible {
+  outline: 2px solid var(--brand-red);
+  outline-offset: 2px;
+}
+
+.tabs .tabs-panel > :first-child {
+  margin-top: 0;
+}
+
+.tabs .tabs-panel img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* all three source instances are full width (edge to edge at every width) */
+main > .section > .tabs-wrapper:has(> .tabs:is(.fragments, .tiles, .vertical)) {
+  max-width: none;
+  padding: 0;
+}
+
+/* shared flat tab bar of tiles + fragments: label 24px / 1.65, 30px block padding */
+.tabs:is(.tiles, .fragments) .tabs-tab {
+  min-width: 0;
+  border-bottom: 0;
+  padding: 30px 0;
+  font-weight: 400;
+  line-height: 1.65;
+  letter-spacing: normal;
+  text-align: center;
+  text-transform: none;
+}
+
+/* ---------- tiles: two equal flat grey tabs, photo tile grid in each panel ---------- */
+.tabs.tiles {
+  padding: 20px 0 0;
+}
+
+.tabs.tiles .tabs-list {
+  display: grid;
+  grid-auto-columns: minmax(0, 1fr);
+  grid-auto-flow: column;
+  gap: 12px;
+  overflow: visible;
+}
+
+.tabs.tiles .tabs-tab {
+  background-color: #f3f3f3;
+  color: #606060;
+  font-size: 14px;
+}
+
+.tabs.tiles .tabs-tab[aria-selected="true"] {
+  background-color: #e1e1e1;
+}
+
+.tabs.tiles .tabs-panel {
+  padding: 10px 0 0;
+}
+
+.tabs.tiles .tabs-tiles {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 5px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* a panel with only one or two tiles: wider tiles, 10px apart */
+.tabs.tiles .tabs-tiles:not(:has(> .tabs-tile:nth-child(3))) {
+  gap: 10px;
+}
+
+.tabs.tiles .tabs-tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  box-sizing: border-box;
+  min-height: 300px;
+  padding: 30px;
+  overflow: hidden;
+  isolation: isolate;
+  background-color: var(--dark-color);
+  color: #fff;
+  text-align: center;
+}
+
+.tabs.tiles .tabs-tiles:not(:has(> .tabs-tile:nth-child(3))) .tabs-tile {
+  padding: 30px 0;
+}
+
+.tabs.tiles .tabs-tile-media {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  line-height: 0;
+}
+
+.tabs.tiles .tabs-tile-media::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: rgb(0 0 0 / 55%);
+}
+
+.tabs.tiles .tabs-tile-media p {
+  margin: 0;
+}
+
+.tabs.tiles .tabs-tile-media picture,
+.tabs.tiles .tabs-tile-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.tabs.tiles .tabs-tile-media img {
+  object-fit: cover;
+}
+
+.tabs.tiles .tabs-tile-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.tabs.tiles .tabs-tile-text > * {
+  margin: 0;
+  color: inherit;
+  font-family: var(--body-font-family);
+  font-weight: 400;
+}
+
+.tabs.tiles .tabs-tile-text h3 {
+  font-size: 24px;
+  line-height: 1;
+}
+
+.tabs.tiles .tabs-tile-text p {
+  max-width: 74%;
+  font-size: 16px;
+  line-height: 1;
+}
+
+.tabs.tiles .tabs-tiles:not(:has(> .tabs-tile:nth-child(3))) .tabs-tile-text h3 {
+  font-size: 22px;
+}
+
+/* ---------- fragments: full-width bar of two tall grey tabs; panels = fragment sections ---------- */
+.tabs.fragments {
+  padding: 20px 0 0;
+}
+
+.tabs.fragments .tabs-list {
+  gap: 10px;
+  margin-bottom: 10px;
+  overflow: visible;
+}
+
+/* source tabs grow from their label width, so the longer label gets the wider tab */
+.tabs.fragments .tabs-tab {
+  flex: 1 1 auto;
+  background-color: #dcdcdc;
+  color: #000;
+  font-size: 24px;
+}
+
+.tabs.fragments .tabs-tab[aria-selected="true"] {
+  background-color: #f6f6f6;
+}
+
+/* the fragment's sections live next to this block's section (see tabs.js) */
+.tabs.fragments .tabs-panels,
+.tabs.fragments .tabs-panel {
+  padding: 0;
+}
+
+main > .section.tabs-fragment-section[hidden] {
+  display: none;
+}
+
+/* ---------- vertical: tab list on the left, photo panel filling the rest ---------- */
+.tabs.vertical {
+  padding: 0;
+  background-color: #f6f6f6;
+}
+
+/* mobile: the three tabs sit in a row above the photo */
+.tabs.vertical .tabs-list {
+  gap: 10px;
+  margin-bottom: 30px;
+  overflow: visible;
+}
+
+.tabs.vertical .tabs-tab {
+  min-width: 0;
+  border-bottom: 0;
+  padding: 16px 12px;
+  background-color: #fff;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 10%);
+  color: #333;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.65;
+  letter-spacing: normal;
+  text-align: center;
+  text-transform: none;
+}
+
+.tabs.vertical .tabs-tab:not([aria-selected="true"]):hover {
+  background-color: #f0f0f0;
+}
+
+/* the active tab runs into the gap and touches the photo */
+.tabs.vertical .tabs-tab[aria-selected="true"] {
+  margin-bottom: -30px;
+  background: linear-gradient(135deg, #c41230 0%, #4a1a7a 100%);
+  box-shadow: none;
+  color: #fff;
+}
+
+.tabs.vertical .tabs-panels {
+  position: relative;
+}
+
+.tabs.vertical .tabs-panel:not([hidden]) {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  min-height: 400px;
+  padding: 0;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.tabs.vertical .tabs-panel.has-media {
+  color: #fff;
+}
+
+.tabs.vertical .tabs-panel-media {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  line-height: 0;
+}
+
+.tabs.vertical .tabs-panel-media::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgb(0 0 0 / 50%) 0%, rgb(0 0 0 / 0%) 50%);
+}
+
+.tabs.vertical .tabs-panel-media picture,
+.tabs.vertical .tabs-panel-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.tabs.vertical .tabs-panel-media img {
+  object-fit: cover;
+}
+
+.tabs.vertical .tabs-panel-content {
+  box-sizing: border-box;
+  max-width: 100%;
+  margin-bottom: 1.5em;
+  padding: 20px;
+  font-size: 14px;
+  line-height: 1.6;
+  text-align: left;
+  text-shadow: 1px 1px 3px rgb(0 0 0 / 30%);
+}
+
+.tabs.vertical .tabs-panel-content > * {
+  margin: 0 0 1.5em;
+  color: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+.tabs.vertical .tabs-panel-content > :last-child {
+  margin-bottom: 0;
+}
+
+/* ---------- breakpoints ---------- */
+@media (width >= 600px) {
+  .tabs.vertical .tabs-tab {
+    padding: 20px 16px;
+    font-size: 14px;
+  }
+
+  .tabs.vertical .tabs-panel:not([hidden]) {
+    min-height: 450px;
+  }
+
+  .tabs.vertical .tabs-panel-content {
+    padding: 24px;
+    font-size: 16px;
+  }
+}
+
+@media (width >= 768px) {
+  .tabs.tiles .tabs-tab {
+    font-size: 24px;
+  }
+
+  .tabs.tiles .tabs-tiles {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  .tabs.tiles .tabs-tiles:not(:has(> .tabs-tile:nth-child(3))) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .tabs.tiles .tabs-tile {
+    padding: 30px;
+  }
+
+  .tabs.tiles .tabs-tiles:not(:has(> .tabs-tile:nth-child(3))) .tabs-tile {
+    padding: 30px;
+  }
+
+  .tabs.tiles .tabs-tile-text h3 {
+    font-size: 22px;
+  }
+
+  .tabs.tiles .tabs-tile-text p {
+    max-width: none;
+  }
+
+  /* two wide tiles: narrow copy measure, larger description */
+  .tabs.tiles .tabs-tiles:not(:has(> .tabs-tile:nth-child(3))) .tabs-tile-text h3 {
+    max-width: 213px;
+  }
+
+  .tabs.tiles .tabs-tiles:not(:has(> .tabs-tile:nth-child(3))) .tabs-tile-text p {
+    max-width: 341px;
+    font-size: 18px;
+  }
+}
+
+@media (width >= 900px) {
+  /* 72px from the intro heading (its wrapper supplies 40px) */
+  .tabs.vertical {
+    display: flex;
+    align-items: stretch;
+    padding-top: 32px;
+  }
+
+  .tabs.vertical .tabs-list {
+    flex: 0 0 320px;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 320px;
+    margin: 0 30px 0 0;
+  }
+
+  .tabs.vertical .tabs-tab {
+    flex: 0 0 auto;
+    width: 100%;
+    padding: 40px 40px 40px 80px;
+    font-size: 18px;
+    text-align: left;
+  }
+
+  .tabs.vertical .tabs-tab[aria-selected="true"] {
+    width: calc(100% + 30px);
+    margin: 0 -30px 0 0;
+  }
+
+  .tabs.vertical .tabs-panels {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  .tabs.vertical .tabs-panel:not([hidden]) {
+    min-height: 600px;
+  }
+
+  .tabs.vertical .tabs-panel-content {
+    max-width: 350px;
+    padding: 40px;
+    font-size: 19px;
+  }
+}

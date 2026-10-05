@@ -1,0 +1,20 @@
+{
+  "variantName": "hero-statement",
+  "baseBlock": "hero",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "colorScheme": "dark",
+    "density": "minimal",
+    "purpose": "brand-statement-banner",
+    "imagePattern": "background-video",
+    "structure": "video + centered statement text"
+  },
+  "contentPattern": "1 column: [video link (https://player.vimeo.com/video/963210796) | paragraph/heading statement text]",
+  "usage": {
+    "pagesUsing": ["https://bradescobank.com/"],
+    "reuseCount": 0,
+    "lastUsed": "2026-10-01"
+  },
+  "options": [],
+  "memberVariantIds": ["hero-statement"]
+}

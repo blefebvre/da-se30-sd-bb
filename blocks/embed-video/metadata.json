@@ -1,0 +1,20 @@
+{
+  "variantName": "embed-video",
+  "baseBlock": "embed",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "minimal",
+    "purpose": "inline-article-video",
+    "imagePattern": "video-embed",
+    "structure": "youtube link"
+  },
+  "contentPattern": "1 cell: YouTube URL link",
+  "usage": {
+    "pagesUsing": ["https://bradescobank.com/en/how-to-buy-assets/"],
+    "reuseCount": 0,
+    "lastUsed": "2026-10-02"
+  },
+  "options": [],
+  "memberVariantIds": ["embed-video"]
+}

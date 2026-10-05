@@ -1,0 +1,16 @@
+{
+  "status": "success",
+  "url": "https://bradescobank.com/en/security/",
+  "path": "en/security",
+  "timestamp": "2026-10-03T06:56:07.243Z",
+  "title": "Security – Bradesco Bank",
+  "template": "info-page",
+  "fragment": "",
+  "blocks": [
+    "hero-banner",
+    "columns-media",
+    "cards-feature",
+    "cards-feature",
+    "accordion"
+  ]
+}

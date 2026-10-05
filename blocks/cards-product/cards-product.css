@@ -1,0 +1,570 @@
+/* full-bleed: escape the global section max-width / side padding */
+main > .section > .cards-product-wrapper {
+  max-width: none;
+  padding: 0;
+}
+
+.cards-product > ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.cards-product > ul > li {
+  position: relative;
+  display: flex;
+  min-height: 340px;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* source stacks tiles in pairs: 20px inside a pair, none between pairs */
+.cards-product > ul > li:nth-child(even) {
+  margin-top: 20px;
+}
+
+/* photo fills the tile */
+.cards-product .cards-product-card-image {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  line-height: 0;
+}
+
+.cards-product .cards-product-card-image picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.cards-product .cards-product-card-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 50%;
+}
+
+/* overlay copy, bottom-aligned */
+.cards-product .cards-product-card-body {
+  box-sizing: border-box;
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 5px;
+  padding: 140px 20px 20px;
+  color: #fff;
+  font-size: var(--body-font-size-m);
+  line-height: 1.65;
+}
+
+.cards-product li.no-image .cards-product-card-body {
+  color: var(--text-color);
+}
+
+.cards-product .cards-product-card-content {
+  display: flex;
+  flex-direction: column;
+  padding-bottom: 10px;
+}
+
+.cards-product .cards-product-card-content > * {
+  margin: 0;
+  padding: 0 3px;
+}
+
+.cards-product .cards-product-card-eyebrow {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 21px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+}
+
+.cards-product .cards-product-card-title {
+  color: inherit;
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 27px;
+}
+
+/* a title with no eyebrow above it is set in the regular weight on the source */
+.cards-product .cards-product-card-content > .cards-product-card-title:first-child {
+  font-weight: 400;
+}
+
+.cards-product .cards-product-card-logo {
+  line-height: 0;
+}
+
+.cards-product .cards-product-card-logo picture,
+.cards-product .cards-product-card-logo img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+}
+
+/* right-column photos are anchored to their right edge on the source */
+.cards-product > ul > li:nth-child(even) .cards-product-card-image img {
+  object-position: 100% 50%;
+}
+
+.cards-product .cards-product-card-text {
+  font-size: var(--body-font-size-s);
+  line-height: 20px;
+}
+
+.cards-product sup {
+  position: relative;
+  top: -0.5em;
+  font-size: 75%;
+  line-height: 0;
+  vertical-align: baseline;
+}
+
+/* red pill CTA (plain <p><a>, not auto-buttonized) */
+.cards-product .cards-product-card-cta {
+  display: flex;
+  margin: 0;
+}
+
+.cards-product a.cards-product-card-cta-link:any-link {
+  display: inline-block;
+  padding: 10px 30px;
+  border-radius: var(--button-radius);
+  background-color: var(--brand-red);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 12px;
+  letter-spacing: var(--button-letter-spacing);
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: 0.3s;
+}
+
+.cards-product a.cards-product-card-cta-link:hover,
+.cards-product a.cards-product-card-cta-link:focus-visible {
+  color: #fff;
+  text-decoration: none;
+}
+
+.cards-product .cards-product-card-footnote {
+  margin: 0;
+  font-size: var(--body-font-size-xs);
+  line-height: 1.65;
+}
+
+@media (width >= 600px) {
+  .cards-product > ul {
+    padding: 0 20px;
+  }
+
+  .cards-product > ul > li {
+    min-height: 487px;
+  }
+
+  .cards-product .cards-product-card-body {
+    gap: 9px;
+    padding: 32px;
+  }
+
+  .cards-product .cards-product-card-content {
+    padding-bottom: 0;
+  }
+
+  .cards-product .cards-product-card-content > * {
+    padding: 0;
+  }
+
+  .cards-product .cards-product-card-eyebrow {
+    font-size: 20px;
+    line-height: 35px;
+  }
+
+  .cards-product .cards-product-card-title {
+    font-size: 35px;
+    line-height: 55px;
+  }
+
+  .cards-product .cards-product-card-content > .cards-product-card-title:first-child {
+    line-height: 1.65;
+  }
+
+  .cards-product .cards-product-card-text {
+    width: 65.162%;
+    font-size: 18px;
+    line-height: 23px;
+  }
+
+  .cards-product a.cards-product-card-cta-link:any-link {
+    padding: 13px 85px;
+    font-size: var(--body-font-size-m);
+    line-height: 16px;
+  }
+}
+
+@media (width >= 900px) {
+  /* 2-up full-bleed grid: 720px | 20px gap | 700px at 1440 */
+  .cards-product > ul {
+    display: grid;
+    grid-template-columns: 50% 1fr;
+    gap: 20px;
+    padding: 0;
+  }
+
+  .cards-product > ul > li,
+  .cards-product > ul > li:nth-child(even) {
+    min-height: 480px;
+    margin-top: 0;
+  }
+
+  /* last row is 500px tall on the source */
+  .cards-product > ul > li:nth-child(odd):nth-last-child(-n + 2),
+  .cards-product > ul > li:nth-child(odd):nth-last-child(-n + 2) + li {
+    min-height: 500px;
+  }
+
+  .cards-product .cards-product-card-body {
+    padding: 70px;
+  }
+
+  .cards-product .cards-product-card-content {
+    min-height: 160px;
+  }
+
+  .cards-product .cards-product-card-title {
+    font-size: 32px;
+  }
+}
+
+
+/*
+ * Options (landing pages). Everything below is scoped to .light / .hover, so the
+ * default rendering above (homepage product tiles) is unchanged.
+ * `li:nth-child(n):nth-last-child(n)` only raises specificity above the default
+ * pair/last-row rules; it matches every tile. Option rules intentionally out-rank
+ * the default rules they follow, hence no-descending-specificity is off here.
+ */
+/* stylelint-disable no-descending-specificity */
+
+/* shared: full-bleed photo tiles, copy at the top, photos centred */
+.cards-product:is(.light, .hover) > ul > li:nth-child(n):nth-last-child(n) {
+  margin-top: 0;
+}
+
+.cards-product:is(.light, .hover) > ul > li:nth-child(n) .cards-product-card-image img {
+  object-position: 50% 50%;
+}
+
+.cards-product:is(.light, .hover) .cards-product-card-content {
+  min-height: 0;
+  padding: 0;
+}
+
+.cards-product:is(.light, .hover) .cards-product-card-content > * {
+  padding: 0;
+}
+
+.cards-product:is(.light, .hover) .cards-product-card-title,
+.cards-product:is(.light, .hover) .cards-product-card-content > .cards-product-card-title:first-child {
+  font-weight: 400;
+}
+
+/* light: two photo panels, dark copy (personal-bank) */
+.cards-product.light > ul {
+  gap: 15px;
+}
+
+.cards-product.light > ul > li:nth-child(n):nth-last-child(n) {
+  min-height: 337px;
+}
+
+.cards-product.light .cards-product-card-body {
+  justify-content: center;
+  gap: 20px;
+  padding: 20px 0 20px 20px;
+  color: var(--text-color);
+}
+
+.cards-product.light .cards-product-card-content {
+  gap: 20px;
+}
+
+.cards-product.light .cards-product-card-title,
+.cards-product.light .cards-product-card-content > .cards-product-card-title:first-child {
+  font-size: 32px;
+  line-height: 48px;
+}
+
+.cards-product.light > ul > li:nth-child(even) .cards-product-card-content > .cards-product-card-title {
+  font-size: 26px;
+  line-height: 39px;
+}
+
+.cards-product.light .cards-product-card-text {
+  width: 179px;
+  max-width: 100%;
+  font-size: var(--body-font-size-m);
+  line-height: 1.3;
+}
+
+/* dash bullets: 30x4 red-to-transparent bar */
+.cards-product.light .cards-product-card-content ul {
+  width: 237px;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cards-product.light .cards-product-card-content > .cards-product-card-title + ul {
+  margin-top: 16px;
+}
+
+.cards-product.light .cards-product-card-content ul > li {
+  position: relative;
+  min-height: 30px;
+  padding-left: 43px;
+  font-size: var(--body-font-size-m);
+  line-height: 20px;
+}
+
+.cards-product.light .cards-product-card-content ul > li + li {
+  margin-top: 8px;
+}
+
+.cards-product.light .cards-product-card-content ul > li::before {
+  content: '';
+  position: absolute;
+  top: 17px;
+  left: 0;
+  width: 30px;
+  height: 4px;
+  background-image: linear-gradient(90deg, #cc092f 0%, rgb(204 9 47 / 0%) 100%);
+}
+
+/* hover: title-only photo tiles; copy fades in on hover/focus (visa-infinite) */
+.cards-product.hover > ul {
+  gap: 12px;
+}
+
+.cards-product.hover > ul > li:nth-child(n):nth-last-child(n) {
+  min-height: 320px;
+}
+
+.cards-product.hover .cards-product-card-image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: rgb(0 0 0 / 50%);
+  transition: opacity 0.5s;
+}
+
+.cards-product.hover .cards-product-card-body {
+  justify-content: flex-start;
+  gap: 12px;
+  padding: 24px 32px;
+  color: #fff;
+}
+
+.cards-product.hover .cards-product-card-body > * {
+  width: 80%;
+}
+
+.cards-product.hover .cards-product-card-content {
+  gap: 12px;
+}
+
+.cards-product.hover .cards-product-card-title,
+.cards-product.hover .cards-product-card-content > .cards-product-card-title:first-child {
+  font-size: 24px;
+  line-height: 24px;
+}
+
+.cards-product.hover .cards-product-card-text {
+  width: auto;
+  font-size: var(--body-font-size-m);
+  line-height: 20px;
+}
+
+/* plain underlined text link, not the default red pill */
+.cards-product.hover a.cards-product-card-cta-link:any-link {
+  display: inline;
+  padding: 0;
+  border-radius: 0;
+  background: none;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 12px;
+  letter-spacing: normal;
+  text-align: start;
+  text-decoration: underline;
+  text-transform: none;
+}
+
+.cards-product.hover .cards-product-card-icon {
+  position: absolute;
+  right: 32px;
+  bottom: 24px;
+  margin: 0;
+  line-height: 0;
+}
+
+.cards-product.hover .cards-product-card-icon picture {
+  display: block;
+}
+
+.cards-product.hover .cards-product-card-icon img {
+  display: block;
+  width: auto;
+  max-width: 42px;
+  height: 32px;
+  object-fit: contain;
+  object-position: 100% 100%;
+}
+
+@media (width >= 600px) {
+  .cards-product:is(.light, .hover) > ul {
+    padding: 0;
+  }
+
+  .cards-product.light a.cards-product-card-cta-link:any-link {
+    padding: 13px 40px;
+  }
+
+  .cards-product.hover > ul {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .cards-product.hover > ul > li:nth-child(n):nth-last-child(n) {
+    min-height: 498px;
+  }
+
+  .cards-product.hover .cards-product-card-body {
+    padding: 32px;
+  }
+
+  .cards-product.hover .cards-product-card-title,
+  .cards-product.hover .cards-product-card-content > .cards-product-card-title:first-child {
+    font-size: 28px;
+    line-height: 34px;
+  }
+
+  .cards-product.hover .cards-product-card-text,
+  .cards-product.hover a.cards-product-card-cta-link:any-link {
+    font-size: 22px;
+    line-height: 24px;
+  }
+
+  .cards-product.hover .cards-product-card-icon {
+    right: 32px;
+    bottom: 32px;
+  }
+
+  .cards-product.hover .cards-product-card-icon img {
+    max-width: 68px;
+    height: 42px;
+  }
+}
+
+@media (width >= 900px) {
+  .cards-product.light > ul {
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .cards-product.light > ul > li:nth-child(n):nth-last-child(n) {
+    min-height: 640px;
+  }
+
+  .cards-product.light .cards-product-card-body {
+    justify-content: flex-start;
+    padding: 40px;
+  }
+
+  .cards-product.light .cards-product-card-text {
+    width: 350px;
+    font-size: 22px;
+  }
+
+  .cards-product.light .cards-product-card-content ul {
+    width: 280px;
+  }
+
+  .cards-product.light .cards-product-card-content ul > li {
+    font-size: 22px;
+    line-height: 1.65;
+  }
+
+  .cards-product.hover > ul {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .cards-product.hover .cards-product-card-body > * {
+    width: 50%;
+  }
+}
+
+@media (width >= 1200px) {
+  .cards-product.hover .cards-product-card-body {
+    padding: 40px;
+  }
+
+  .cards-product.hover .cards-product-card-icon {
+    right: 40px;
+    bottom: 40px;
+  }
+}
+
+/*
+ * hover reveal: on wide screens with a hover-capable pointer the copy below the
+ * title is transparent (it keeps its space) and the overlay is a top gradient;
+ * hovering or focusing the tile shows the copy and darkens the whole photo.
+ * Touch / narrow screens always show the copy over the full overlay.
+ * Opacity only (no visibility: hidden) so the link stays keyboard-focusable.
+ */
+@media (width >= 900px) and (hover: hover) {
+  .cards-product.hover .cards-product-card-image::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background-image: linear-gradient(180deg, rgb(0 0 0 / 50%) 0%, rgb(0 0 0 / 0%) 60%);
+    transition: opacity 0.5s;
+  }
+
+  .cards-product.hover .cards-product-card-image::after {
+    opacity: 0;
+  }
+
+  .cards-product.hover .cards-product-card-text,
+  .cards-product.hover .cards-product-card-cta {
+    opacity: 0;
+    transform: translateY(-4px);
+    transition: opacity 0.5s, transform 0.5s;
+  }
+
+  .cards-product.hover > ul > li:is(:hover, :focus-within) .cards-product-card-image::before {
+    opacity: 0;
+  }
+
+  .cards-product.hover > ul > li:is(:hover, :focus-within) .cards-product-card-image::after {
+    opacity: 1;
+  }
+
+  .cards-product.hover > ul > li:is(:hover, :focus-within) .cards-product-card-text,
+  .cards-product.hover > ul > li:is(:hover, :focus-within) .cards-product-card-cta {
+    opacity: 1;
+    transform: none;
+  }
+}

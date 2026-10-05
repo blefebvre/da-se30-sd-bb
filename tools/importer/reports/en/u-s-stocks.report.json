@@ -1,0 +1,11 @@
+{
+  "status": "success",
+  "url": "https://bradescobank.com/en/u-s-stocks/",
+  "path": "en/u-s-stocks",
+  "timestamp": "2026-10-03T06:01:34.129Z",
+  "title": "U.S. Stocks – Bradesco Bank",
+  "template": "article",
+  "blocks": [
+    "hero-article"
+  ]
+}

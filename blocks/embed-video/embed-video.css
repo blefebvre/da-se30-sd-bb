@@ -1,0 +1,35 @@
+/*
+ * Source: inline YouTube iframe in the article content column
+ * (width:100%; aspect-ratio:16/9; display:block; no border/radius/background).
+ * The column width (880px on video posts) comes from the section; the
+ * date -> video gap (24.5px) comes from the preceding default content.
+ */
+.embed-video {
+  width: 100%;
+  margin: 0 0 26.4px;
+}
+
+main .embed-video-wrapper:last-child > .embed-video {
+  margin-bottom: 0;
+}
+
+.embed-video .embed-video-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+
+.embed-video .embed-video-frame iframe {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* unsupported URL: authored link stays visible as plain content */
+.embed-video.embed-video-unsupported > div > div {
+  padding: 0;
+}

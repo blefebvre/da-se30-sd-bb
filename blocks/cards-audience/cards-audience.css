@@ -1,0 +1,330 @@
+/* full-bleed: undo the global section content width/padding */
+main > .section > .cards-audience-wrapper {
+  max-width: none;
+  padding: 0;
+}
+
+/* brand divider directly below the tiles (15px mobile, 19px >= 768px) */
+.cards-audience::after {
+  content: '';
+  display: block;
+  height: 15px;
+  background-color: var(--brand-red-dark);
+}
+
+.cards-audience > ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  overflow: hidden;
+}
+
+.cards-audience > ul > li {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  min-height: 301px;
+  margin-bottom: 20px;
+  transition: transform 0.5s;
+}
+
+.cards-audience > ul > li:last-child {
+  margin-bottom: 0;
+}
+
+.cards-audience .cards-audience-card-image {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  line-height: 0;
+}
+
+.cards-audience .cards-audience-card-image picture,
+.cards-audience .cards-audience-card-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+}
+
+/* bottom shade (source overlay image: transparent -> rgba(0 0 0 / 70%)) */
+.cards-audience .cards-audience-card-image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(180deg, rgb(0 0 0 / 0%) 0%, rgb(0 0 0 / 70%) 100%);
+}
+
+/* label: centered at the bottom of the tile */
+.cards-audience .cards-audience-card-body {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 0 0 20px;
+  color: #fff;
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 40px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.cards-audience .cards-audience-card-body > * {
+  margin: 0;
+  transition: transform 0.5s;
+}
+
+.cards-audience .cards-audience-card-body a:any-link,
+.cards-audience .cards-audience-card-body a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* stretched link: the whole tile is clickable */
+.cards-audience li.has-link .cards-audience-card-body a::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+.cards-audience li.has-link {
+  cursor: pointer;
+}
+
+@media (width >= 768px) {
+  .cards-audience::after {
+    height: 19px;
+  }
+
+  .cards-audience > ul > li {
+    min-height: 381px;
+    margin-bottom: 0;
+  }
+
+  .cards-audience .cards-audience-card-body {
+    padding-bottom: 40px;
+    font-size: 30px;
+  }
+}
+
+@media (width >= 1080px) {
+  .cards-audience > ul {
+    flex-direction: row;
+    min-height: 620px;
+  }
+
+  .cards-audience > ul > li {
+    flex: 1 1 0;
+    min-width: 0;
+    height: 620px;
+    min-height: 0;
+  }
+
+  .cards-audience > ul > li:hover {
+    transform: scale(1.1);
+  }
+
+  .cards-audience > ul > li:hover .cards-audience-card-body > * {
+    transform: translateY(-250px);
+  }
+}
+
+/*
+ * compact (private-bank): shorter edge-to-edge tiles in a row from tablet up,
+ * smaller regular-weight labels (usually plain text), no hover, no divider.
+ */
+.cards-audience.compact {
+  padding: 0 0 13px;
+}
+
+.cards-audience.compact::after {
+  content: none;
+}
+
+.cards-audience.compact > ul > li {
+  min-height: 189px;
+}
+
+.cards-audience.compact .cards-audience-card-body {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 21px;
+  text-transform: none;
+}
+
+@media (width >= 768px) {
+  .cards-audience.compact > ul {
+    flex-direction: row;
+  }
+
+  .cards-audience.compact > ul > li {
+    flex: 1 1 0;
+    min-width: 0;
+    min-height: 315px;
+    margin-bottom: 0;
+  }
+
+  .cards-audience.compact .cards-audience-card-body {
+    padding-bottom: 40px;
+  }
+}
+
+@media (width >= 1080px) {
+  .cards-audience.compact {
+    padding: 25px 0 8px;
+  }
+
+  .cards-audience.compact > ul {
+    min-height: 0;
+  }
+
+  .cards-audience.compact > ul > li {
+    height: 415px;
+    min-height: 0;
+  }
+
+  .cards-audience.compact .cards-audience-card-body {
+    font-size: 24px;
+    line-height: 32px;
+  }
+
+  .cards-audience.compact > ul > li:hover,
+  .cards-audience.compact > ul > li:hover .cards-audience-card-body > * {
+    transform: none;
+  }
+}
+
+/*
+ * landscape (corporate): contained 3-column grid (88% / 90% of the viewport,
+ * max 1296px) of landscape tiles with 20px gutters, centred bold white H3
+ * labels, no shade, no hover; the full-width red divider stays below (the
+ * gap above it is the grid's bottom margin, as ::after sits inside padding).
+ */
+.cards-audience.landscape > ul {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  width: 88%;
+  max-width: 1296px;
+  margin: 0 auto 10px;
+}
+
+.cards-audience.landscape > ul > li {
+  min-height: 0;
+  height: 150px;
+  margin-bottom: 0;
+}
+
+.cards-audience.landscape .cards-audience-card-image::after {
+  content: none;
+}
+
+.cards-audience.landscape .cards-audience-card-body {
+  justify-content: center;
+  padding: 10px;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 29px;
+  text-transform: none;
+}
+
+.cards-audience.landscape .cards-audience-card-body :is(h2, h3, p) {
+  color: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+}
+
+@media (width >= 768px) {
+  .cards-audience.landscape > ul {
+    grid-template-columns: repeat(3, 1fr);
+    width: 90%;
+    margin-bottom: 40px;
+  }
+
+  .cards-audience.landscape > ul > li {
+    height: 242px;
+  }
+
+  .cards-audience.landscape .cards-audience-card-body {
+    line-height: 32px;
+  }
+}
+
+@media (width >= 1080px) {
+  .cards-audience.landscape {
+    padding-top: 10px;
+  }
+
+  .cards-audience.landscape > ul {
+    min-height: 0;
+    margin-bottom: 70px;
+  }
+
+  .cards-audience.landscape > ul > li:hover,
+  .cards-audience.landscape > ul > li:hover .cards-audience-card-body > * {
+    transform: none;
+  }
+}
+
+/*
+ * landing template, default tiles (personal-bank): edge-to-edge portrait
+ * tiles with mixed-case labels, white band above/below, no red divider,
+ * zoom on hover without moving the label. Option variants are excluded.
+ */
+body.landing .cards-audience:not(.landscape, .compact) {
+  padding: 60px 0 80px;
+}
+
+body.landing .cards-audience:not(.landscape, .compact)::after {
+  content: none;
+}
+
+body.landing .cards-audience:not(.landscape, .compact) > ul > li {
+  min-height: 200px;
+}
+
+body.landing .cards-audience:not(.landscape, .compact) .cards-audience-card-body {
+  text-transform: none;
+}
+
+@media (width >= 768px) {
+  body.landing .cards-audience:not(.landscape, .compact) {
+    padding-bottom: 60px;
+  }
+
+  body.landing .cards-audience:not(.landscape, .compact) > ul > li {
+    min-height: 381px;
+    margin-bottom: 20px;
+  }
+
+  body.landing .cards-audience:not(.landscape, .compact) > ul > li:last-child {
+    margin-bottom: 0;
+  }
+
+  body.landing .cards-audience:not(.landscape, .compact) .cards-audience-card-body {
+    font-size: 26px;
+  }
+}
+
+@media (width >= 1080px) {
+  body.landing .cards-audience:not(.landscape, .compact) > ul {
+    min-height: 0;
+  }
+
+  body.landing .cards-audience:not(.landscape, .compact) > ul > li {
+    height: 560px;
+    min-height: 0;
+    margin-bottom: 0;
+  }
+
+  body.landing .cards-audience:not(.landscape, .compact) > ul > li:hover .cards-audience-card-body > * {
+    transform: none;
+  }
+}

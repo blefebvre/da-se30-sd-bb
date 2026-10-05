@@ -10,7 +10,33 @@ import {
   loadSections,
   loadCSS,
   buildBlock,
+  toClassName,
 } from './aem.js';
+
+/**
+ * Applies Section Metadata blocks the rendering pipeline left in place (e.g. local
+ * previews of plain HTML): "style" values become section classes, other keys data
+ * attributes. No-op when the pipeline already processed them.
+ * @param {Element} main The container element
+ */
+function applySectionMetadata(main) {
+  main.querySelectorAll(':scope > div > div.section-metadata').forEach((meta) => {
+    const section = meta.parentElement;
+    [...meta.children].forEach((row) => {
+      const [nameCell, valueCell] = row.children;
+      if (!nameCell || !valueCell) return;
+      const name = toClassName(nameCell.textContent);
+      const value = valueCell.textContent.trim();
+      if (name === 'style') {
+        value.split(',').map((s) => toClassName(s)).filter(Boolean)
+          .forEach((cls) => section.classList.add(cls));
+      } else if (name) {
+        section.dataset[name.replace(/-([a-z])/g, (g) => g[1].toUpperCase())] = value;
+      }
+    });
+    meta.remove();
+  });
+}
 
 if (window.trustedTypes && window.trustedTypes.createPolicy) {
   const innerTT = window.trustedTypes.createPolicy('tt-inner', {
@@ -150,6 +176,7 @@ function decorateButtons(main) {
 export function decorateMain(main) {
   decorateIcons(main);
   buildAutoBlocks(main);
+  applySectionMetadata(main);
   decorateSections(main);
   decorateBlocks(main);
   decorateButtons(main);

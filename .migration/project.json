@@ -1,0 +1,11 @@
+{
+  "type": "da",
+  "sites": {
+    "da-se30-sd-bb": {
+      "previewOrg": "blefebvre",
+      "previewSite": "da-se30-sd-bb",
+      "contentHostUrl": "https://content.da.live/blefebvre/da-se30-sd-bb/",
+      "libraryUrl": "https://main--sta-boilerplate--aemdemos.aem.page/tools/sidekick/library.json"
+    }
+  }
+}

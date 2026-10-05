@@ -1,0 +1,15 @@
+{
+  "status": "success",
+  "url": "https://bradescobank.com/en/real-estate/",
+  "path": "en/real-estate",
+  "timestamp": "2026-10-03T06:05:46.818Z",
+  "title": "Real Estate – Bradesco Bank",
+  "template": "landing",
+  "fragment": "",
+  "blocks": [
+    "hero-video",
+    "cards-feature",
+    "columns-media",
+    "tabs"
+  ]
+}

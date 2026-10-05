@@ -1,0 +1,67 @@
+{
+  "variantName": "hero-promo",
+  "baseBlock": "hero",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "colorScheme": "dark-overlay",
+    "density": "medium",
+    "purpose": "content-promo-banner",
+    "imagePattern": "background-image",
+    "structure": "image + h3 + paragraph + cta"
+  },
+  "contentPattern": "1 column: [background image | heading (h2/h3), paragraph(s), optional list / footnotes / image-only logo or badge row, 0-n CTA links]; may be split over 2 rows (row 1 image, row 2 copy); card option: a foreground image paragraph inside the copy splits it into [title+text | image | text+CTA]",
+  "usage": {
+    "pagesUsing": [
+      "/en/personal-bank/index",
+      "https://bradescobank.com/",
+      "/en/private-bank/index",
+      "/en/corporate/index",
+      "/en/credit-cards/index",
+      "/en/credit-card-signature-gold/index",
+      "/en/credit-card/visa-infinite/index",
+      "/en/personal-bank/investments/index",
+      "/en/investments-content/bradesco-investments-app/index",
+      "/en/careers/index",
+      "/en/institutional/index"
+    ],
+    "reuseCount": 10,
+    "lastUsed": "2026-10-03T00:00:00Z"
+  },
+  "options": [
+    {
+      "class": "center",
+      "label": "Center"
+    },
+    {
+      "class": "light",
+      "label": "Light"
+    },
+    {
+      "class": "right",
+      "label": "Right"
+    },
+    {
+      "class": "card",
+      "label": "Card"
+    },
+    {
+      "class": "split",
+      "label": "Split"
+    },
+    {
+      "class": "checks",
+      "label": "Checks"
+    },
+    {
+      "class": "end",
+      "label": "End"
+    },
+    {
+      "class": "dim",
+      "label": "Dim"
+    }
+  ],
+  "memberVariantIds": [
+    "hero-promo"
+  ]
+}

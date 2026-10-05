@@ -1,0 +1,14 @@
+{
+  "status": "success",
+  "url": "https://bradescobank.com/en/certificate-of-deposit-bradesco/",
+  "path": "en/certificate-of-deposit-bradesco",
+  "timestamp": "2026-10-03T06:06:31.022Z",
+  "title": "CDB – Bradesco Bank",
+  "template": "landing",
+  "fragment": "",
+  "blocks": [
+    "cards-feature",
+    "cards-feature",
+    "hero-banner"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "status": "success",
+  "url": "https://bradescobank.com/en/bank-holidays/",
+  "path": "en/bank-holidays",
+  "timestamp": "2026-10-03T06:55:45.851Z",
+  "title": "Bank Holidays – Bradesco Bank",
+  "template": "info-page",
+  "fragment": "",
+  "blocks": [
+    "hero-banner",
+    "table-article"
+  ]
+}

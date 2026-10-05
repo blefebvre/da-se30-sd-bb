@@ -1,0 +1,15 @@
+{
+  "status": "success",
+  "url": "https://bradescobank.com/en/privacy-and-cookies/?fragment=bradesco-investments-privacy-notice",
+  "path": "en/privacy-and-cookies/fragments/bradesco-investments-privacy-notice",
+  "timestamp": "2026-10-03T06:55:15.881Z",
+  "title": "Privacy and Cookies – Bradesco Bank",
+  "template": "info-page",
+  "fragment": "bradesco-investments-privacy-notice",
+  "blocks": [
+    "table-article",
+    "table-article",
+    "table-article",
+    "table-article"
+  ]
+}

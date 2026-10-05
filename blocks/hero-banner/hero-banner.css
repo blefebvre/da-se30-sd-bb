@@ -1,0 +1,341 @@
+/*
+ * hero-banner — values from the source Elementor page-top heroes (computed styles):
+ * 765px tall at every width, header overlays it, strip directly below.
+ */
+
+/* full-bleed: escape the boxed section column */
+main > .section > .hero-banner-wrapper {
+  max-width: none;
+  padding: 0;
+}
+
+/* decorative strip directly below the banner (not authored).
+   mobile: red -> violet gradient image (mob-linha-degrade-1.jpg, 1079px wide at natural size) */
+main > .section > .hero-banner-wrapper::after {
+  content: '';
+  display: block;
+  height: 19px;
+  background: linear-gradient(90deg, #cc092f 108px, #37398c 1079px);
+}
+
+.hero-banner {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  box-sizing: border-box;
+  min-height: 765px;
+  padding: calc(var(--nav-height) + 40px) 0 50px;
+  overflow: hidden;
+  isolation: isolate;
+  background-color: var(--dark-color);
+}
+
+.hero-banner.no-image {
+  background-color: transparent;
+}
+
+.hero-banner .hero-banner-media {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  line-height: 0;
+}
+
+/* text-only banners: 30% black overlay (source container ::before) keeps the title and the
+   overlaying header legible on light photos; logo/split/right banners have none */
+.hero-banner.no-figure .hero-banner-media::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: rgb(0 0 0 / 30%);
+  pointer-events: none;
+}
+
+.hero-banner .hero-banner-media picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-banner .hero-banner-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+}
+
+.hero-banner .hero-banner-content {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 20px;
+  color: #fff;
+}
+
+.hero-banner.no-image .hero-banner-content {
+  color: var(--text-color);
+}
+
+.hero-banner .hero-banner-figure {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 20px;
+  line-height: 0;
+}
+
+.hero-banner .hero-banner-figure img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+}
+
+.hero-banner .hero-banner-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.hero-banner .hero-banner-text > * {
+  margin: 0;
+}
+
+.hero-banner .hero-banner-text h1,
+.hero-banner .hero-banner-text h2 {
+  color: inherit;
+  font-family: var(--heading-font-family);
+  font-size: 26px;
+  font-weight: 400;
+  line-height: 30px;
+}
+
+.hero-banner .hero-banner-text p {
+  font-size: 20px;
+  line-height: 23px;
+}
+
+.hero-banner .hero-banner-text p.hero-banner-cta {
+  padding-top: 8px;
+}
+
+/* default layout with a logo above the title (e.g. Zelle) */
+.hero-banner:not(.split, .right, .no-figure) {
+  padding-bottom: 60px;
+}
+
+.hero-banner:not(.split, .right, .no-figure) .hero-banner-figure img {
+  width: 254px;
+}
+
+.hero-banner:not(.split, .right, .no-figure) .hero-banner-text h1,
+.hero-banner:not(.split, .right, .no-figure) .hero-banner-text h2 {
+  font-size: 27px;
+  line-height: 27px;
+}
+
+.hero-banner:not(.split, .right, .no-figure) .hero-banner-text p {
+  font-size: 18px;
+  line-height: 22px;
+}
+
+/* split: logo | thin white vertical rule | title (mobile: logo stacked above title) */
+.hero-banner.split {
+  padding-bottom: 55px;
+}
+
+.hero-banner.split .hero-banner-figure img {
+  width: 115px;
+}
+
+.hero-banner.split .hero-banner-divider {
+  display: none;
+}
+
+/* right: card image centred in the banner, text column at the bottom (mobile) */
+.hero-banner.right {
+  padding-bottom: 56px;
+}
+
+.hero-banner.right .hero-banner-content {
+  align-items: center;
+  padding: 0;
+}
+
+.hero-banner.right .hero-banner-figure {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 250px;
+  transform: translate(-50%, -50%);
+}
+
+.hero-banner.right .hero-banner-figure img {
+  width: 100%;
+}
+
+.hero-banner.right .hero-banner-text {
+  width: 85%;
+}
+
+.hero-banner.right .hero-banner-text h1,
+.hero-banner.right .hero-banner-text h2 {
+  font-size: 30px;
+  font-weight: 300;
+  line-height: 32px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+}
+
+.hero-banner.right .hero-banner-text p {
+  font-weight: 300;
+  line-height: 24px;
+}
+
+/* right: solid 12px dark-red strip at every width */
+main > .section > .hero-banner-wrapper:has(> .hero-banner.right)::after {
+  height: 12px;
+  background: var(--brand-red-dark);
+}
+
+@media (width >= 900px) {
+  main > .section > .hero-banner-wrapper::after {
+    background: var(--brand-red-dark);
+  }
+
+  main > .section > .hero-banner-wrapper:has(> .hero-banner.split)::after {
+    background: #cc092f;
+  }
+
+  .hero-banner {
+    padding-bottom: 86px;
+  }
+
+  /* boxed 1420px row with 10px column gutters (text at x=20 on a 1440 viewport) */
+  .hero-banner .hero-banner-content {
+    max-width: 1440px;
+  }
+
+  .hero-banner .hero-banner-text {
+    gap: 10px;
+    max-width: 556px;
+  }
+
+  .hero-banner .hero-banner-text h1,
+  .hero-banner .hero-banner-text h2 {
+    font-size: 40px;
+    line-height: 45px;
+  }
+
+  .hero-banner .hero-banner-text p {
+    font-size: 30px;
+    line-height: 35px;
+  }
+
+  /* default with logo: vertically centred, 10px inside the 1296px box */
+  .hero-banner:not(.split, .right, .no-figure) {
+    align-items: center;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .hero-banner:not(.split, .right, .no-figure) .hero-banner-content {
+    max-width: 1316px;
+  }
+
+  .hero-banner:not(.split, .right, .no-figure) .hero-banner-figure img {
+    width: 361px;
+  }
+
+  .hero-banner:not(.split, .right, .no-figure) .hero-banner-text {
+    gap: 20px;
+    max-width: 618px;
+  }
+
+  .hero-banner:not(.split, .right, .no-figure) .hero-banner-text h1,
+  .hero-banner:not(.split, .right, .no-figure) .hero-banner-text h2 {
+    font-size: 50px;
+    line-height: 50px;
+  }
+
+  .hero-banner:not(.split, .right, .no-figure) .hero-banner-text p {
+    font-size: 30px;
+    line-height: 33px;
+  }
+
+  /* split: row on the 1296px box, bottom-aligned 90px above the strip */
+  .hero-banner.split {
+    padding-bottom: 90px;
+  }
+
+  .hero-banner.split .hero-banner-media img {
+    object-position: center top;
+  }
+
+  .hero-banner.split .hero-banner-content {
+    flex-direction: row;
+    align-items: stretch;
+    max-width: 1336px;
+  }
+
+  .hero-banner.split .hero-banner-figure img {
+    width: 166px;
+  }
+
+  .hero-banner.split .hero-banner-divider {
+    display: block;
+    flex: 0 0 1px;
+    background-color: currentcolor;
+  }
+
+  .hero-banner.split .hero-banner-text {
+    flex: 1 1 auto;
+    justify-content: center;
+  }
+
+  .hero-banner.split .hero-banner-text > :last-child {
+    margin-bottom: 22px;
+  }
+
+  /* right: card centred on the banner, text column (35%) vertically centred on the right */
+  .hero-banner.right {
+    align-items: center;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+
+  .hero-banner.right .hero-banner-content {
+    flex-direction: row;
+    justify-content: flex-end;
+    max-width: 1440px;
+    padding: 0 10px;
+  }
+
+  .hero-banner.right .hero-banner-figure {
+    width: min(380px, 30vw);
+  }
+
+  .hero-banner.right .hero-banner-text {
+    gap: 20px;
+    width: 35%;
+    max-width: none;
+  }
+
+  .hero-banner.right .hero-banner-text h1,
+  .hero-banner.right .hero-banner-text h2 {
+    max-width: 90%; /* heading widget is 447px of the 497px column */
+    font-size: 40px;
+    line-height: 48px;
+    letter-spacing: 10px;
+  }
+
+  .hero-banner.right .hero-banner-text p {
+    font-size: 35px;
+    line-height: 42px;
+  }
+}

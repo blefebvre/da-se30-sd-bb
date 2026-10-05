@@ -1,0 +1,477 @@
+/*
+ * Table (Article) - matches the rendered source table (theme defaults):
+ * full 1px #e1e8ed grid, 0.7em/1em cell padding, 16px/1.65 text,
+ * centered semibold header cells, bold first-column labels.
+ * Source does not stack or scroll at mobile; the auto-layout table
+ * simply narrows its columns. The scroll region only engages if the
+ * container ever becomes narrower than the table's min-content width.
+ */
+.table-article {
+  /* source: empty 26.4px spacer paragraphs above and below the table */
+  margin: 26.4px 0;
+}
+
+.table-article .table-article-scroll {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-article .table-article-scroll:focus-visible {
+  outline: 2px solid var(--link-hover-color, currentcolor);
+  outline-offset: 2px;
+}
+
+.table-article table {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  border: 1px solid #e1e8ed;
+  border-collapse: collapse;
+  border-spacing: 0;
+  empty-cells: show;
+  font-family: var(--body-font-family);
+  font-size: var(--body-font-size-m);
+  line-height: 1.65;
+  color: var(--text-color);
+  background-color: transparent;
+}
+
+.table-article th,
+.table-article td {
+  padding: 11.2px 16px;
+  border: 1px solid #e1e8ed;
+  font-size: var(--body-font-size-m);
+  vertical-align: middle;
+}
+
+.table-article th {
+  font-weight: 600;
+  text-align: center;
+}
+
+.table-article td {
+  font-weight: 400;
+  text-align: left;
+}
+
+.table-article td strong {
+  font-weight: 700;
+}
+
+.table-article th > p,
+.table-article td > p {
+  margin: 0;
+}
+
+.table-article th > p + p,
+.table-article td > p + p {
+  margin-top: 0.5em;
+}
+
+/*
+ * compare / features options (additive; the base table above is unchanged).
+ * Values from the source widgets' computed styles (.bradesco-table-container,
+ * .tabela-beneficios) and their 767px / 1080px breakpoints.
+ */
+.table-article.compare table,
+.table-article.features table {
+  table-layout: fixed;
+  border: 0;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.table-article.compare th,
+.table-article.compare td,
+.table-article.features th,
+.table-article.features td {
+  border: 0;
+  font-weight: 400;
+  vertical-align: middle;
+}
+
+.table-article.compare td strong,
+.table-article.features td strong {
+  font-weight: 700;
+}
+
+/* source (theme normalize): superscripts don't grow the line box */
+.table-article.compare sup,
+.table-article.features sup {
+  position: relative;
+  top: -0.5em;
+  font-size: 75%;
+  line-height: 0;
+  vertical-align: baseline;
+}
+
+.table-article .table-article-check {
+  display: inline-block;
+  box-sizing: border-box;
+}
+
+/*
+ * features: label | value rows in a rounded, bordered box on a dark section;
+ * light label cells, translucent value cells, gradient row separators.
+ */
+.table-article.features {
+  margin: 0;
+}
+
+.table-article.features .table-article-scroll {
+  box-sizing: border-box;
+  max-width: 377px;
+  margin: 0 auto;
+  border: 1px solid rgb(255 255 255 / 85%);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.table-article.features tbody th,
+.table-article.features tbody td {
+  box-sizing: border-box;
+  height: 43px;
+  background-position: bottom;
+  background-size: 100% 1px;
+  background-repeat: no-repeat;
+}
+
+.table-article.features tbody th {
+  width: 52%;
+  padding: 0 19px;
+  background-color: rgb(255 255 255 / 88%);
+  background-image: linear-gradient(90deg, rgb(175 175 175 / 0%) 0%, rgb(175 175 175 / 12%) 10%, rgb(175 175 175 / 25%) 28%, rgb(175 175 175 / 38%) 52%, rgb(175 175 175 / 42%) 100%);
+  font-size: 16px;
+  line-height: 1.32;
+  color: #4d4d4d;
+  text-align: left;
+}
+
+.table-article.features tbody td {
+  padding: 0 12px;
+  background-color: rgb(255 255 255 / 12%);
+  background-image: linear-gradient(rgb(255 255 255 / 32%) 0 0);
+  font-size: 15px;
+  line-height: 1.15;
+  color: #fff;
+  text-align: center;
+}
+
+.table-article.features tbody tr:last-child > * {
+  background-image: none;
+}
+
+.table-article.features td.is-long {
+  font-size: 12px;
+  line-height: 1.05;
+}
+
+/* white outline circle with a check glyph */
+.table-article.features .table-article-check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+  vertical-align: middle;
+}
+
+.table-article.features .table-article-check::after {
+  content: '✓';
+}
+
+/*
+ * compare: dark-red header tabs over the value columns rise above a white
+ * rounded, shadowed card holding the rows; vertical divider between values.
+ */
+.table-article.compare {
+  --ta-tab-h: 40px;
+  --ta-tab-full: 85px;
+  --ta-tab-radius: 10px 10px 0 0;
+  --ta-tab-shadow: 0 3px 8px rgb(0 0 0 / 20%);
+  --ta-tab-l: 1.667%;
+  --ta-tab-r: 1.667%;
+  --ta-tab-last-l: 1.667%;
+  --ta-tab-last-r: 1.667%;
+  --ta-pad-x: 10px;
+  --ta-card-top: 22px;
+  --ta-card-bottom: 16px;
+  --ta-cell-y: 7px;
+  --ta-check: 20px;
+  --ta-check-svg: 18px;
+
+  box-sizing: border-box;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 43px 0 49px;
+}
+
+.table-article.compare .table-article-scroll {
+  position: relative;
+  isolation: isolate;
+  box-sizing: border-box;
+  padding: 0 var(--ta-pad-x);
+  overflow: visible;
+}
+
+/* the white card starts below the visible part of the tabs */
+.table-article.compare .table-article-scroll::before {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  inset: var(--ta-tab-h) var(--ta-pad-x) 0;
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 0 4px 10px rgb(0 0 0 / 20%);
+}
+
+.table-article.compare table {
+  font-family: Inter, system-ui, -apple-system, sans-serif;
+  color: var(--text-color);
+  -webkit-font-smoothing: antialiased;
+}
+
+.table-article.compare thead th {
+  position: relative;
+  z-index: 0;
+  box-sizing: border-box;
+  height: var(--ta-tab-h);
+  padding: 11px 0 0;
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1.65;
+  color: #fff;
+  text-align: center;
+  vertical-align: top;
+}
+
+.table-article.compare thead > tr > :first-child {
+  width: 40%;
+}
+
+/* tab extends behind the card (only its top part shows) */
+.table-article.compare thead th:not(.is-empty)::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: 0 var(--ta-tab-r) calc(var(--ta-tab-h) - var(--ta-tab-full)) var(--ta-tab-l);
+  border-radius: var(--ta-tab-radius);
+  background-color: var(--brand-red-dark);
+  box-shadow: var(--ta-tab-shadow);
+}
+
+.table-article.compare thead th:last-child:not(.is-empty)::before {
+  right: var(--ta-tab-last-r);
+  left: var(--ta-tab-last-l);
+}
+
+.table-article.compare tbody th,
+.table-article.compare tbody td {
+  position: relative;
+  z-index: 2;
+  padding: var(--ta-cell-y) 6px;
+  font-size: 10px;
+  line-height: 1.35;
+  color: var(--text-color);
+}
+
+.table-article.compare tbody th {
+  padding-left: 14px;
+  text-align: left;
+}
+
+.table-article.compare tbody td {
+  text-align: center;
+}
+
+.table-article.compare tbody tr:first-child > * {
+  padding-top: calc(var(--ta-cell-y) + var(--ta-card-top));
+}
+
+.table-article.compare tbody tr:last-child > * {
+  padding-bottom: calc(var(--ta-cell-y) + var(--ta-card-bottom));
+}
+
+/* vertical divider after each value column but the last, rows only */
+.table-article.compare tbody td:where(:not(:last-child)) {
+  background: linear-gradient(#a7a7a7 0 0) right top / 1px 100% no-repeat;
+}
+
+.table-article.compare tbody tr:first-child > td:where(:not(:last-child)) {
+  background-position: right bottom;
+  background-size: 1px calc(100% - var(--ta-card-top));
+}
+
+.table-article.compare tbody tr:last-child > td:where(:not(:last-child)) {
+  background-size: 1px calc(100% - var(--ta-card-bottom));
+}
+
+.table-article.compare tbody tr:only-child > td:where(:not(:last-child)) {
+  background-position: right var(--ta-card-top);
+  background-size: 1px calc(100% - var(--ta-card-top) - var(--ta-card-bottom));
+}
+
+.table-article.compare td.is-dash {
+  font-size: 14px;
+}
+
+/* source renders the dash and small-print spans in the brand font */
+.table-article.compare td.is-dash,
+.table-article.compare .table-article-long {
+  font-family: var(--body-font-family);
+}
+
+.table-article.compare .table-article-long {
+  display: block;
+  max-width: 100%;
+  margin: 0 auto;
+  font-size: 8px;
+  line-height: 1.2;
+}
+
+/* keep the text strut so check rows get the source line-box height */
+.table-article.compare td.is-check::before {
+  content: '\200b';
+}
+
+/* navy outline check-circle */
+.table-article.compare .table-article-check {
+  width: var(--ta-check);
+  height: var(--ta-check);
+
+  /* source: svg centred in an inline-flex box sits 1px below the baseline */
+  vertical-align: -1px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30' fill='none'%3E%3Ccircle cx='15' cy='15' r='13' stroke='%231C1761' stroke-width='2'/%3E%3Cpath d='M9.5 15L13.5 19L20.5 11' stroke='%231C1761' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / var(--ta-check-svg) no-repeat;
+}
+
+@media (width >= 768px) {
+  .table-article.compare {
+    --ta-tab-h: 46px;
+    --ta-tab-full: 100px;
+    --ta-tab-radius: 12px 12px 0 0;
+    --ta-tab-shadow: 0 4px 10px rgb(0 0 0 / 25%);
+    --ta-pad-x: 15px;
+    --ta-card-top: 30px;
+    --ta-card-bottom: 22px;
+    --ta-cell-y: 10px;
+    --ta-check: 24px;
+    --ta-check-svg: 22px;
+  }
+
+  .table-article.compare .table-article-scroll::before {
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgb(0 0 0 / 25%);
+  }
+
+  .table-article.compare thead th {
+    padding-top: 12px;
+    font-size: 15px;
+    font-weight: 400;
+  }
+
+  .table-article.compare tbody th,
+  .table-article.compare tbody td {
+    padding-inline: 14px;
+    font-size: 14px;
+    line-height: 1.4;
+  }
+
+  .table-article.compare tbody th {
+    padding-left: 22px;
+  }
+
+  .table-article.compare td.is-dash {
+    font-size: 20px;
+  }
+
+  .table-article.compare .table-article-long {
+    max-width: 230px;
+    font-size: 11px;
+    line-height: 1.25;
+  }
+
+  .table-article.features .table-article-scroll {
+    max-width: 765px;
+    border-radius: 10px;
+  }
+
+  .table-article.features tbody th,
+  .table-article.features tbody td {
+    height: 42px;
+  }
+
+  .table-article.features tbody th {
+    width: 56%;
+    padding: 0 40px;
+    font-size: 17px;
+    line-height: 1.25;
+  }
+
+  .table-article.features tbody td {
+    padding: 0 24px;
+    font-size: 16px;
+  }
+
+  .table-article.features td.is-long {
+    font-size: 14px;
+    line-height: 1.08;
+  }
+
+  .table-article.features .table-article-check {
+    width: 23px;
+    height: 23px;
+  }
+}
+
+@media (width >= 900px) {
+  .table-article.compare {
+    padding: 36px 0 54px;
+  }
+}
+
+@media (width >= 1081px) {
+  .table-article.compare {
+    --ta-tab-h: 54px;
+    --ta-tab-full: 119px;
+    --ta-tab-radius: 15px;
+    --ta-tab-r: 5%;
+    --ta-tab-last-l: 0;
+    --ta-tab-last-r: 0;
+    --ta-pad-x: 0;
+    --ta-card-top: 38px;
+    --ta-card-bottom: 28px;
+    --ta-cell-y: 13px;
+    --ta-check: 30px;
+    --ta-check-svg: 28px;
+  }
+
+  .table-article.compare .table-article-scroll::before {
+    border-radius: 15px;
+  }
+
+  .table-article.compare thead th {
+    padding-top: 13px;
+    font-size: 20px;
+  }
+
+  .table-article.compare tbody th,
+  .table-article.compare tbody td {
+    padding-inline: 24px;
+    font-size: 18px;
+  }
+
+  .table-article.compare tbody th {
+    padding-left: 45px;
+  }
+
+  .table-article.compare .table-article-long {
+    max-width: 280px;
+    font-size: 14px;
+  }
+}

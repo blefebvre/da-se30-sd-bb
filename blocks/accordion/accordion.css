@@ -1,0 +1,300 @@
+/*
+ * accordion - Elementor accordion (bradescobank.com landing pages)
+ * Separate white boxes, 15px apart, soft shadow; 24px/500 titles with a solid grey chevron.
+ */
+.accordion {
+  --accordion-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512'%3E%3Cpath d='M207.029 381.476L12.686 187.132c-9.373-9.373-9.373-24.569 0-33.941l22.667-22.667c9.357-9.357 24.522-9.375 33.901-.04L224 284.505l154.745-154.021c9.379-9.335 24.544-9.317 33.901.04l22.667 22.667c9.373 9.373 9.373 24.569 0 33.941L240.971 381.476c-9.373 9.372-24.569 9.372-33.942 0z'/%3E%3C/svg%3E");
+  --accordion-chevron-color: var(--text-color);
+  --accordion-shadow: 0 5px 12px rgb(0 0 0 / 12%);
+  --accordion-open-bg: var(--background-color);
+
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin: 0 3px;
+  padding: 0 0 11px;
+  color: var(--text-color);
+}
+
+/* last block of the section: the block supplies the section's bottom spacing */
+.accordion-wrapper:last-child > .accordion {
+  padding-bottom: 40px;
+}
+
+.accordion .accordion-item {
+  border-radius: 4px;
+  background-color: var(--background-color);
+  box-shadow: var(--accordion-shadow);
+}
+
+.accordion .accordion-item[hidden] {
+  display: none;
+}
+
+.accordion .accordion-item-label {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid #eaeaea;
+  padding: 16px 20px 20px;
+  background-color: var(--background-color);
+  cursor: pointer;
+  list-style: none;
+}
+
+.accordion .accordion-item-label::-webkit-details-marker {
+  display: none;
+}
+
+.accordion .accordion-item-label:focus-visible {
+  outline: 2px solid var(--brand-red);
+  outline-offset: -2px;
+}
+
+.accordion .accordion-item-title {
+  flex: 1 1 auto;
+  min-width: 0;
+  color: var(--text-color);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 16px;
+}
+
+/* chevron: 23px icon right-aligned in a 26px-high icon box */
+.accordion .accordion-item-label::after {
+  content: '';
+  flex: 0 0 28px;
+  height: 26px;
+  background-color: var(--accordion-chevron-color);
+  mask: var(--accordion-chevron) no-repeat right 1px top 0 / 23px 23px;
+}
+
+.accordion .accordion-item[open] > .accordion-item-label {
+  z-index: 1;
+  border-bottom-width: 0;
+  background-color: var(--accordion-open-bg);
+  box-shadow: 0 4px 12px rgb(0 0 0 / 10%);
+}
+
+/* chevron up: vertical flip, anchored so it stays at the top-right of the icon box */
+.accordion .accordion-item[open] > .accordion-item-label::after {
+  mask-position: right 1px bottom 0;
+  transform: scaleY(-1);
+}
+
+.accordion .accordion-item-body {
+  padding: 20px 20px 22px 25px;
+  background-color: var(--accordion-open-bg);
+  font-size: 14px;
+  line-height: 22px;
+}
+
+.accordion .accordion-item-body > * {
+  margin: 0 0 21px;
+}
+
+.accordion .accordion-item-body > :last-child {
+  margin-bottom: 0;
+}
+
+/* more: red pill revealing the hidden items */
+.accordion .accordion-more {
+  display: flex;
+  justify-content: center;
+  margin: 5px 0 0;
+}
+
+.accordion .accordion-more-button {
+  margin: 0;
+  border: 0;
+  border-radius: var(--button-radius);
+  padding: 10px 30px;
+  background-color: var(--brand-red);
+  color: #fff;
+  font-family: var(--body-font-family);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 14px;
+  letter-spacing: var(--button-letter-spacing);
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.accordion .accordion-more-button:hover,
+.accordion .accordion-more-button:focus-visible {
+  background-color: #920820;
+}
+
+/* premium (Visa Infinite): all closed, deeper shadow, grey open item, thin line chevron,
+   wide dark-red "See more" pill */
+.accordion.premium {
+  --accordion-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 33 18' fill='none'%3E%3Cpath d='M1 1L16.5 16L32 1' stroke='black' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+  --accordion-chevron-color: #575757;
+  --accordion-shadow: 0 4px 10px rgb(0 0 0 / 25%);
+  --accordion-open-bg: #f6f6f6;
+
+  margin: 0 -10px;
+}
+
+.accordion.premium .accordion-more {
+  margin-top: 25px;
+}
+
+.accordion.premium .accordion-more-button {
+  border-radius: 36px;
+  padding: 10px 40px;
+  background-color: var(--brand-red-dark);
+  font-weight: 400;
+}
+
+.accordion.premium .accordion-more-button:hover,
+.accordion.premium .accordion-more-button:focus-visible {
+  background-color: var(--brand-red-dark);
+}
+
+/* icons (Security): line icon (label cell picture) before each label, square items
+   with a lighter shadow, no divider, medium-weight body with small red bullets */
+.accordion.icons {
+  --accordion-shadow: 0 5px 9px rgb(0 0 0 / 10%);
+
+  gap: 20px;
+  padding-top: 17px;
+}
+
+.accordion.icons .accordion-item {
+  border-radius: 0;
+}
+
+.accordion.icons .accordion-item-label {
+  border-bottom-width: 0;
+  padding: 16px 20px 20px 70px;
+}
+
+/* icon box: image contained top-left in a 30px square */
+.accordion.icons .accordion-item-title picture {
+  position: absolute;
+  top: 12px;
+  left: 26px;
+  display: flex;
+  width: 30px;
+  height: 30px;
+}
+
+.accordion.icons .accordion-item-title img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: left top;
+}
+
+/* the chevron box (26px) overhangs the label line instead of growing the row */
+.accordion.icons .accordion-item-label::after {
+  align-self: flex-start;
+  margin-bottom: -10px;
+}
+
+.accordion.icons .accordion-item-body {
+  padding: 30px 20px 40px 25px;
+  font-weight: 500;
+}
+
+.accordion.icons .accordion-item-body ul {
+  padding-left: 35px;
+}
+
+.accordion.icons .accordion-item-body li {
+  margin: 0 0 15px -20px;
+}
+
+.accordion.icons .accordion-item-body li:last-child {
+  margin-bottom: 0;
+}
+
+.accordion.icons .accordion-item-body li::marker {
+  color: #cc092f;
+}
+
+@media (width >= 900px) {
+  .accordion {
+    margin: 0 -10px;
+    padding-top: 5px;
+  }
+
+  .accordion-wrapper:last-child > .accordion {
+    padding-bottom: 60px;
+  }
+
+  .accordion .accordion-item-label {
+    padding: 30px 38px 30px 30px;
+  }
+
+  .accordion .accordion-item-title {
+    font-size: 24px;
+    line-height: 24px;
+  }
+
+  .accordion .accordion-item-label::after {
+    flex-basis: 34.5px;
+  }
+
+  .accordion .accordion-item-body {
+    padding: 30px 71px 25px 30px;
+    font-size: 16px;
+  }
+
+  .accordion .accordion-item-body > * {
+    margin-bottom: 24px;
+  }
+
+  .accordion .accordion-more-button {
+    padding: 13px 65px;
+    font-size: 16px;
+    line-height: 16px;
+  }
+
+  .accordion.premium {
+    margin: 0 -12px;
+    padding-top: 0;
+  }
+
+  .accordion.premium .accordion-more-button {
+    padding: 15px 100px;
+  }
+
+  .accordion.icons {
+    gap: 32px;
+    margin: 0;
+    padding-top: 63px;
+  }
+
+  .accordion.icons .accordion-item-label {
+    padding: 17px 38px 20px 120px;
+  }
+
+  /* natural-size icon, centred in a 46px column, top-aligned */
+  .accordion.icons .accordion-item-title picture {
+    top: 15px;
+    left: 46px;
+    justify-content: center;
+    width: 46px;
+    height: auto;
+  }
+
+  .accordion.icons .accordion-item-title img {
+    width: auto;
+    height: auto;
+  }
+
+  .accordion.icons .accordion-item-label::after {
+    margin-bottom: -2px;
+  }
+
+  .accordion.icons .accordion-item-body {
+    padding: 30px 71px 40px 45px;
+  }
+
+  .accordion.icons .accordion-item-body ul {
+    padding-left: 40px;
+  }
+}

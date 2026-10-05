@@ -1,0 +1,20 @@
+{
+  "status": "success",
+  "url": "https://bradescobank.com/en/credit-card/visa-infinite/",
+  "path": "en/credit-card/visa-infinite",
+  "timestamp": "2026-10-03T06:06:50.388Z",
+  "title": "Visa Infinite – Bradesco Bank",
+  "template": "landing",
+  "fragment": "",
+  "blocks": [
+    "cards-feature",
+    "cards-feature",
+    "cards-product",
+    "hero-promo",
+    "hero-promo",
+    "hero-promo",
+    "table-article",
+    "accordion",
+    "hero-banner"
+  ]
+}

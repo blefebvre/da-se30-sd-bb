@@ -1,0 +1,18 @@
+{
+  "status": "success",
+  "url": "https://bradescobank.com/en/credit-card-signature-gold/",
+  "path": "en/credit-card-signature-gold",
+  "timestamp": "2026-10-03T06:06:19.028Z",
+  "title": "Signature & Gold – Bradesco Bank",
+  "template": "landing",
+  "fragment": "",
+  "blocks": [
+    "hero-video",
+    "cards-feature",
+    "hero-promo",
+    "hero-promo",
+    "tabs",
+    "table-article",
+    "accordion"
+  ]
+}

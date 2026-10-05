@@ -1,0 +1,37 @@
+{
+  "variantName": "table-article",
+  "baseBlock": "table",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "colorScheme": "light",
+    "density": "medium",
+    "purpose": "article-data-table",
+    "imagePattern": "noimg",
+    "structure": "header row + label column + text cells"
+  },
+  "contentPattern": "Base: first row = header cells, then one row per data row. compare: header row ['' | product A | product B] then [label | value | value]; features: no header, rows [label | value]; ':check:' / '\u2713' value cells render as check marks; '-' cells render as a dash; values > 38 chars render as small print",
+  "usage": {
+    "pagesUsing": [
+      "https://bradescobank.com/en/reits/",
+      "/en/credit-card-signature-gold/index",
+      "/en/credit-card/visa-infinite/index",
+      "/en/bank-holidays/index",
+      "/en/privacy-and-cookies/index"
+    ],
+    "reuseCount": 4,
+    "lastUsed": "2026-10-03"
+  },
+  "options": [
+    {
+      "class": "compare",
+      "label": "Compare"
+    },
+    {
+      "class": "features",
+      "label": "Features"
+    }
+  ],
+  "memberVariantIds": [
+    "table-article"
+  ]
+}

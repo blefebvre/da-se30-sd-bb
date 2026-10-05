@@ -1,0 +1,36 @@
+{
+  "variantName": "cards-audience",
+  "baseBlock": "cards",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "colorScheme": "image-overlay",
+    "density": "minimal",
+    "purpose": "audience-selector",
+    "imagePattern": "full-bleed-portrait",
+    "structure": "image + label link"
+  },
+  "contentPattern": "one row per tile, 2 cols: [image | label (link, h3 or paragraph; link optional)]",
+  "usage": {
+    "pagesUsing": [
+      "/en/personal-bank/index",
+      "https://bradescobank.com/",
+      "/en/private-bank/index",
+      "/en/corporate/index"
+    ],
+    "reuseCount": 3,
+    "lastUsed": "2026-10-02T17:01:59Z"
+  },
+  "options": [
+    {
+      "class": "landscape",
+      "label": "Landscape"
+    },
+    {
+      "class": "compact",
+      "label": "Compact"
+    }
+  ],
+  "memberVariantIds": [
+    "cards-audience"
+  ]
+}

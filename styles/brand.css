@@ -1,0 +1,58 @@
+/* Brand tokens extracted from https://bradescobank.com/ (see migration-work/brand.json) */
+:root {
+  /* colors */
+  --background-color: #fff;
+  --light-color: #f8f8f8;
+  --dark-color: #000;
+  --text-color: #535353;
+  --link-color: #535353;
+  --link-hover-color: #ba0a29;
+  --brand-red: #ba0a29;
+  --brand-red-dark: #900f15;
+  --brand-red-gradient: linear-gradient(90deg, #900f15 0%, #cc092f 50%, #900f15 100%);
+
+  /* fonts */
+  --body-font-family: bradescosans, bradescosans-fallback, sans-serif;
+  --heading-font-family: bradescosans, bradescosans-fallback, sans-serif;
+
+  /* body sizes */
+  --body-font-size-m: 16px;
+  --body-font-size-s: 14px;
+  --body-font-size-xs: 11px;
+
+  /* heading sizes (mobile) */
+  --heading-font-size-xxl: 36px;
+  --heading-font-size-xl: 22px;
+  --heading-font-size-l: 24px;
+  --heading-font-size-m: 20px;
+  --heading-font-size-s: 18px;
+  --heading-font-size-xs: 16px;
+
+  /* buttons */
+  --button-radius: 100px;
+  --button-letter-spacing: 2px;
+
+  /* spacing */
+  --section-padding: 0;
+
+  /* nav height */
+  --nav-height: 64px;
+}
+
+@media (width >= 768px) {
+  :root {
+    --heading-font-size-xl: 32px;
+  }
+}
+
+@media (width >= 900px) {
+  :root {
+    /* heading sizes (desktop) */
+    --heading-font-size-xxl: 40px;
+    --heading-font-size-xl: 32px;
+    --heading-font-size-l: 32px;
+    --heading-font-size-m: 24px;
+    --heading-font-size-s: 20px;
+    --heading-font-size-xs: 16px;
+  }
+}

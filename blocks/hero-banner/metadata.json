@@ -1,0 +1,47 @@
+{
+  "variantName": "hero-banner",
+  "baseBlock": "hero",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "colorScheme": "dark-overlay",
+    "density": "minimal",
+    "purpose": "page-intro-hero",
+    "imagePattern": "background-image + foreground-image",
+    "structure": "image + image + h1 + paragraph"
+  },
+  "contentPattern": "1 column: row 1 [background image], row 2 [optional foreground/logo image(s), h1, optional subtitle p, optional CTA link]; a single cell holding all of it also works (first image = background)",
+  "usage": {
+    "pagesUsing": [
+      "https://bradescobank.com/en/investments-content/bradesco-investments-app/",
+      "https://bradescobank.com/en/careers/",
+      "https://bradescobank.com/en/certificate-of-deposit-bradesco/",
+      "https://bradescobank.com/en/personal-bank/investments/",
+      "https://bradescobank.com/en/credit-card/visa-infinite/",
+      "https://bradescobank.com/en/zelle/",
+      "https://bradescobank.com/en/security/",
+      "https://bradescobank.com/en/about-us/",
+      "/en/help/index",
+      "/en/bank-holidays/index",
+      "/en/bradesco-lounge/index",
+      "/en/privacy-and-cookies/index",
+      "/en/other-disclosures/index",
+      "/en/cra-public-file/index",
+      "/en/about-us/index"
+    ],
+    "reuseCount": 13,
+    "lastUsed": "2026-10-03"
+  },
+  "options": [
+    {
+      "class": "split",
+      "label": "Split"
+    },
+    {
+      "class": "right",
+      "label": "Right"
+    }
+  ],
+  "memberVariantIds": [
+    "hero-banner"
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "variantName": "cards-product",
+  "baseBlock": "cards",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "colorScheme": "dark-overlay",
+    "density": "medium",
+    "purpose": "product-promo",
+    "imagePattern": "full-bleed-background",
+    "structure": "image + eyebrow + h3 + paragraph + cta"
+  },
+  "contentPattern": "one row per tile, 2 cols: [photo | optional eyebrow p, h2/h3 title (or logo image), text p or ul, optional CTA link, optional footnote p]; hover option: an extra image-only p in the body = corner icon",
+  "usage": {
+    "pagesUsing": [
+      "/en/personal-bank/index",
+      "https://bradescobank.com/",
+      "/en/credit-card/visa-infinite/index"
+    ],
+    "reuseCount": 2,
+    "lastUsed": "2026-10-02"
+  },
+  "options": [
+    {
+      "class": "light",
+      "label": "Light"
+    },
+    {
+      "class": "hover",
+      "label": "Hover"
+    }
+  ],
+  "memberVariantIds": [
+    "cards-product"
+  ]
+}

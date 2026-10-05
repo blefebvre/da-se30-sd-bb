@@ -1,0 +1,132 @@
+/*
+ * Hero (Article): post-title banner. Values from source computed styles
+ * (bradescobank.com/en/reits, .elementor-element-b710887 + .elementor-element-df751d4).
+ * Source breakpoints: < 768 mobile, 768-1080 tablet, >= 1081 desktop.
+ */
+
+/* full-bleed: escape the global boxed section column */
+main > .section.hero-article-container > .hero-article-wrapper {
+  max-width: none;
+  padding: 0;
+}
+
+/*
+ * mobile: 275px banner = 180px top + 35px h1 + 60px bottom,
+ * then the 19px strip below it (bottom padding = 60 + 19)
+ */
+.hero-article {
+  --hero-article-strip-height: 19px;
+  --hero-article-strip-overlap: 0px;
+  --hero-article-strip-image-width: 1206px; /* mobile strip image: 1079x17 scaled to cover 19px */
+
+  position: relative;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 180px 6% calc(60px + var(--hero-article-strip-height) - var(--hero-article-strip-overlap));
+  isolation: isolate;
+  background-color: var(--dark-color, #000);
+  color: #fff;
+  text-align: center;
+}
+
+/* decorative red-to-purple strip directly under the banner (not authored) */
+.hero-article::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1;
+  height: var(--hero-article-strip-height);
+
+  /* source is a cover-fitted JPG: solid #cd092f to 10%, linear to #3a388b at 99% */
+  background-image: linear-gradient(90deg, #cd092f 10%, #3a388b 99%);
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  background-size: max(100%, var(--hero-article-strip-image-width)) 100%;
+}
+
+.hero-article .hero-article-media {
+  position: absolute;
+  inset: 0 0 calc(var(--hero-article-strip-height) - var(--hero-article-strip-overlap));
+  z-index: -1;
+  overflow: hidden;
+  line-height: 0;
+}
+
+/* 40% black overlay over the featured image (source ::before, opacity 0.4) */
+.hero-article .hero-article-media::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: rgb(0 0 0 / 40%);
+}
+
+.hero-article .hero-article-media picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-article .hero-article-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 50%;
+}
+
+.hero-article .hero-article-content {
+  max-width: 1700px;
+  margin: 0 auto;
+}
+
+.hero-article .hero-article-content h1,
+.hero-article .hero-article-content h2,
+.hero-article .hero-article-content h3 {
+  margin: 0;
+  color: #fff;
+  font-family: var(--heading-font-family);
+  font-size: 26px;
+  font-weight: 400;
+  line-height: 35px;
+  text-align: center;
+}
+
+@media (width >= 700px) {
+  .hero-article {
+    padding-right: 5%;
+    padding-left: 5%;
+  }
+}
+
+/* tablet: 320px banner = 200 + 40 + 80; strip overlaps the banner by 1px */
+@media (width >= 768px) {
+  .hero-article {
+    --hero-article-strip-overlap: 1px;
+    --hero-article-strip-image-width: 2146px; /* desktop strip image: 1920x17 scaled to cover 19px */
+
+    padding-top: 200px;
+    padding-bottom: calc(80px + var(--hero-article-strip-height) - var(--hero-article-strip-overlap));
+  }
+
+  .hero-article .hero-article-content h1,
+  .hero-article .hero-article-content h2,
+  .hero-article .hero-article-content h3 {
+    font-size: 30px;
+    line-height: 40px;
+  }
+}
+
+/* desktop: 380px banner = 250 + 50 + 80 */
+@media (width >= 1081px) {
+  .hero-article {
+    padding-top: 250px;
+  }
+
+  .hero-article .hero-article-content h1,
+  .hero-article .hero-article-content h2,
+  .hero-article .hero-article-content h3 {
+    font-size: 36px;
+    line-height: 50px;
+  }
+}

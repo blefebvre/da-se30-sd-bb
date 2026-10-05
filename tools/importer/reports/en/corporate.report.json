@@ -1,0 +1,16 @@
+{
+  "status": "success",
+  "url": "https://bradescobank.com/en/corporate/",
+  "path": "en/corporate",
+  "timestamp": "2026-10-03T06:04:49.491Z",
+  "title": "Business Corporate – Bradesco Bank",
+  "template": "landing",
+  "fragment": "",
+  "blocks": [
+    "hero-video",
+    "cards-audience",
+    "cards-feature",
+    "cards-feature",
+    "hero-promo"
+  ]
+}

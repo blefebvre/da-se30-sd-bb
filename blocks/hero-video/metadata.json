@@ -1,0 +1,33 @@
+{
+  "variantName": "hero-video",
+  "baseBlock": "hero",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "colorScheme": "dark",
+    "density": "minimal",
+    "purpose": "page-intro-hero",
+    "imagePattern": "background-video",
+    "structure": "video + h1"
+  },
+  "contentPattern": "1 column: [video link (https://player.vimeo.com/video/963210681) | h1]",
+  "usage": {
+    "pagesUsing": [
+      "/en/corporate/index",
+      "/en/personal-bank/index",
+      "/en/private-bank/index",
+      "/en/real-estate/index",
+      "https://bradescobank.com/",
+      "/en/credit-cards/index",
+      "/en/credit-card-signature-gold/index",
+      "/en/institutional/index"
+    ],
+    "reuseCount": 7,
+    "lastUsed": "2026-10-03T00:00:00Z"
+  },
+  "options": [
+    "large"
+  ],
+  "memberVariantIds": [
+    "hero-video"
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "status": "success",
+  "url": "https://bradescobank.com/en/other-disclosures/",
+  "path": "en/other-disclosures",
+  "timestamp": "2026-10-03T06:56:31.205Z",
+  "title": "Other disclosures – Bradesco Bank",
+  "template": "info-page",
+  "fragment": "",
+  "blocks": [
+    "hero-banner",
+    "cards-feature"
+  ]
+}

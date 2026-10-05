@@ -1,0 +1,15 @@
+{
+  "status": "success",
+  "url": "https://bradescobank.com/en/careers/?fragment=internship",
+  "path": "en/careers/fragments/internship",
+  "timestamp": "2026-10-03T06:08:45.260Z",
+  "title": "Careers – Bradesco Bank",
+  "template": "landing",
+  "fragment": "internship",
+  "blocks": [
+    "hero-promo",
+    "hero-promo",
+    "columns-media",
+    "columns-media"
+  ]
+}

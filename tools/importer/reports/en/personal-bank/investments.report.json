@@ -1,0 +1,17 @@
+{
+  "status": "success",
+  "url": "https://bradescobank.com/en/personal-bank/investments/",
+  "path": "en/personal-bank/investments",
+  "timestamp": "2026-10-03T06:06:58.878Z",
+  "title": "Investments – Bradesco Bank",
+  "template": "landing",
+  "fragment": "",
+  "blocks": [
+    "cards-feature",
+    "cards-feature",
+    "hero-promo",
+    "hero-promo",
+    "hero-promo",
+    "hero-banner"
+  ]
+}

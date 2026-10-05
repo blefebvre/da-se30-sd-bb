@@ -1,0 +1,16 @@
+{
+  "status": "success",
+  "url": "https://bradescobank.com/en/zelle/",
+  "path": "en/zelle",
+  "timestamp": "2026-10-03T06:06:40.101Z",
+  "title": "Zelle – Bradesco Bank",
+  "template": "landing",
+  "fragment": "",
+  "blocks": [
+    "cards-feature",
+    "cards-feature",
+    "hero-promo",
+    "accordion",
+    "hero-banner"
+  ]
+}
