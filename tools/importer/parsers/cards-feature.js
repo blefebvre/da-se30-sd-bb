@@ -838,7 +838,410 @@ function parseInfo(element, { document, options }) {
   element.replaceWith(block);
 }
 
+/* ------------------------------------------------------------------------------------------
+ * Listing template (import-listing.js, template "listing"). Gated in parse(): only runs when
+ * template === 'listing'. Field-based extraction (no EL.collect walk), one row per post:
+ *   [image (img only, no link) | body]   or   [body]  when no post has an image.
+ *   body = <p>DATE</p> <p><em>CATEGORY</em></p> <h3><a href=PERMALINK>TITLE</a></h3>
+ *          <p>EXCERPT</p> <p>By AUTHOR</p>   (each only when present; the title is the only link)
+ * Items: article.post-card (custom-posts-grid shortcode, investments-content Highlights),
+ *   .e-loop-item (loop grids), otherwise EL.findItems.
+ * Fields:
+ *   image     first <img> of the item (onLoad materializes articles-archive CSS backgrounds as a
+ *             direct-child <img> of container b0cf567); fallback EL.bgUrl of the item's empty
+ *             background containers (svg decorations ignored).
+ *   date      a text widget matching MM/DD/YYYY.
+ *   category  .post-category-alt (emphasised text, link dropped). articles-archive's
+ *             category text-editor 05a409f is invisible on the source and is dropped.
+ *   title     .post-title / theme-post-title / heading widget / first heading, else the first
+ *             remaining text widget (archives: plain text-editor).
+ *   permalink title link, else the item's wrapper anchor (a.e-con), else the image link.
+ *   excerpt   .post-excerpt / theme-post-excerpt / remaining text widgets.
+ *   byline    a text widget "BY <name>" -> "By <name>".
+ * Dropped: favorite/bookmark buttons, scripts, html widgets, empty nodes. Content of the
+ * instance outside the items (pagination nav) is moved out as default content (EL.moveOut).
+ * ---------------------------------------------------------------------------------------- */
+const LISTING_DROP = '.favorite-container, .post-bookmark-placeholder, button, script, style, noscript, svg, .elementor-element-05a409f, .elementor-hidden-desktop';
+const LISTING_DATE = /^\d{1,2}\/\d{1,2}\/\d{2,4}$/;
+const LISTING_BYLINE = /^by\s+(\S.*)$/i;
+const LISTING_TITLE = '.post-title, .elementor-widget-theme-post-title, .elementor-widget-heading';
+const LISTING_TEXT = '.post-excerpt, .elementor-widget-text-editor, .elementor-widget-theme-post-excerpt, .elementor-widget-shortcode';
+
+function listingItems(element) {
+  const cards = [...element.querySelectorAll('article.post-card')].filter((n) => EL.hasContent(n));
+  if (cards.length) return cards;
+  const loop = [...element.querySelectorAll('.e-loop-item')].filter((n) => EL.hasContent(n));
+  if (loop.length) return loop;
+  return EL.findItems(element);
+}
+
+const listingDropped = (n) => !!n.closest(LISTING_DROP);
+const listingText = (n) => {
+  const c = n.cloneNode(true);
+  c.querySelectorAll(LISTING_DROP).forEach((x) => x.remove());
+  return EL.norm(c.textContent);
+};
+const listingHref = (a) => {
+  const href = a && a.getAttribute('href');
+  return href && !/^#?$/.test(href) ? EL.fixHref(href) : null;
+};
+
+function listingRow(document, item) {
+  const p = (text) => { const el = document.createElement('p'); el.textContent = text; return el; };
+
+  // image
+  let imageEl = null;
+  let imageLink = null;
+  const img = [...item.querySelectorAll('img')].find((i) => !listingDropped(i) && EL.imgSrc(i));
+  if (img) {
+    const it = EL.imageItem(document, img, false);
+    if (it) { imageEl = it.el; imageLink = img.closest('a[href]'); }
+  }
+  if (!imageEl) {
+    const bg = [item, ...item.querySelectorAll('[data-settings*="background_background"]')]
+      .filter((n) => !listingDropped(n) && !EL.norm(n.textContent))
+      .map((n) => EL.bgUrl(n)).find((src) => src && !/\.svg(\?|#|$)/i.test(src));
+    if (bg) imageEl = EL.bgImageItem(document, bg).el;
+  }
+
+  // category
+  const catEl = [...item.querySelectorAll('.post-category-alt')].find((n) => !listingDropped(n) && listingText(n));
+  const category = catEl ? listingText(catEl) : '';
+
+  // title
+  let titleEl = [...item.querySelectorAll(LISTING_TITLE)].find((n) => !listingDropped(n) && listingText(n));
+  if (!titleEl) {
+    titleEl = [...item.querySelectorAll('h1, h2, h3, h4, h5, h6')].find((n) => !listingDropped(n) && listingText(n));
+  }
+
+  // text widgets (outermost only, outside category / title), in document order
+  const texts = [];
+  [...item.querySelectorAll(LISTING_TEXT)].forEach((n) => {
+    if (listingDropped(n) || (catEl && (n.contains(catEl) || catEl.contains(n)))) return;
+    if (titleEl && (n.contains(titleEl) || titleEl.contains(n))) return;
+    if (texts.some((t) => t.el.contains(n))) return;
+    const text = listingText(n);
+    if (text) texts.push({ el: n, text });
+  });
+  let date = '';
+  let byline = '';
+  const rest = [];
+  texts.forEach((t) => {
+    if (!date && LISTING_DATE.test(t.text)) { date = t.text; return; }
+    const by = t.text.match(LISTING_BYLINE);
+    if (!byline && by) { byline = `By ${by[1]}`; return; }
+    rest.push(t);
+  });
+  let title = titleEl ? listingText(titleEl) : '';
+  if (!title && rest.length) title = rest.shift().text;
+
+  // permalink: title link, wrapper anchor, image link
+  const wrapper = item.matches('a[href]') ? item
+    : (item.querySelector('a.e-con[href]') || item.closest('a[href]'));
+  const href = listingHref(titleEl && (titleEl.matches('a[href]') ? titleEl : titleEl.querySelector('a[href]')))
+    || listingHref(wrapper) || listingHref(imageLink);
+
+  const body = [];
+  if (date) body.push(p(date));
+  if (category) {
+    const el = document.createElement('p');
+    const em = document.createElement('em');
+    em.textContent = category;
+    el.append(em);
+    body.push(el);
+  }
+  if (title) {
+    const h3 = document.createElement('h3');
+    if (href) {
+      const a = document.createElement('a');
+      a.href = href;
+      a.textContent = title;
+      h3.append(a);
+    } else {
+      h3.textContent = title;
+    }
+    body.push(h3);
+  }
+  rest.forEach((t) => body.push(p(t.text)));
+  if (byline) body.push(p(byline));
+  return { imageEl, body };
+}
+
+function parseListing(element, { document, options }) {
+  EL.unlazy(document);
+  const items = listingItems(element);
+  const rows = items.map((item) => listingRow(document, item)).filter((r) => r.body.length || r.imageEl);
+  if (!rows.length) {
+    element.replaceWith(...element.childNodes);
+    return;
+  }
+  const { before, after } = EL.outside(element, items);
+  EL.moveOut(document, element, before, 'before');
+  EL.moveOut(document, element, after, 'after');
+  const withImage = rows.some((r) => r.imageEl);
+  const cells = rows.map((r) => (withImage ? [r.imageEl || '', r.body] : [r.body]));
+  const block = WebImporter.Blocks.createBlock(document, { name: EL.blockName('cards-feature', options), cells });
+  element.replaceWith(block);
+}
+
+/* ------------------------------------------------------------------------------------------
+ * Article-rich template (import-article-rich.js, template "article-rich"). Gated in parse():
+ * only runs when template === 'article-rich'; any other option set falls back to parseLanding.
+ *  a) 'slides' — Elementor nested carousel (Swiper): items = .swiper-slide minus
+ *     .swiper-slide-duplicate clones (swiper-slide-duplicate-prev/-next alone is an original),
+ *     de-duplicated by data-swiper-slide-index (fallback heading text), ordered by that index.
+ *     Row [icon | body]: icon = .elementor-widget-icon img with a real URL (onLoad swaps the
+ *     inline svg for the uploaded .svg), '' when only an svg / data: URI remains. Body: heading
+ *     -> h3; first text-editor -> p(s); next text-editor ending with ':' -> h4; every following
+ *     text-editor -> one li of a single ul. Level-bar image widgets are dropped. Carousel
+ *     data-settings autoplay === 'yes' appends 'autoplay' to the block-name options.
+ *  b) 'centered' — e-grid of text boxes: items = the grid's child containers (through a single
+ *     .e-con-inner); row [body] = every text paragraph as <p>; background decorations dropped.
+ *  c) 'steps' — html widget (.compounding-steps): items = repeated root children
+ *     (.compounding-step); row [<p>step text</p>]; the step number is dropped (CSS counters).
+ *  d) 'filled' — html widget (.investment-options): items = repeated root children
+ *     (.investment-option); row [<p>text with <br> line breaks</p>].
+ * ---------------------------------------------------------------------------------------- */
+const AR_SKIP = /^(STYLE|SCRIPT|NOSCRIPT|TEMPLATE|LINK|META)$/;
+
+/** Collapse whitespace in text nodes; trim at the edges and around <br>. */
+function arTidy(el) {
+  const walker = el.ownerDocument.createTreeWalker(el, 4);
+  const texts = [];
+  while (walker.nextNode()) texts.push(walker.currentNode);
+  texts.forEach((t) => { t.textContent = t.textContent.replace(/[\s\u00a0\u200b]+/g, ' '); });
+  const edge = (n, dir) => {
+    // nearest meaningful sibling in a direction, climbing out of inline wrappers
+    let cur = n;
+    while (cur && cur !== el) {
+      const sib = dir < 0 ? cur.previousSibling : cur.nextSibling;
+      if (sib) return sib;
+      cur = cur.parentNode;
+    }
+    return null;
+  };
+  texts.forEach((t) => {
+    const prev = edge(t, -1);
+    const next = edge(t, 1);
+    if (!prev || (prev.nodeType === 1 && prev.tagName === 'BR')) t.textContent = t.textContent.replace(/^ /, '');
+    if (!next || (next.nodeType === 1 && next.tagName === 'BR')) t.textContent = t.textContent.replace(/ $/, '');
+    if (!t.textContent) t.remove();
+  });
+  // drop leading / trailing <br>
+  while (el.firstChild && el.firstChild.nodeType === 1 && el.firstChild.tagName === 'BR') el.firstChild.remove();
+  while (el.lastChild && el.lastChild.nodeType === 1 && el.lastChild.tagName === 'BR') el.lastChild.remove();
+  return el;
+}
+
+function arParagraph(document, html) {
+  const p = EL.clean(EL.make(document, 'p', html));
+  return arTidy(p);
+}
+
+const arHidden = (n, stop) => {
+  for (let cur = n; cur && cur !== stop; cur = cur.parentElement) {
+    if (cur.classList && (cur.classList.contains('elementor-hidden-desktop')
+      || cur.classList.contains('swiper-slide-duplicate'))) return true;
+    if (cur.hasAttribute && cur.hasAttribute('hidden')) return true;
+    const style = cur.getAttribute && cur.getAttribute('style');
+    if (style && /display\s*:\s*none/i.test(style)) return true;
+  }
+  return false;
+};
+
+/** Text blocks of one widget as paragraphs (inline content kept). */
+function arWidgetParas(document, w) {
+  const out = [];
+  EL.collect(document, w, { bgImages: false, iconItems: false }).forEach((it) => {
+    if (!it.el || it.kind === 'image') return;
+    if (it.kind === 'list') { out.push(it.el); return; }
+    out.push(arParagraph(document, it.el.innerHTML));
+  });
+  return out.filter((n) => EL.norm(n.textContent));
+}
+
+function arSlideIcon(document, slide) {
+  const img = [...slide.querySelectorAll('.elementor-widget-icon img')].find((i) => !arHidden(i, slide));
+  const src = img ? EL.imgSrc(img) : '';
+  if (!src) return '';
+  const out = document.createElement('img');
+  out.src = src;
+  out.alt = '';
+  return out;
+}
+
+function arSlideBody(document, slide) {
+  const widgets = [...slide.querySelectorAll('.elementor-widget')]
+    .filter((w) => !arHidden(w, slide) && ['heading', 'text-editor'].includes(EL.widgetType(w)));
+  const body = [];
+  let ul = null;
+  let stage = 'title'; // title -> desc -> intro -> items
+  widgets.forEach((w) => {
+    const type = EL.widgetType(w);
+    if (type === 'heading') {
+      const t = w.querySelector('.elementor-heading-title') || w.querySelector('h1, h2, h3, h4, h5, h6, p');
+      const text = t ? EL.norm(t.textContent) : '';
+      if (!text) return;
+      const h = EL.clean(EL.make(document, stage === 'title' ? 'h3' : 'h4', t.innerHTML));
+      arTidy(h);
+      body.push(h);
+      if (stage === 'title') stage = 'desc';
+      return;
+    }
+    const paras = arWidgetParas(document, w);
+    if (!paras.length) return;
+    const text = EL.norm(paras.map((p) => p.textContent).join(' '));
+    if (stage === 'title' || stage === 'desc') {
+      if (stage === 'desc' && body.some((n) => n.tagName === 'P') && /:$/.test(text)) {
+        body.push(arTidy(EL.make(document, 'h4', paras.map((p) => p.innerHTML).join(' '))));
+        stage = 'items';
+        return;
+      }
+      body.push(...paras);
+      if (stage === 'title') stage = 'desc';
+      return;
+    }
+    // items: one li per text-editor (several paragraphs joined by <br>)
+    if (!ul) { ul = document.createElement('ul'); body.push(ul); }
+    const li = document.createElement('li');
+    paras.forEach((p, i) => {
+      if (i) li.append(document.createElement('br'));
+      if (p.tagName === 'P') li.append(...p.childNodes);
+      else li.append(p);
+    });
+    ul.append(arTidy(li));
+  });
+  return body;
+}
+
+function parseArticleRichSlides(element, { document, options }) {
+  const slides = [...element.querySelectorAll('.swiper-slide')]
+    .filter((s) => !s.classList.contains('swiper-slide-duplicate') && EL.hasContent(s));
+  const seen = new Set();
+  const items = [];
+  slides.forEach((slide, pos) => {
+    const idxAttr = slide.getAttribute('data-swiper-slide-index');
+    const idx = idxAttr !== null && idxAttr !== '' && !Number.isNaN(parseInt(idxAttr, 10)) ? parseInt(idxAttr, 10) : null;
+    const heading = slide.querySelector('.elementor-widget-heading .elementor-heading-title, .elementor-widget-heading h1, .elementor-widget-heading h2, .elementor-widget-heading h3');
+    const key = idx !== null ? `i:${idx}` : `h:${EL.norm(heading ? heading.textContent : slide.textContent).toLowerCase()}`;
+    if (seen.has(key)) return;
+    seen.add(key);
+    items.push({ slide, idx, pos });
+  });
+  items.sort((a, b) => {
+    if (a.idx !== null && b.idx !== null && a.idx !== b.idx) return a.idx - b.idx;
+    return a.pos - b.pos;
+  });
+  const cells = items
+    .map(({ slide }) => [arSlideIcon(document, slide), arSlideBody(document, slide)])
+    .filter((r) => r[1].length);
+  if (!cells.length) {
+    element.replaceWith(...element.childNodes);
+    return;
+  }
+  const carousel = element.matches('.elementor-widget-n-carousel') ? element
+    : (element.querySelector('.elementor-widget-n-carousel') || element);
+  const opts = [...options];
+  if (EL.settings(carousel).autoplay === 'yes' && !opts.includes('autoplay')) opts.push('autoplay');
+  const block = WebImporter.Blocks.createBlock(document, { name: EL.blockName('cards-feature', opts), cells });
+  element.replaceWith(block);
+}
+
+function parseArticleRichGrid(element, { document, options }) {
+  let items = EL.kidsOf(element).filter((k) => EL.isCon(k) && EL.hasContent(k));
+  if (!items.length) items = EL.findItems(element);
+  const cells = [];
+  items.forEach((item) => {
+    const body = [];
+    EL.collect(document, item, { bgImages: false, iconItems: false }).forEach((it) => {
+      if (!it.el || it.kind === 'image' || it.kind === 'divider') return;
+      if (it.kind === 'list') { body.push(it.el); return; }
+      const p = arParagraph(document, it.el.innerHTML);
+      if (EL.norm(p.textContent)) body.push(p);
+    });
+    if (body.length) cells.push([body]);
+  });
+  if (!cells.length) {
+    element.replaceWith(...element.childNodes);
+    return;
+  }
+  const block = WebImporter.Blocks.createBlock(document, { name: EL.blockName('cards-feature', options), cells });
+  element.replaceWith(block);
+}
+
+/** Root element of an html widget's markup (skips <style>/<script>). */
+function arHtmlRoot(element) {
+  const c = element.querySelector(':scope > .elementor-widget-container') || element;
+  const kids = [...c.children].filter((k) => !AR_SKIP.test(k.tagName));
+  return kids.length === 1 ? kids[0] : c;
+}
+
+/** Repeated direct children of the root (largest same-class group, >= 2), else fallback. */
+function arRepeated(root, fallback) {
+  const kids = [...root.children].filter((k) => !AR_SKIP.test(k.tagName));
+  const groups = new Map();
+  kids.forEach((k) => {
+    const key = `${k.tagName}.${[...k.classList].sort().join('.')}`;
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(k);
+  });
+  let best = null;
+  groups.forEach((g) => { if (g.length >= 2 && (!best || g.length > best.length)) best = g; });
+  if (best) return best;
+  return [...root.querySelectorAll(fallback)];
+}
+
+function parseArticleRichHtml(element, { document, options, kind }) {
+  const root = arHtmlRoot(element);
+  const items = kind === 'steps'
+    ? arRepeated(root, '.compounding-step')
+    : arRepeated(root, '.investment-option');
+  const cells = [];
+  items.forEach((item) => {
+    let html;
+    if (kind === 'steps') {
+      const text = item.querySelector('.compounding-step-text');
+      if (text) {
+        html = text.innerHTML;
+      } else {
+        // generic: drop number-only children (CSS counters render the numbers)
+        const clone = item.cloneNode(true);
+        [...clone.children].forEach((k) => { if (/^\d+\.?$/.test(EL.norm(k.textContent))) k.remove(); });
+        const inner = clone.children.length === 1 && /^(P|DIV)$/.test(clone.children[0].tagName)
+          && EL.norm(clone.children[0].textContent) === EL.norm(clone.textContent) ? clone.children[0] : clone;
+        html = inner.innerHTML;
+      }
+    } else {
+      html = item.innerHTML;
+    }
+    const p = arParagraph(document, html);
+    if (EL.norm(p.textContent)) cells.push([[p]]);
+  });
+  if (!cells.length) {
+    element.replaceWith(...element.childNodes);
+    return;
+  }
+  const block = WebImporter.Blocks.createBlock(document, { name: EL.blockName('cards-feature', options), cells });
+  element.replaceWith(block);
+}
+
+function parseArticleRich(element, { document, options }) {
+  if (options.includes('slides')) { parseArticleRichSlides(element, { document, options }); return; }
+  if (options.includes('centered')) { parseArticleRichGrid(element, { document, options }); return; }
+  if (options.includes('steps')) { parseArticleRichHtml(element, { document, options, kind: 'steps' }); return; }
+  if (options.includes('filled')) { parseArticleRichHtml(element, { document, options, kind: 'filled' }); return; }
+  parseLanding(element, { document, options });
+}
+
 export default function parse(element, { document, options, basePath, template } = {}) {
+  if (template === 'article-rich') {
+    parseArticleRich(element, { document, options: options || [], basePath: basePath || '' });
+    return;
+  }
+  if (template === 'listing') {
+    parseListing(element, { document, options: options || [], basePath: basePath || '' });
+    return;
+  }
   if (isInfoPage(element, template)) {
     parseInfo(element, { document, options: options || [], basePath: basePath || '' });
     return;

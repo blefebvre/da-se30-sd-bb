@@ -203,6 +203,68 @@ main > .section > .hero-banner-wrapper:has(> .hero-banner.right)::after {
   background: var(--brand-red-dark);
 }
 
+/* compact: title-only listing banner (articles / insights archives) — 488px tall at every
+   width, 10px container padding, 50% black overlay, single-line 40px title centred both ways */
+.hero-banner.compact {
+  align-items: center;
+  min-height: 488px;
+  padding: 10px;
+}
+
+.hero-banner.compact .hero-banner-media::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: rgb(0 0 0 / 50%);
+  pointer-events: none;
+}
+
+.hero-banner.compact .hero-banner-content,
+.hero-banner.compact .hero-banner-text {
+  align-items: center;
+  padding: 0;
+}
+
+.hero-banner.compact .hero-banner-text h1,
+.hero-banner.compact .hero-banner-text h2 {
+  font-size: 40px;
+  line-height: 40px;
+}
+
+/* compact: 11px strip = Rectangle-3-1.svg (1300x11, #cc092f from x=209.5 to #37398c at 1300),
+   background-size cover + centred, i.e. never narrower than 1300px */
+main > .section > .hero-banner-wrapper:has(> .hero-banner.compact)::after {
+  height: 11px;
+  background: linear-gradient(90deg, #cc092f 16.115%, #37398c 100%) center / max(100%, 1300px) 100%;
+}
+
+/* compact short (saved articles): 270px, 20% overlay, 22px title bottom-centred
+   (10px / 30px text padding); keeps the default 19px strip */
+.hero-banner.compact.short {
+  align-items: flex-end;
+  min-height: 270px;
+  padding: 10px 0 30px;
+}
+
+.hero-banner.compact.short .hero-banner-media::after {
+  background-color: rgb(0 0 0 / 20%);
+}
+
+.hero-banner.compact.short .hero-banner-text {
+  text-align: center;
+}
+
+.hero-banner.compact.short .hero-banner-text h1,
+.hero-banner.compact.short .hero-banner-text h2 {
+  font-size: 22px;
+  line-height: 23px;
+}
+
+main > .section > .hero-banner-wrapper:has(> .hero-banner.compact.short)::after {
+  height: 19px;
+  background: linear-gradient(90deg, #cc092f 108px, #37398c 1079px);
+}
+
 @media (width >= 900px) {
   main > .section > .hero-banner-wrapper::after {
     background: var(--brand-red-dark);
@@ -337,5 +399,28 @@ main > .section > .hero-banner-wrapper:has(> .hero-banner.right)::after {
   .hero-banner.right .hero-banner-text p {
     font-size: 35px;
     line-height: 42px;
+  }
+
+  /* compact short: 450px, 40px/48px title centred inside a 168px box (120px top padding) */
+  .hero-banner.compact.short {
+    align-items: center;
+    min-height: 450px;
+    padding: 0;
+  }
+
+  .hero-banner.compact.short .hero-banner-content {
+    padding-top: 120px;
+  }
+
+  .hero-banner.compact.short .hero-banner-text h1,
+  .hero-banner.compact.short .hero-banner-text h2 {
+    font-size: 40px;
+    line-height: 48px;
+  }
+
+  /* strip overlaps the banner by 1px (source margin-top: -1px) */
+  main > .section > .hero-banner-wrapper:has(> .hero-banner.compact.short)::after {
+    margin-top: -1px;
+    background: var(--brand-red-dark);
   }
 }

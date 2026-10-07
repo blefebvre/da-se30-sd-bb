@@ -10,6 +10,7 @@ import heroPromoParser from './parsers/hero-promo.js';
 
 // TRANSFORMER IMPORTS
 import cleanupTransformer from './transformers/bradesco-cleanup.js';
+import linksTransformer from './transformers/bradesco-links.js';
 import sectionsTransformer from './transformers/bradesco-sections.js';
 
 // PARSER REGISTRY
@@ -48,6 +49,7 @@ const PAGE_TEMPLATE = {
 const transformers = [
   cleanupTransformer,
   ...(PAGE_TEMPLATE.sections && PAGE_TEMPLATE.sections.length > 1 ? [sectionsTransformer] : []),
+  linksTransformer,
 ];
 
 function executeTransformers(hookName, element, payload) {

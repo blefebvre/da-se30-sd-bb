@@ -2088,7 +2088,478 @@ var CustomImportScript = (() => {
       LEGACY_ROOTS
     };
   })();
-  function parse3(element, { document, options, basePath } = {}) {
+  var INFO_ROOTS = ["1178", "2212", "1481", "1401", "2391", "2498", "467", "631", "6834", "2456", "2514", "2527"].map((id) => `.elementor-${id}`).join(", ");
+  function isInfoPage(element, template) {
+    if (template) return template === "info-page";
+    return !!element.closest(INFO_ROOTS);
+  }
+  var FIGURE = /^([$€£]?\s*[\d][\d.,]*\s*\+?(?:\s*(?:million|billion|thousand|trillion|mil|bi)\b)?\s*\+?)\s+(\S.*)$/i;
+  function splitFigure(document, p) {
+    const lines = [];
+    let cur = [];
+    [...p.childNodes].forEach((n) => {
+      if (n.nodeType === 1 && n.tagName === "BR") {
+        lines.push(cur);
+        cur = [];
+      } else cur.push(n);
+    });
+    lines.push(cur);
+    const filled = lines.filter((l) => l.some((n) => EL3.norm(n.textContent)));
+    if (filled.length >= 2) {
+      return filled.map((l) => {
+        const out = document.createElement("p");
+        l.forEach((n) => out.append(n));
+        [...out.childNodes].forEach((n) => {
+          if (n.nodeType === 3) n.textContent = n.textContent.replace(/\s+/g, " ");
+        });
+        if (out.firstChild && out.firstChild.nodeType === 3) out.firstChild.textContent = out.firstChild.textContent.replace(/^\s+/, "");
+        if (out.lastChild && out.lastChild.nodeType === 3) out.lastChild.textContent = out.lastChild.textContent.replace(/\s+$/, "");
+        return out;
+      });
+    }
+    const text = EL3.norm(p.textContent);
+    const m = !p.querySelector("*") && text.match(FIGURE);
+    if (!m) return [p];
+    return [m[1].trim(), m[2].trim()].map((t) => {
+      const out = document.createElement("p");
+      out.textContent = t;
+      return out;
+    });
+  }
+  function trimTrailingBreaks(el) {
+    for (let guard = 0; guard < 20; guard += 1) {
+      const last = el.lastChild;
+      if (!last) break;
+      if (last.nodeType === 3 && !last.textContent.replace(/[\s ]+/g, "")) {
+        last.remove();
+        continue;
+      }
+      if (last.nodeType === 1 && last.tagName === "BR") {
+        last.remove();
+        continue;
+      }
+      break;
+    }
+  }
+  function infoBody(document, body, options) {
+    let out = body;
+    if (options.includes("rows")) {
+      out = out.map((el) => {
+        if (/^H[1-6]$/.test(el.tagName)) {
+          el.querySelectorAll("br").forEach((br) => br.replaceWith(" "));
+          el.innerHTML = el.innerHTML.replace(/\s+/g, " ").trim();
+        }
+        if (el.tagName === "UL" || el.tagName === "OL") {
+          [...el.children].forEach((li) => {
+            const ps = [...li.children].filter((c) => c.tagName === "P");
+            ps.forEach((p, i) => {
+              trimTrailingBreaks(p);
+              const frag = [...p.childNodes];
+              if (i > 0) frag.unshift(document.createElement("br"));
+              p.replaceWith(...frag);
+            });
+            [...li.childNodes].forEach((n) => {
+              if (n.nodeType === 3 && !n.textContent.trim()) n.remove();
+            });
+            trimTrailingBreaks(li);
+            if (li.firstChild && li.firstChild.nodeType === 3) li.firstChild.textContent = li.firstChild.textContent.replace(/^\s+/, "");
+          });
+          [...el.childNodes].forEach((n) => {
+            if (n.nodeType === 3 && !n.textContent.trim()) n.remove();
+          });
+        }
+        return el;
+      });
+    }
+    if (options.includes("gradient") && !out.some((el) => /^H[1-6]$/.test(el.tagName))) {
+      out = out.flatMap((el) => el.tagName === "P" ? splitFigure(document, el) : [el]);
+    }
+    if (options.includes("documents") && !out.some((el) => /^H[1-6]$/.test(el.tagName))) {
+      const first = out.find((el) => el.tagName === "P" && EL3.norm(el.textContent));
+      const link = first && first.querySelector("a");
+      const isLink = !!link && EL3.norm(first.textContent) === EL3.norm(link.textContent);
+      if (first && !isLink) out[out.indexOf(first)] = EL3.retag(document, first, "h3");
+    }
+    return out;
+  }
+  function parseInfo(element, { document, options }) {
+    EL3.unlazy(document);
+    let items = options.includes("documents") ? [...element.querySelectorAll(".box-cra")].filter((n) => EL3.hasContent(n)) : [];
+    if (!items.length) items = cardItems(element);
+    const single = !items.length && EL3.hasContent(element);
+    if (single) items = [element];
+    const rows = items.map((item) => cardBody(document, item, options)).filter((r) => r.body.length || r.imageEl).map((r) => ({ imageEl: r.imageEl, body: infoBody(document, r.body, options) }));
+    if (!rows.length) {
+      element.replaceWith(...element.childNodes);
+      return;
+    }
+    if (!single) {
+      const { before, after } = EL3.outside(element, items);
+      EL3.moveOut(document, element, before, "before");
+      EL3.moveOut(document, element, after, "after");
+    }
+    const withImage = options.includes("documents") || rows.some((r) => r.imageEl);
+    const cells = rows.map((r) => withImage ? [r.imageEl || "", r.body] : [r.body]);
+    const block = WebImporter.Blocks.createBlock(document, { name: EL3.blockName("cards-feature", options), cells });
+    element.replaceWith(block);
+  }
+  var LISTING_DROP = ".favorite-container, .post-bookmark-placeholder, button, script, style, noscript, svg, .elementor-element-05a409f, .elementor-hidden-desktop";
+  var LISTING_DATE = /^\d{1,2}\/\d{1,2}\/\d{2,4}$/;
+  var LISTING_BYLINE = /^by\s+(\S.*)$/i;
+  var LISTING_TITLE = ".post-title, .elementor-widget-theme-post-title, .elementor-widget-heading";
+  var LISTING_TEXT = ".post-excerpt, .elementor-widget-text-editor, .elementor-widget-theme-post-excerpt, .elementor-widget-shortcode";
+  function listingItems(element) {
+    const cards = [...element.querySelectorAll("article.post-card")].filter((n) => EL3.hasContent(n));
+    if (cards.length) return cards;
+    const loop = [...element.querySelectorAll(".e-loop-item")].filter((n) => EL3.hasContent(n));
+    if (loop.length) return loop;
+    return EL3.findItems(element);
+  }
+  var listingDropped = (n) => !!n.closest(LISTING_DROP);
+  var listingText = (n) => {
+    const c = n.cloneNode(true);
+    c.querySelectorAll(LISTING_DROP).forEach((x) => x.remove());
+    return EL3.norm(c.textContent);
+  };
+  var listingHref = (a) => {
+    const href = a && a.getAttribute("href");
+    return href && !/^#?$/.test(href) ? EL3.fixHref(href) : null;
+  };
+  function listingRow(document, item) {
+    const p = (text) => {
+      const el = document.createElement("p");
+      el.textContent = text;
+      return el;
+    };
+    let imageEl = null;
+    let imageLink = null;
+    const img = [...item.querySelectorAll("img")].find((i) => !listingDropped(i) && EL3.imgSrc(i));
+    if (img) {
+      const it = EL3.imageItem(document, img, false);
+      if (it) {
+        imageEl = it.el;
+        imageLink = img.closest("a[href]");
+      }
+    }
+    if (!imageEl) {
+      const bg = [item, ...item.querySelectorAll('[data-settings*="background_background"]')].filter((n) => !listingDropped(n) && !EL3.norm(n.textContent)).map((n) => EL3.bgUrl(n)).find((src) => src && !/\.svg(\?|#|$)/i.test(src));
+      if (bg) imageEl = EL3.bgImageItem(document, bg).el;
+    }
+    const catEl = [...item.querySelectorAll(".post-category-alt")].find((n) => !listingDropped(n) && listingText(n));
+    const category = catEl ? listingText(catEl) : "";
+    let titleEl = [...item.querySelectorAll(LISTING_TITLE)].find((n) => !listingDropped(n) && listingText(n));
+    if (!titleEl) {
+      titleEl = [...item.querySelectorAll("h1, h2, h3, h4, h5, h6")].find((n) => !listingDropped(n) && listingText(n));
+    }
+    const texts = [];
+    [...item.querySelectorAll(LISTING_TEXT)].forEach((n) => {
+      if (listingDropped(n) || catEl && (n.contains(catEl) || catEl.contains(n))) return;
+      if (titleEl && (n.contains(titleEl) || titleEl.contains(n))) return;
+      if (texts.some((t) => t.el.contains(n))) return;
+      const text = listingText(n);
+      if (text) texts.push({ el: n, text });
+    });
+    let date = "";
+    let byline = "";
+    const rest = [];
+    texts.forEach((t) => {
+      if (!date && LISTING_DATE.test(t.text)) {
+        date = t.text;
+        return;
+      }
+      const by = t.text.match(LISTING_BYLINE);
+      if (!byline && by) {
+        byline = `By ${by[1]}`;
+        return;
+      }
+      rest.push(t);
+    });
+    let title = titleEl ? listingText(titleEl) : "";
+    if (!title && rest.length) title = rest.shift().text;
+    const wrapper = item.matches("a[href]") ? item : item.querySelector("a.e-con[href]") || item.closest("a[href]");
+    const href = listingHref(titleEl && (titleEl.matches("a[href]") ? titleEl : titleEl.querySelector("a[href]"))) || listingHref(wrapper) || listingHref(imageLink);
+    const body = [];
+    if (date) body.push(p(date));
+    if (category) {
+      const el = document.createElement("p");
+      const em = document.createElement("em");
+      em.textContent = category;
+      el.append(em);
+      body.push(el);
+    }
+    if (title) {
+      const h3 = document.createElement("h3");
+      if (href) {
+        const a = document.createElement("a");
+        a.href = href;
+        a.textContent = title;
+        h3.append(a);
+      } else {
+        h3.textContent = title;
+      }
+      body.push(h3);
+    }
+    rest.forEach((t) => body.push(p(t.text)));
+    if (byline) body.push(p(byline));
+    return { imageEl, body };
+  }
+  function parseListing(element, { document, options }) {
+    EL3.unlazy(document);
+    const items = listingItems(element);
+    const rows = items.map((item) => listingRow(document, item)).filter((r) => r.body.length || r.imageEl);
+    if (!rows.length) {
+      element.replaceWith(...element.childNodes);
+      return;
+    }
+    const { before, after } = EL3.outside(element, items);
+    EL3.moveOut(document, element, before, "before");
+    EL3.moveOut(document, element, after, "after");
+    const withImage = rows.some((r) => r.imageEl);
+    const cells = rows.map((r) => withImage ? [r.imageEl || "", r.body] : [r.body]);
+    const block = WebImporter.Blocks.createBlock(document, { name: EL3.blockName("cards-feature", options), cells });
+    element.replaceWith(block);
+  }
+  var AR_SKIP = /^(STYLE|SCRIPT|NOSCRIPT|TEMPLATE|LINK|META)$/;
+  function arTidy(el) {
+    const walker = el.ownerDocument.createTreeWalker(el, 4);
+    const texts = [];
+    while (walker.nextNode()) texts.push(walker.currentNode);
+    texts.forEach((t) => {
+      t.textContent = t.textContent.replace(/[\s\u00a0\u200b]+/g, " ");
+    });
+    const edge = (n, dir) => {
+      let cur = n;
+      while (cur && cur !== el) {
+        const sib = dir < 0 ? cur.previousSibling : cur.nextSibling;
+        if (sib) return sib;
+        cur = cur.parentNode;
+      }
+      return null;
+    };
+    texts.forEach((t) => {
+      const prev = edge(t, -1);
+      const next = edge(t, 1);
+      if (!prev || prev.nodeType === 1 && prev.tagName === "BR") t.textContent = t.textContent.replace(/^ /, "");
+      if (!next || next.nodeType === 1 && next.tagName === "BR") t.textContent = t.textContent.replace(/ $/, "");
+      if (!t.textContent) t.remove();
+    });
+    while (el.firstChild && el.firstChild.nodeType === 1 && el.firstChild.tagName === "BR") el.firstChild.remove();
+    while (el.lastChild && el.lastChild.nodeType === 1 && el.lastChild.tagName === "BR") el.lastChild.remove();
+    return el;
+  }
+  function arParagraph(document, html) {
+    const p = EL3.clean(EL3.make(document, "p", html));
+    return arTidy(p);
+  }
+  var arHidden = (n, stop) => {
+    for (let cur = n; cur && cur !== stop; cur = cur.parentElement) {
+      if (cur.classList && (cur.classList.contains("elementor-hidden-desktop") || cur.classList.contains("swiper-slide-duplicate"))) return true;
+      if (cur.hasAttribute && cur.hasAttribute("hidden")) return true;
+      const style = cur.getAttribute && cur.getAttribute("style");
+      if (style && /display\s*:\s*none/i.test(style)) return true;
+    }
+    return false;
+  };
+  function arWidgetParas(document, w) {
+    const out = [];
+    EL3.collect(document, w, { bgImages: false, iconItems: false }).forEach((it) => {
+      if (!it.el || it.kind === "image") return;
+      if (it.kind === "list") {
+        out.push(it.el);
+        return;
+      }
+      out.push(arParagraph(document, it.el.innerHTML));
+    });
+    return out.filter((n) => EL3.norm(n.textContent));
+  }
+  function arSlideIcon(document, slide) {
+    const img = [...slide.querySelectorAll(".elementor-widget-icon img")].find((i) => !arHidden(i, slide));
+    const src = img ? EL3.imgSrc(img) : "";
+    if (!src) return "";
+    const out = document.createElement("img");
+    out.src = src;
+    out.alt = "";
+    return out;
+  }
+  function arSlideBody(document, slide) {
+    const widgets = [...slide.querySelectorAll(".elementor-widget")].filter((w) => !arHidden(w, slide) && ["heading", "text-editor"].includes(EL3.widgetType(w)));
+    const body = [];
+    let ul = null;
+    let stage = "title";
+    widgets.forEach((w) => {
+      const type = EL3.widgetType(w);
+      if (type === "heading") {
+        const t = w.querySelector(".elementor-heading-title") || w.querySelector("h1, h2, h3, h4, h5, h6, p");
+        const text2 = t ? EL3.norm(t.textContent) : "";
+        if (!text2) return;
+        const h = EL3.clean(EL3.make(document, stage === "title" ? "h3" : "h4", t.innerHTML));
+        arTidy(h);
+        body.push(h);
+        if (stage === "title") stage = "desc";
+        return;
+      }
+      const paras = arWidgetParas(document, w);
+      if (!paras.length) return;
+      const text = EL3.norm(paras.map((p) => p.textContent).join(" "));
+      if (stage === "title" || stage === "desc") {
+        if (stage === "desc" && body.some((n) => n.tagName === "P") && /:$/.test(text)) {
+          body.push(arTidy(EL3.make(document, "h4", paras.map((p) => p.innerHTML).join(" "))));
+          stage = "items";
+          return;
+        }
+        body.push(...paras);
+        if (stage === "title") stage = "desc";
+        return;
+      }
+      if (!ul) {
+        ul = document.createElement("ul");
+        body.push(ul);
+      }
+      const li = document.createElement("li");
+      paras.forEach((p, i) => {
+        if (i) li.append(document.createElement("br"));
+        if (p.tagName === "P") li.append(...p.childNodes);
+        else li.append(p);
+      });
+      ul.append(arTidy(li));
+    });
+    return body;
+  }
+  function parseArticleRichSlides(element, { document, options }) {
+    const slides = [...element.querySelectorAll(".swiper-slide")].filter((s) => !s.classList.contains("swiper-slide-duplicate") && EL3.hasContent(s));
+    const seen = /* @__PURE__ */ new Set();
+    const items = [];
+    slides.forEach((slide, pos) => {
+      const idxAttr = slide.getAttribute("data-swiper-slide-index");
+      const idx = idxAttr !== null && idxAttr !== "" && !Number.isNaN(parseInt(idxAttr, 10)) ? parseInt(idxAttr, 10) : null;
+      const heading = slide.querySelector(".elementor-widget-heading .elementor-heading-title, .elementor-widget-heading h1, .elementor-widget-heading h2, .elementor-widget-heading h3");
+      const key = idx !== null ? `i:${idx}` : `h:${EL3.norm(heading ? heading.textContent : slide.textContent).toLowerCase()}`;
+      if (seen.has(key)) return;
+      seen.add(key);
+      items.push({ slide, idx, pos });
+    });
+    items.sort((a, b) => {
+      if (a.idx !== null && b.idx !== null && a.idx !== b.idx) return a.idx - b.idx;
+      return a.pos - b.pos;
+    });
+    const cells = items.map(({ slide }) => [arSlideIcon(document, slide), arSlideBody(document, slide)]).filter((r) => r[1].length);
+    if (!cells.length) {
+      element.replaceWith(...element.childNodes);
+      return;
+    }
+    const carousel = element.matches(".elementor-widget-n-carousel") ? element : element.querySelector(".elementor-widget-n-carousel") || element;
+    const opts = [...options];
+    if (EL3.settings(carousel).autoplay === "yes" && !opts.includes("autoplay")) opts.push("autoplay");
+    const block = WebImporter.Blocks.createBlock(document, { name: EL3.blockName("cards-feature", opts), cells });
+    element.replaceWith(block);
+  }
+  function parseArticleRichGrid(element, { document, options }) {
+    let items = EL3.kidsOf(element).filter((k) => EL3.isCon(k) && EL3.hasContent(k));
+    if (!items.length) items = EL3.findItems(element);
+    const cells = [];
+    items.forEach((item) => {
+      const body = [];
+      EL3.collect(document, item, { bgImages: false, iconItems: false }).forEach((it) => {
+        if (!it.el || it.kind === "image" || it.kind === "divider") return;
+        if (it.kind === "list") {
+          body.push(it.el);
+          return;
+        }
+        const p = arParagraph(document, it.el.innerHTML);
+        if (EL3.norm(p.textContent)) body.push(p);
+      });
+      if (body.length) cells.push([body]);
+    });
+    if (!cells.length) {
+      element.replaceWith(...element.childNodes);
+      return;
+    }
+    const block = WebImporter.Blocks.createBlock(document, { name: EL3.blockName("cards-feature", options), cells });
+    element.replaceWith(block);
+  }
+  function arHtmlRoot(element) {
+    const c = element.querySelector(":scope > .elementor-widget-container") || element;
+    const kids = [...c.children].filter((k) => !AR_SKIP.test(k.tagName));
+    return kids.length === 1 ? kids[0] : c;
+  }
+  function arRepeated(root, fallback) {
+    const kids = [...root.children].filter((k) => !AR_SKIP.test(k.tagName));
+    const groups = /* @__PURE__ */ new Map();
+    kids.forEach((k) => {
+      const key = `${k.tagName}.${[...k.classList].sort().join(".")}`;
+      if (!groups.has(key)) groups.set(key, []);
+      groups.get(key).push(k);
+    });
+    let best = null;
+    groups.forEach((g) => {
+      if (g.length >= 2 && (!best || g.length > best.length)) best = g;
+    });
+    if (best) return best;
+    return [...root.querySelectorAll(fallback)];
+  }
+  function parseArticleRichHtml(element, { document, options, kind }) {
+    const root = arHtmlRoot(element);
+    const items = kind === "steps" ? arRepeated(root, ".compounding-step") : arRepeated(root, ".investment-option");
+    const cells = [];
+    items.forEach((item) => {
+      let html;
+      if (kind === "steps") {
+        const text = item.querySelector(".compounding-step-text");
+        if (text) {
+          html = text.innerHTML;
+        } else {
+          const clone = item.cloneNode(true);
+          [...clone.children].forEach((k) => {
+            if (/^\d+\.?$/.test(EL3.norm(k.textContent))) k.remove();
+          });
+          const inner = clone.children.length === 1 && /^(P|DIV)$/.test(clone.children[0].tagName) && EL3.norm(clone.children[0].textContent) === EL3.norm(clone.textContent) ? clone.children[0] : clone;
+          html = inner.innerHTML;
+        }
+      } else {
+        html = item.innerHTML;
+      }
+      const p = arParagraph(document, html);
+      if (EL3.norm(p.textContent)) cells.push([[p]]);
+    });
+    if (!cells.length) {
+      element.replaceWith(...element.childNodes);
+      return;
+    }
+    const block = WebImporter.Blocks.createBlock(document, { name: EL3.blockName("cards-feature", options), cells });
+    element.replaceWith(block);
+  }
+  function parseArticleRich(element, { document, options }) {
+    if (options.includes("slides")) {
+      parseArticleRichSlides(element, { document, options });
+      return;
+    }
+    if (options.includes("centered")) {
+      parseArticleRichGrid(element, { document, options });
+      return;
+    }
+    if (options.includes("steps")) {
+      parseArticleRichHtml(element, { document, options, kind: "steps" });
+      return;
+    }
+    if (options.includes("filled")) {
+      parseArticleRichHtml(element, { document, options, kind: "filled" });
+      return;
+    }
+    parseLanding3(element, { document, options });
+  }
+  function parse3(element, { document, options, basePath, template } = {}) {
+    if (template === "article-rich") {
+      parseArticleRich(element, { document, options: options || [], basePath: basePath || "" });
+      return;
+    }
+    if (template === "listing") {
+      parseListing(element, { document, options: options || [], basePath: basePath || "" });
+      return;
+    }
+    if (isInfoPage(element, template)) {
+      parseInfo(element, { document, options: options || [], basePath: basePath || "" });
+      return;
+    }
     parseLanding3(element, { document, options: options || [], basePath: basePath || "" });
   }
 
@@ -4162,8 +4633,78 @@ var CustomImportScript = (() => {
       LEGACY_ROOTS
     };
   })();
-  function parse6(element, { document, options, basePath } = {}) {
-    parseLanding6(element, { document, options: options || [], basePath: basePath || "" });
+  var INFO_ROOTS2 = ["1178", "2212", "1481", "1401", "2391", "2498", "467", "631", "6834", "2456", "2514", "2527"].map((id) => `.elementor-${id}`).join(", ");
+  function isInfoPage2(element, template) {
+    if (template) return template === "info-page";
+    return !!element.closest(INFO_ROOTS2);
+  }
+  function inlineIconRuns(document, root) {
+    root.querySelectorAll(".elementor-widget-text-editor > .elementor-widget-container").forEach((c) => {
+      const loose = [...c.childNodes].some((n) => n.nodeType === 1 && n.tagName === "IMG");
+      const text = [...c.childNodes].some((n) => n.nodeType === 3 && EL6.norm(n.textContent));
+      if (!loose || !text) return;
+      const runs = [];
+      let run = [];
+      [...c.childNodes].forEach((n) => {
+        run.push(n);
+        if (n.nodeType === 1 && n.tagName === "IMG") {
+          runs.push(run);
+          run = [];
+        }
+      });
+      if (run.length) runs.push(run);
+      const ps = runs.map((r) => {
+        const p = document.createElement("p");
+        r.forEach((n) => {
+          if (n.nodeType === 3) p.append(n.textContent.replace(/[\s ]+/g, " "));
+          else p.append(n);
+        });
+        if (p.firstChild && p.firstChild.nodeType === 3) p.firstChild.textContent = p.firstChild.textContent.replace(/^\s+/, "");
+        return p;
+      }).filter((p) => EL6.norm(p.textContent) || p.querySelector("img"));
+      c.replaceChildren(...ps);
+    });
+  }
+  function textColumns(element) {
+    let node = element;
+    for (let i = 0; i < 8; i += 1) {
+      const kids = EL6.kidsOf(node).filter((k) => EL6.isCon(k) && EL6.hasContent(k));
+      if (kids.length !== 1) return kids.length ? kids : [node];
+      node = kids[0];
+    }
+    return [node];
+  }
+  function parseContacts(element, { document, options }) {
+    EL6.unlazy(document);
+    let image = null;
+    EL6.kidsOf(element).some((k) => {
+      if (!EL6.isCon(k) || EL6.hasContent(k)) return false;
+      const src = EL6.bgUrl(k);
+      if (src) image = EL6.bgImageItem(document, src).el;
+      return !!src;
+    });
+    const textHost = EL6.kidsOf(element).find((k) => EL6.isCon(k) && EL6.hasContent(k));
+    if (!textHost) {
+      parseLanding6(element, { document, options });
+      return;
+    }
+    inlineIconRuns(document, textHost);
+    const cols = textColumns(textHost).map((col) => EL6.collect(document, col, { bgImages: false, groupImages: false }).map((it) => it.el).filter(Boolean)).filter((c) => c.length);
+    if (!cols.length) {
+      parseLanding6(element, { document, options });
+      return;
+    }
+    const row = image ? [[image], ...cols] : cols;
+    const block = WebImporter.Blocks.createBlock(document, { name: EL6.blockName("columns-media", options), cells: [row] });
+    element.replaceWith(block);
+  }
+  function parse6(element, { document, options, basePath, template } = {}) {
+    const opts = options || [];
+    if (isInfoPage2(element, template) && opts.includes("contacts")) {
+      parseContacts(element, { document, options: opts, basePath: basePath || "" });
+      return;
+    }
+    parseLanding6(element, { document, options: opts, basePath: basePath || "" });
   }
 
   // tools/importer/parsers/tabs.js
@@ -4173,7 +4714,7 @@ var CustomImportScript = (() => {
     e434b48: "https://bradescobank.com/wp-content/uploads/2026/08/Rectangle-6-1.webp"
   };
   function slugify(text) {
-    return (text || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+    return (text || "").replace(/['\u2019]/g, "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
   }
   function elementId(el) {
     return el.getAttribute("data-id") || ([...el.classList].find((c) => /^elementor-element-[0-9a-f]{6,8}$/.test(c)) || "").replace("elementor-element-", "");
@@ -4232,6 +4773,89 @@ var CustomImportScript = (() => {
       if (it.el) out.push(it.el);
     });
     return out;
+  }
+  var isFaq = (element, options) => options.includes("faq") || !!element.querySelector(".term-link[data-term-id]") && !!element.querySelector(".question-item");
+  var termId = (link) => link.getAttribute("data-term-id") || ([...link.classList].map((c) => (c.match(/^term-(\d+)$/) || [])[1]).find(Boolean) || "");
+  function absUrl(document, src) {
+    if (!src) return "";
+    try {
+      return new URL(src, document.baseURI || "https://bradescobank.com/").href;
+    } catch (e) {
+      return src;
+    }
+  }
+  function faqCategories(document, element) {
+    const seen = /* @__PURE__ */ new Set();
+    const out = [];
+    element.querySelectorAll(".term-link").forEach((link) => {
+      const id = termId(link);
+      if (!id || seen.has(id) || link.closest(".swiper-slide-duplicate")) return;
+      seen.add(id);
+      const slide = link.closest(".swiper-slide");
+      const img = link.querySelector("img.slide-image") || link.querySelector("img");
+      out.push({
+        id,
+        label: EL7.norm((link.querySelector(".slide-text") || link).textContent),
+        icon: img ? absUrl(document, EL7.imgSrc(img)) : "",
+        active: !!(slide && slide.classList.contains("active") || link.classList.contains("active"))
+      });
+    });
+    return out;
+  }
+  function faqPanel(document, panel) {
+    const out = [];
+    panel.querySelectorAll(".question-item, .title-subterm").forEach((node) => {
+      if (node.classList.contains("title-subterm")) {
+        if (node.closest(".question-item") || !EL7.norm(node.textContent)) return;
+        const p = document.createElement("p");
+        const strong = document.createElement("strong");
+        strong.textContent = EL7.norm(node.textContent);
+        p.append(strong);
+        out.push(p);
+        return;
+      }
+      const header = node.querySelector(".cta-header") || node;
+      const title = header.querySelector(".cta-title") || header.querySelector("h1, h2, h3, h4, h5, h6");
+      const question = EL7.norm(title ? title.textContent : "");
+      if (!question) return;
+      const h3 = document.createElement("h3");
+      h3.textContent = question;
+      out.push(h3);
+      const answer = node.querySelector(".toggle-content");
+      if (!answer) return;
+      const clone = answer.cloneNode(true);
+      clone.querySelectorAll("svg, .cta-icon, .question-terms").forEach((n) => n.remove());
+      EL7.collect(document, clone, { bgImages: false }).forEach((it) => {
+        if (!it.el) return;
+        out.push(/^H[1-6]$/.test(it.el.tagName) ? EL7.retag(document, it.el, "h4") : it.el);
+      });
+    });
+    return out;
+  }
+  function parseFaq(element, { document, options }) {
+    const categories = faqCategories(document, element);
+    if (!categories.length) return false;
+    const panels = [...element.querySelectorAll(".faq-term-panel[data-term-id]")];
+    const defaultContainer = element.querySelector('[id="faq_container"]');
+    const defaultId = (categories.find((c) => c.active) || categories[0]).id;
+    const cells = categories.map((cat) => {
+      const label = [];
+      if (cat.icon) {
+        const img = document.createElement("img");
+        img.src = cat.icon;
+        img.alt = "";
+        label.push(img);
+      }
+      const p = document.createElement("p");
+      p.textContent = cat.label;
+      label.push(p);
+      let panel = panels.find((n) => n.getAttribute("data-term-id") === cat.id);
+      if (!panel && cat.id === defaultId) panel = defaultContainer;
+      return [label, panel ? faqPanel(document, panel) : ""];
+    });
+    const block = WebImporter.Blocks.createBlock(document, { name: EL7.blockName("tabs", options), cells });
+    element.replaceWith(block);
+    return true;
   }
   function parseLanding7(element, { document, options, basePath }) {
     EL7.unlazy(document);
@@ -4832,7 +5456,9 @@ var CustomImportScript = (() => {
     };
   })();
   function parse7(element, { document, options, basePath } = {}) {
-    parseLanding7(element, { document, options: options || [], basePath: basePath || "" });
+    const opts = options || [];
+    if (isFaq(element, opts) && parseFaq(element, { document, options: opts })) return;
+    parseLanding7(element, { document, options: opts, basePath: basePath || "" });
   }
 
   // tools/importer/parsers/table-article.js
@@ -5521,7 +6147,151 @@ var CustomImportScript = (() => {
       LEGACY_ROOTS
     };
   })();
-  function parse8(element, { document, options, basePath } = {}) {
+  var INFO_ROOTS3 = ["1178", "2212", "1481", "1401", "2391", "2498", "467", "631", "6834", "2456", "2514", "2527"].map((id) => `.elementor-${id}`).join(", ");
+  var BLOCK_ATTR = "data-excat-block";
+  function isInfoPage3(element, template) {
+    if (template) return template === "info-page";
+    return !!element.closest(INFO_ROOTS3);
+  }
+  var hiddenDesktop = (n) => n.classList.contains("elementor-hidden-desktop");
+  function calendarRows(element) {
+    const cols = [".elementor-element-19c2d74", ".elementor-element-65d8928"].map((s) => element.querySelector(s)).filter(Boolean);
+    const hosts = cols.length ? cols : [element];
+    const sel = ".ticker-calendar h1, .ticker-calendar h2, .ticker-calendar h3, .ticker-calendar h4, .ticker-calendar p";
+    let heads = hosts.flatMap((h) => [...h.querySelectorAll(sel)]);
+    if (!heads.length) heads = hosts.flatMap((h) => [...h.querySelectorAll("h3")]);
+    const rows = [];
+    heads.forEach((h) => {
+      if (h.closest(".elementor-hidden-desktop")) return;
+      const date = [];
+      const name = [];
+      let seenBreak = false;
+      [...h.childNodes].forEach((n) => {
+        if (n.nodeType === 1 && n.tagName === "BR") {
+          seenBreak = true;
+          return;
+        }
+        (seenBreak ? name : date).push(n.textContent);
+      });
+      const d = EL8.norm(date.join(""));
+      const nm = EL8.norm(name.join(""));
+      if (d || nm) rows.push([d, nm]);
+    });
+    return rows;
+  }
+  function noticeCells(row) {
+    const host = row.querySelector(":scope > .e-con-inner") || row;
+    return [...host.children].filter((c) => c.classList.contains("e-con") && !hiddenDesktop(c));
+  }
+  function isNoticeRow(n) {
+    if (!n || n.nodeType !== 1 || !n.classList.contains("e-con") || hiddenDesktop(n)) return false;
+    if (n.hasAttribute(BLOCK_ATTR)) return false;
+    const host = n.querySelector(":scope > .e-con-inner") || n;
+    if ([...host.children].some((c) => EL8.isWidget(c))) return false;
+    return noticeCells(n).length >= 2;
+  }
+  function noticeCell(document, cell) {
+    const els = EL8.collect(document, cell, { bgImages: false }).map((it) => it.el).filter(Boolean);
+    const text = els.map((e) => EL8.norm(e.textContent)).join("");
+    if (!els.length || /^[.\s]*$/.test(text) && !els.some((e) => e.querySelector && e.querySelector("img"))) return "";
+    return els;
+  }
+  function parseNotice(element, { document, options }) {
+    if (noticeCells(element).length < 2) {
+      parseLanding8(element, { document, options });
+      return;
+    }
+    const trs = [element];
+    let n = element.nextElementSibling;
+    while (n && n.tagName !== "HR" && !n.hasAttribute(BLOCK_ATTR) && isNoticeRow(n)) {
+      trs.push(n);
+      n = n.nextElementSibling;
+    }
+    const rows = trs.map((tr) => noticeCells(tr).map((c) => noticeCell(document, c)));
+    const colCount = Math.max(...rows.map((r) => r.length));
+    rows.forEach((r) => {
+      while (r.length < colCount) r.push("");
+    });
+    const block = WebImporter.Blocks.createBlock(document, { name: EL8.blockName("table-article", options), cells: rows });
+    trs.slice(1).forEach((tr) => tr.remove());
+    element.replaceWith(block);
+  }
+  function parseCalendar(element, { document, options }) {
+    const rows = calendarRows(element);
+    if (!rows.length) {
+      parseLanding8(element, { document, options });
+      return;
+    }
+    const block = WebImporter.Blocks.createBlock(document, { name: EL8.blockName("table-article", options), cells: rows });
+    element.replaceWith(block);
+  }
+  function articleRichCell(document, cell) {
+    if (!cell) return "";
+    const text = EL8.norm(cell.textContent);
+    if (!text && !cell.querySelector("img")) return "";
+    const div = EL8.clean(EL8.make(document, "div", cell.innerHTML));
+    div.querySelectorAll("p").forEach((p) => {
+      if (!EL8.norm(p.textContent) && !p.querySelector("img")) p.remove();
+    });
+    [...div.childNodes].forEach((n) => {
+      if (n.nodeType === 3) n.textContent = n.textContent.replace(/[\s\u00a0]+/g, " ");
+    });
+    if (!div.children.length) return text;
+    while (div.firstChild && div.firstChild.nodeType === 3 && !EL8.norm(div.firstChild.textContent)) div.firstChild.remove();
+    while (div.lastChild && div.lastChild.nodeType === 3 && !EL8.norm(div.lastChild.textContent)) div.lastChild.remove();
+    return [...div.childNodes];
+  }
+  function articleRichExpand(tr) {
+    const out = [];
+    rowCells(tr).forEach((c) => {
+      out.push(c);
+      const span = parseInt(c.getAttribute("colspan") || "1", 10);
+      for (let i = 1; i < span; i += 1) out.push(null);
+    });
+    return out;
+  }
+  function parseArticleRich2(element, { document, options }) {
+    const table = element.tagName === "TABLE" ? element : element.querySelector("table");
+    if (!table || table.closest(".bdc-calc")) return;
+    const own = (tr) => tr.closest("table") === table;
+    const allRows = [...table.querySelectorAll("tr")].filter(own);
+    if (!allRows.length) return;
+    let headerRow = [...table.querySelectorAll("thead tr")].find(own) || null;
+    if (!headerRow && rowCells(allRows[0]).length && rowCells(allRows[0]).every((c) => c.tagName === "TH")) {
+      headerRow = allRows[0];
+    }
+    const bodyRows = allRows.filter((tr) => tr !== headerRow && !(tr.parentElement && tr.parentElement.tagName === "THEAD"));
+    const head = headerRow ? articleRichExpand(headerRow) : null;
+    const body = bodyRows.map(articleRichExpand).filter((r) => r.length);
+    const colCount = Math.max(head ? head.length : 0, ...body.map((r) => r.length));
+    if (!colCount) return;
+    const filled = (c) => !!c && (!!EL8.norm(c.textContent) || !!c.querySelector("img"));
+    const keep = [];
+    for (let i = 0; i < colCount; i += 1) {
+      if (!body.length ? head && filled(head[i]) : body.some((r) => filled(r[i]))) keep.push(i);
+    }
+    if (!keep.length) return;
+    const rows = [];
+    if (head) rows.push(keep.map((i) => articleRichCell(document, head[i])));
+    body.forEach((r) => {
+      if (!keep.some((i) => filled(r[i]))) return;
+      rows.push(keep.map((i) => articleRichCell(document, r[i])));
+    });
+    if (!rows.length) return;
+    const block = WebImporter.Blocks.createBlock(document, { name: EL8.blockName("table-article", options), cells: rows });
+    element.replaceWith(block);
+  }
+  function parse8(element, { document, options, basePath, template } = {}) {
+    const opts = options || [];
+    if (template === "article-rich") {
+      parseArticleRich2(element, { document, options: opts, basePath: basePath || "" });
+      return;
+    }
+    if (isInfoPage3(element, template) && (opts.includes("notice") || opts.includes("calendar"))) {
+      if (opts.includes("notice")) parseNotice(element, { document, options: opts });
+      else parseCalendar(element, { document, options: opts });
+      return;
+    }
     if (element.closest(EL8.LEGACY_ROOTS)) {
       parseLegacy5(element, { document });
       return;
@@ -6136,8 +6906,127 @@ var CustomImportScript = (() => {
       LEGACY_ROOTS
     };
   })();
-  function parse9(element, { document, options, basePath } = {}) {
-    parseLanding9(element, { document, options: options || [], basePath: basePath || "" });
+  var INFO_ROOTS4 = ["1178", "2212", "1481", "1401", "2391", "2498", "467", "631", "6834", "2456", "2514", "2527"].map((id) => `.elementor-${id}`).join(", ");
+  function isInfoPage4(element, template) {
+    if (template) return template === "info-page";
+    return !!element.closest(INFO_ROOTS4);
+  }
+  function cssUrl(value) {
+    const m = String(value || "").match(/url\(\s*['"]?([^'")]+)['"]?\s*\)/i);
+    return m && !/^data:/i.test(m[1]) ? m[1].trim() : null;
+  }
+  function styleIconMap(document) {
+    const map = {};
+    document.querySelectorAll("style").forEach((s) => {
+      const css = s.textContent || "";
+      const re = /\[data-tab=["']?(\d+)["']?\][^{]*?a\s*:{1,2}before\s*\{([^}]*)\}/gi;
+      let m = re.exec(css);
+      while (m) {
+        const url = cssUrl(m[2]);
+        if (url && !map[m[1]]) map[m[1]] = url;
+        m = re.exec(css);
+      }
+    });
+    return map;
+  }
+  function titleIcon(document, item, styleMap) {
+    const anchor = item.querySelector(".elementor-accordion-title, .elementor-toggle-title") || item.querySelector(".elementor-tab-title a");
+    let src = null;
+    const view = document.defaultView;
+    if (anchor && view && view.getComputedStyle) {
+      try {
+        const cs = view.getComputedStyle(anchor, "::before");
+        src = cssUrl(cs.content) || cssUrl(cs.backgroundImage);
+      } catch (e) {
+      }
+    }
+    if (!src) {
+      const tab = item.querySelector("[data-tab]");
+      const n = tab && tab.getAttribute("data-tab");
+      if (n && styleMap[n]) src = styleMap[n];
+    }
+    if (!src) return null;
+    const img = document.createElement("img");
+    img.src = src;
+    img.alt = "";
+    return img;
+  }
+  function parseInfoIcons(element, { document, options }) {
+    const styleMap = styleIconMap(document);
+    const items = [...element.querySelectorAll(".elementor-accordion-item, .elementor-toggle-item")];
+    if (!items.length) {
+      parseLanding9(element, { document, options });
+      return;
+    }
+    const cells = [];
+    items.forEach((item) => {
+      const head = item.querySelector(".elementor-tab-title");
+      const title = head && (head.querySelector(".elementor-accordion-title, .elementor-toggle-title") || head);
+      const label = title ? EL9.norm(title.textContent) : "";
+      if (!label) return;
+      const content = item.querySelector(".elementor-tab-content");
+      const answer = [];
+      if (content) EL9.collect(document, content, { bgImages: false }).forEach((it) => {
+        if (it.el) answer.push(it.el);
+      });
+      const icon = titleIcon(document, item, styleMap);
+      const labelCell = icon ? [icon, document.createTextNode(` ${label}`)] : label;
+      cells.push([labelCell, answer.length ? answer : ""]);
+    });
+    if (!cells.length) {
+      element.replaceWith(...element.childNodes);
+      return;
+    }
+    const block = WebImporter.Blocks.createBlock(document, { name: EL9.blockName("accordion", options), cells });
+    element.replaceWith(block);
+  }
+  function articleRichHeadingTag(widgetEl) {
+    const parent = widgetEl && widgetEl.parentElement;
+    if (!parent) return "h3";
+    const withIcon = [...parent.children].some((c) => c !== widgetEl && EL9.isWidget(c) && EL9.widgetType(c) === "icon");
+    return withIcon ? "h4" : "h3";
+  }
+  function parseArticleRich3(element, { document, options }) {
+    const cells = [];
+    accordionItems(element).forEach(({ title, body }) => {
+      const label = title ? EL9.norm(title.textContent) : "";
+      if (!label) return;
+      const answer = [];
+      body.forEach((node) => {
+        EL9.collect(document, node, { bgImages: false, iconItems: false }).forEach((it) => {
+          if (!it.el) return;
+          if (it.kind === "image") return;
+          if (it.kind === "heading") {
+            const isWidgetOrigin = it.origin && EL9.isWidget(it.origin);
+            const tag = isWidgetOrigin ? articleRichHeadingTag(it.origin) : "h3";
+            const h = EL9.retag(document, it.el, tag);
+            if (!h.children.length) h.textContent = EL9.norm(h.textContent);
+            answer.push(h);
+            return;
+          }
+          answer.push(it.el);
+        });
+      });
+      cells.push([label, answer.length ? answer : ""]);
+    });
+    if (!cells.length) {
+      element.replaceWith(...element.childNodes);
+      return;
+    }
+    const block = WebImporter.Blocks.createBlock(document, { name: EL9.blockName("accordion", options), cells });
+    element.replaceWith(block);
+  }
+  function parse9(element, { document, options, basePath, template } = {}) {
+    const opts = options || [];
+    if (template === "article-rich") {
+      parseArticleRich3(element, { document, options: opts, basePath: basePath || "" });
+      return;
+    }
+    if (isInfoPage4(element, template) && opts.includes("icons")) {
+      parseInfoIcons(element, { document, options: opts, basePath: basePath || "" });
+      return;
+    }
+    parseLanding9(element, { document, options: opts, basePath: basePath || "" });
   }
 
   // tools/importer/parsers/hero-banner.js
@@ -6836,6 +7725,48 @@ var CustomImportScript = (() => {
     }
   }
 
+  // tools/importer/transformers/bradesco-links.js
+  var SOURCE_HOSTS = ["bradescobank.com", "www.bradescobank.com"];
+  var REDIRECTS = {
+    "/privacy-and-security.html": "/en/privacy-and-cookies",
+    "/opt-out-form.html": "/en/opt-out-form",
+    "/real-estate": "/en/real-estate",
+    "/help": "/en/help",
+    "/en/signature-gold": "/en/credit-card-signature-gold",
+    "/en/investments": "/en/personal-bank/investments",
+    "/certificate-of-deposit-bradesco": "/en/certificate-of-deposit-bradesco",
+    "/en/credit-card": "/en/credit-cards",
+    "/apex-fee-schedule": "https://bradescobank.com/wp-content/uploads/2026/01/APEX-Fee-Schedule-01.2026.pdf"
+  };
+  var KEEP_ABSOLUTE = /^\/(assets|wp-content|wp-admin|wp-includes|wp-json|feed)(\/|$)/;
+  function toSitePath(href) {
+    if (!href) return null;
+    let url;
+    try {
+      url = new URL(href, "https://bradescobank.com/");
+    } catch (e) {
+      return null;
+    }
+    if (!SOURCE_HOSTS.includes(url.hostname)) return null;
+    if (!/^https?:$/.test(url.protocol)) return null;
+    if (KEEP_ABSOLUTE.test(url.pathname)) return null;
+    let path = url.pathname.replace(/\/+$/, "") || "/";
+    if (REDIRECTS[path]) path = REDIRECTS[path];
+    if (/^https?:/.test(path)) return path;
+    if (path === "/en" || path === "/index") path = "/";
+    if (/^\/(pt|es)(\/|$)/.test(path)) return null;
+    return `${path}${url.search}${url.hash}`;
+  }
+  function transform2(hookName, element, payload) {
+    if (hookName !== "afterTransform") return;
+    element.querySelectorAll("a[href]").forEach((a) => {
+      const raw = a.getAttribute("href");
+      if (!raw || /^(#|mailto:|tel:|javascript:)/i.test(raw)) return;
+      const path = toSitePath(raw);
+      if (path) a.setAttribute("href", path);
+    });
+  }
+
   // tools/importer/transformers/bradesco-landing.js
   var TransformHook2 = { beforeTransform: "beforeTransform", afterTransform: "afterTransform" };
   var CONTACT_URL = "https://bradescobank.com/en/help/";
@@ -6935,7 +7866,7 @@ var CustomImportScript = (() => {
     p.append(a);
     return p;
   }
-  function transform2(hookName, element, payload) {
+  function transform3(hookName, element, payload) {
     const doc = element.ownerDocument;
     if (hookName === TransformHook2.beforeTransform) {
       WebImporter.DOMUtils.remove(element, [
@@ -7223,7 +8154,7 @@ var CustomImportScript = (() => {
     if (!root) return [];
     return Array.from(root.children).filter((c) => c.matches(".e-con, .elementor-section, .elementor-element")).map((el, i) => ({ id: `auto-${i + 1}`, style: styleFromBackground(el), el }));
   }
-  function transform3(hookName, element, payload) {
+  function transform4(hookName, element, payload) {
     const doc = element.ownerDocument;
     if (hookName === "beforeTransform") {
       const resolved = resolveSections(element, payload);
@@ -8690,7 +9621,7 @@ var CustomImportScript = (() => {
       ]
     }
   };
-  var transformers = [transform, transform2, transform3];
+  var transformers = [transform, transform3, transform4, transform2];
   function executeTransformers(hookName, element, payload) {
     const enhancedPayload = __spreadProps(__spreadValues({}, payload), { template: PAGE_TEMPLATE });
     transformers.forEach((transformerFn) => {

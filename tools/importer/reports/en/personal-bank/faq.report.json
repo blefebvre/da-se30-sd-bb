@@ -1,0 +1,12 @@
+{
+  "status": "success",
+  "url": "https://bradescobank.com/en/personal-bank/faq/",
+  "path": "en/personal-bank/faq",
+  "timestamp": "2026-10-06T21:06:56.817Z",
+  "title": "FAQ – Bradesco Bank",
+  "template": "faq-hub",
+  "blocks": [
+    "hero-banner",
+    "tabs"
+  ]
+}

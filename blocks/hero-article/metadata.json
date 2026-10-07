@@ -11,10 +11,17 @@
   },
   "contentPattern": "1 column: row 1 [featured image], row 2 [h1 post title]",
   "usage": {
-    "pagesUsing": ["https://bradescobank.com/en/reits/"],
-    "reuseCount": 0,
-    "lastUsed": "2026-10-02"
+    "pagesUsing": [
+      "https://bradescobank.com/en/reits/",
+      "/en/exploring-investment-products-in-the-u-s/index",
+      "/en/investing-for-different-client-profiles/index",
+      "/en/the-power-of-compounding/index"
+    ],
+    "reuseCount": 3,
+    "lastUsed": "2026-10-05T23:42:27.446178Z"
   },
   "options": [],
-  "memberVariantIds": ["hero-article"]
+  "memberVariantIds": [
+    "hero-article"
+  ]
 }

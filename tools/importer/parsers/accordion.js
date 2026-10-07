@@ -711,8 +711,62 @@ function parseInfoIcons(element, { document, options }) {
   element.replaceWith(block);
 }
 
+/* ------------------------------------------------------------------------------------------
+ * Article-rich template (import-article-rich.js, template "article-rich"). Gated in parse():
+ * only runs when template === 'article-rich'. Elementor nested accordion inside the post
+ * content (details.e-n-accordion-item > summary + content container): one row per item
+ * [title text | body], ALL items kept. Body = the content container flattened with EL.collect
+ * (icon widgets — decorative red dots — dropped, no icon+text list pairing, no background
+ * images). Heading demotion: a heading widget whose parent container also holds an icon widget
+ * (run-in labels "Liquidity:", "STRIPS:") -> <h4>; any other heading widget -> <h3>.
+ * Text-editor paragraphs (incl. bold run-in labels) stay <p>.
+ * ---------------------------------------------------------------------------------------- */
+function articleRichHeadingTag(widgetEl) {
+  const parent = widgetEl && widgetEl.parentElement;
+  if (!parent) return 'h3';
+  const withIcon = [...parent.children].some((c) => c !== widgetEl && EL.isWidget(c) && EL.widgetType(c) === 'icon');
+  return withIcon ? 'h4' : 'h3';
+}
+
+function parseArticleRich(element, { document, options }) {
+  const cells = [];
+  accordionItems(element).forEach(({ title, body }) => {
+    const label = title ? EL.norm(title.textContent) : '';
+    if (!label) return;
+    const answer = [];
+    body.forEach((node) => {
+      EL.collect(document, node, { bgImages: false, iconItems: false }).forEach((it) => {
+        if (!it.el) return;
+        if (it.kind === 'image') return; // no content images expected; drop icon/data-URI leftovers
+        if (it.kind === 'heading') {
+          const isWidgetOrigin = it.origin && EL.isWidget(it.origin);
+          const tag = isWidgetOrigin ? articleRichHeadingTag(it.origin) : 'h3';
+          const h = EL.retag(document, it.el, tag);
+          if (!h.children.length) h.textContent = EL.norm(h.textContent);
+          answer.push(h);
+          return;
+        }
+        answer.push(it.el);
+      });
+    });
+    cells.push([label, answer.length ? answer : '']);
+  });
+
+  if (!cells.length) {
+    element.replaceWith(...element.childNodes);
+    return;
+  }
+
+  const block = WebImporter.Blocks.createBlock(document, { name: EL.blockName('accordion', options), cells });
+  element.replaceWith(block);
+}
+
 export default function parse(element, { document, options, basePath, template } = {}) {
   const opts = options || [];
+  if (template === 'article-rich') {
+    parseArticleRich(element, { document, options: opts, basePath: basePath || '' });
+    return;
+  }
   if (isInfoPage(element, template) && opts.includes('icons')) {
     parseInfoIcons(element, { document, options: opts, basePath: basePath || '' });
     return;

@@ -12,24 +12,29 @@
   "contentPattern": "1 column: row 1 [background image], row 2 [optional foreground/logo image(s), h1, optional subtitle p, optional CTA link]; a single cell holding all of it also works (first image = background)",
   "usage": {
     "pagesUsing": [
-      "https://bradescobank.com/en/investments-content/bradesco-investments-app/",
-      "https://bradescobank.com/en/careers/",
-      "https://bradescobank.com/en/certificate-of-deposit-bradesco/",
-      "https://bradescobank.com/en/personal-bank/investments/",
-      "https://bradescobank.com/en/credit-card/visa-infinite/",
-      "https://bradescobank.com/en/zelle/",
-      "https://bradescobank.com/en/security/",
-      "https://bradescobank.com/en/about-us/",
-      "/en/help/index",
+      "/en/about-us/index",
       "/en/bank-holidays/index",
       "/en/bradesco-lounge/index",
-      "/en/privacy-and-cookies/index",
-      "/en/other-disclosures/index",
       "/en/cra-public-file/index",
-      "/en/about-us/index"
+      "/en/help/index",
+      "/en/other-disclosures/index",
+      "/en/personal-bank/faq/index",
+      "/en/privacy-and-cookies/index",
+      "https://bradescobank.com/en/about-us/",
+      "https://bradescobank.com/en/careers/",
+      "https://bradescobank.com/en/certificate-of-deposit-bradesco/",
+      "https://bradescobank.com/en/credit-card/visa-infinite/",
+      "https://bradescobank.com/en/investments-content/bradesco-investments-app/",
+      "https://bradescobank.com/en/personal-bank/investments/",
+      "https://bradescobank.com/en/security/",
+      "https://bradescobank.com/en/zelle/",
+      "/en/personal-bank/investments/faq/index",
+      "/en/articles-archive/index",
+      "/en/insights-archive/index",
+      "/en/investments-content/saved-articles/index"
     ],
-    "reuseCount": 13,
-    "lastUsed": "2026-10-03"
+    "reuseCount": 18,
+    "lastUsed": "2026-10-05T21:30:46Z"
   },
   "options": [
     {
@@ -39,6 +44,14 @@
     {
       "class": "right",
       "label": "Right"
+    },
+    {
+      "class": "compact",
+      "label": "Compact"
+    },
+    {
+      "class": "compact short",
+      "label": "Compact Short"
     }
   ],
   "memberVariantIds": [

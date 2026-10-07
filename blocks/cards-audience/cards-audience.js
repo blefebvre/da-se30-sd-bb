@@ -1,9 +1,8 @@
 import { createOptimizedPicture } from '../../scripts/aem.js';
 
-const OPTION_CLASSES = ['landscape', 'compact'];
+const OPTION_CLASSES = ['landscape', 'compact', 'promo'];
 
 export default function decorate(block) {
-  // eslint-disable-next-line no-unused-vars
   const active = [...block.classList].filter((c) => OPTION_CLASSES.includes(c));
 
   const ul = document.createElement('ul');
@@ -30,9 +29,28 @@ export default function decorate(block) {
       }
     }
 
-    // The label link makes the whole tile clickable (stretched link, see CSS).
     const link = li.querySelector('.cards-audience-card-body a[href]');
-    if (link) {
+    if (active.includes('promo')) {
+      // promo: the link stays a visible pill button (no stretched link);
+      // the copy above it is grouped so it can keep its own min-height.
+      if (link) {
+        link.className = 'button primary';
+        const holder = link.closest('p');
+        if (holder && holder.textContent.trim() === link.textContent.trim()) {
+          holder.className = 'button-wrapper';
+        }
+      }
+      const body = li.querySelector('.cards-audience-card-body');
+      if (body) {
+        const text = document.createElement('div');
+        text.className = 'cards-audience-card-text';
+        [...body.children]
+          .filter((child) => !child.classList.contains('button-wrapper'))
+          .forEach((child) => text.append(child));
+        if (text.children.length) body.prepend(text);
+      }
+    } else if (link) {
+      // The label link makes the whole tile clickable (stretched link, see CSS).
       li.classList.add('has-link');
       link.classList.remove('button', 'primary', 'secondary', 'accent');
       const wrapper = link.closest('.button-wrapper');

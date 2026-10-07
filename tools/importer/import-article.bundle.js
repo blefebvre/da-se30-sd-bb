@@ -836,7 +836,151 @@ var CustomImportScript = (() => {
       LEGACY_ROOTS
     };
   })();
-  function parse2(element, { document, options, basePath } = {}) {
+  var INFO_ROOTS = ["1178", "2212", "1481", "1401", "2391", "2498", "467", "631", "6834", "2456", "2514", "2527"].map((id) => `.elementor-${id}`).join(", ");
+  var BLOCK_ATTR = "data-excat-block";
+  function isInfoPage(element, template) {
+    if (template) return template === "info-page";
+    return !!element.closest(INFO_ROOTS);
+  }
+  var hiddenDesktop = (n) => n.classList.contains("elementor-hidden-desktop");
+  function calendarRows(element) {
+    const cols = [".elementor-element-19c2d74", ".elementor-element-65d8928"].map((s) => element.querySelector(s)).filter(Boolean);
+    const hosts = cols.length ? cols : [element];
+    const sel = ".ticker-calendar h1, .ticker-calendar h2, .ticker-calendar h3, .ticker-calendar h4, .ticker-calendar p";
+    let heads = hosts.flatMap((h) => [...h.querySelectorAll(sel)]);
+    if (!heads.length) heads = hosts.flatMap((h) => [...h.querySelectorAll("h3")]);
+    const rows = [];
+    heads.forEach((h) => {
+      if (h.closest(".elementor-hidden-desktop")) return;
+      const date = [];
+      const name = [];
+      let seenBreak = false;
+      [...h.childNodes].forEach((n) => {
+        if (n.nodeType === 1 && n.tagName === "BR") {
+          seenBreak = true;
+          return;
+        }
+        (seenBreak ? name : date).push(n.textContent);
+      });
+      const d = EL.norm(date.join(""));
+      const nm = EL.norm(name.join(""));
+      if (d || nm) rows.push([d, nm]);
+    });
+    return rows;
+  }
+  function noticeCells(row) {
+    const host = row.querySelector(":scope > .e-con-inner") || row;
+    return [...host.children].filter((c) => c.classList.contains("e-con") && !hiddenDesktop(c));
+  }
+  function isNoticeRow(n) {
+    if (!n || n.nodeType !== 1 || !n.classList.contains("e-con") || hiddenDesktop(n)) return false;
+    if (n.hasAttribute(BLOCK_ATTR)) return false;
+    const host = n.querySelector(":scope > .e-con-inner") || n;
+    if ([...host.children].some((c) => EL.isWidget(c))) return false;
+    return noticeCells(n).length >= 2;
+  }
+  function noticeCell(document, cell) {
+    const els = EL.collect(document, cell, { bgImages: false }).map((it) => it.el).filter(Boolean);
+    const text = els.map((e) => EL.norm(e.textContent)).join("");
+    if (!els.length || /^[.\s]*$/.test(text) && !els.some((e) => e.querySelector && e.querySelector("img"))) return "";
+    return els;
+  }
+  function parseNotice(element, { document, options }) {
+    if (noticeCells(element).length < 2) {
+      parseLanding(element, { document, options });
+      return;
+    }
+    const trs = [element];
+    let n = element.nextElementSibling;
+    while (n && n.tagName !== "HR" && !n.hasAttribute(BLOCK_ATTR) && isNoticeRow(n)) {
+      trs.push(n);
+      n = n.nextElementSibling;
+    }
+    const rows = trs.map((tr) => noticeCells(tr).map((c) => noticeCell(document, c)));
+    const colCount = Math.max(...rows.map((r) => r.length));
+    rows.forEach((r) => {
+      while (r.length < colCount) r.push("");
+    });
+    const block = WebImporter.Blocks.createBlock(document, { name: EL.blockName("table-article", options), cells: rows });
+    trs.slice(1).forEach((tr) => tr.remove());
+    element.replaceWith(block);
+  }
+  function parseCalendar(element, { document, options }) {
+    const rows = calendarRows(element);
+    if (!rows.length) {
+      parseLanding(element, { document, options });
+      return;
+    }
+    const block = WebImporter.Blocks.createBlock(document, { name: EL.blockName("table-article", options), cells: rows });
+    element.replaceWith(block);
+  }
+  function articleRichCell(document, cell) {
+    if (!cell) return "";
+    const text = EL.norm(cell.textContent);
+    if (!text && !cell.querySelector("img")) return "";
+    const div = EL.clean(EL.make(document, "div", cell.innerHTML));
+    div.querySelectorAll("p").forEach((p) => {
+      if (!EL.norm(p.textContent) && !p.querySelector("img")) p.remove();
+    });
+    [...div.childNodes].forEach((n) => {
+      if (n.nodeType === 3) n.textContent = n.textContent.replace(/[\s\u00a0]+/g, " ");
+    });
+    if (!div.children.length) return text;
+    while (div.firstChild && div.firstChild.nodeType === 3 && !EL.norm(div.firstChild.textContent)) div.firstChild.remove();
+    while (div.lastChild && div.lastChild.nodeType === 3 && !EL.norm(div.lastChild.textContent)) div.lastChild.remove();
+    return [...div.childNodes];
+  }
+  function articleRichExpand(tr) {
+    const out = [];
+    rowCells(tr).forEach((c) => {
+      out.push(c);
+      const span = parseInt(c.getAttribute("colspan") || "1", 10);
+      for (let i = 1; i < span; i += 1) out.push(null);
+    });
+    return out;
+  }
+  function parseArticleRich(element, { document, options }) {
+    const table = element.tagName === "TABLE" ? element : element.querySelector("table");
+    if (!table || table.closest(".bdc-calc")) return;
+    const own = (tr) => tr.closest("table") === table;
+    const allRows = [...table.querySelectorAll("tr")].filter(own);
+    if (!allRows.length) return;
+    let headerRow = [...table.querySelectorAll("thead tr")].find(own) || null;
+    if (!headerRow && rowCells(allRows[0]).length && rowCells(allRows[0]).every((c) => c.tagName === "TH")) {
+      headerRow = allRows[0];
+    }
+    const bodyRows = allRows.filter((tr) => tr !== headerRow && !(tr.parentElement && tr.parentElement.tagName === "THEAD"));
+    const head = headerRow ? articleRichExpand(headerRow) : null;
+    const body = bodyRows.map(articleRichExpand).filter((r) => r.length);
+    const colCount = Math.max(head ? head.length : 0, ...body.map((r) => r.length));
+    if (!colCount) return;
+    const filled = (c) => !!c && (!!EL.norm(c.textContent) || !!c.querySelector("img"));
+    const keep = [];
+    for (let i = 0; i < colCount; i += 1) {
+      if (!body.length ? head && filled(head[i]) : body.some((r) => filled(r[i]))) keep.push(i);
+    }
+    if (!keep.length) return;
+    const rows = [];
+    if (head) rows.push(keep.map((i) => articleRichCell(document, head[i])));
+    body.forEach((r) => {
+      if (!keep.some((i) => filled(r[i]))) return;
+      rows.push(keep.map((i) => articleRichCell(document, r[i])));
+    });
+    if (!rows.length) return;
+    const block = WebImporter.Blocks.createBlock(document, { name: EL.blockName("table-article", options), cells: rows });
+    element.replaceWith(block);
+  }
+  function parse2(element, { document, options, basePath, template } = {}) {
+    const opts = options || [];
+    if (template === "article-rich") {
+      parseArticleRich(element, { document, options: opts, basePath: basePath || "" });
+      return;
+    }
+    if (isInfoPage(element, template) && (opts.includes("notice") || opts.includes("calendar"))) {
+      if (opts.includes("notice")) parseNotice(element, { document, options: opts });
+      else parseCalendar(element, { document, options: opts });
+      return;
+    }
     if (element.closest(EL.LEGACY_ROOTS)) {
       parseLegacy(element, { document });
       return;
@@ -967,6 +1111,48 @@ var CustomImportScript = (() => {
     }
   }
 
+  // tools/importer/transformers/bradesco-links.js
+  var SOURCE_HOSTS = ["bradescobank.com", "www.bradescobank.com"];
+  var REDIRECTS = {
+    "/privacy-and-security.html": "/en/privacy-and-cookies",
+    "/opt-out-form.html": "/en/opt-out-form",
+    "/real-estate": "/en/real-estate",
+    "/help": "/en/help",
+    "/en/signature-gold": "/en/credit-card-signature-gold",
+    "/en/investments": "/en/personal-bank/investments",
+    "/certificate-of-deposit-bradesco": "/en/certificate-of-deposit-bradesco",
+    "/en/credit-card": "/en/credit-cards",
+    "/apex-fee-schedule": "https://bradescobank.com/wp-content/uploads/2026/01/APEX-Fee-Schedule-01.2026.pdf"
+  };
+  var KEEP_ABSOLUTE = /^\/(assets|wp-content|wp-admin|wp-includes|wp-json|feed)(\/|$)/;
+  function toSitePath(href) {
+    if (!href) return null;
+    let url;
+    try {
+      url = new URL(href, "https://bradescobank.com/");
+    } catch (e) {
+      return null;
+    }
+    if (!SOURCE_HOSTS.includes(url.hostname)) return null;
+    if (!/^https?:$/.test(url.protocol)) return null;
+    if (KEEP_ABSOLUTE.test(url.pathname)) return null;
+    let path = url.pathname.replace(/\/+$/, "") || "/";
+    if (REDIRECTS[path]) path = REDIRECTS[path];
+    if (/^https?:/.test(path)) return path;
+    if (path === "/en" || path === "/index") path = "/";
+    if (/^\/(pt|es)(\/|$)/.test(path)) return null;
+    return `${path}${url.search}${url.hash}`;
+  }
+  function transform2(hookName, element, payload) {
+    if (hookName !== "afterTransform") return;
+    element.querySelectorAll("a[href]").forEach((a) => {
+      const raw = a.getAttribute("href");
+      if (!raw || /^(#|mailto:|tel:|javascript:)/i.test(raw)) return;
+      const path = toSitePath(raw);
+      if (path) a.setAttribute("href", path);
+    });
+  }
+
   // tools/importer/transformers/bradesco-sections.js
   var SECTION_MARKER_ATTR = "data-excat-section-id";
   function querySection(root, selectors) {
@@ -978,7 +1164,7 @@ var CustomImportScript = (() => {
     }
     return null;
   }
-  function transform2(hookName, element, payload) {
+  function transform3(hookName, element, payload) {
     const sections = payload && payload.template && payload.template.sections || [];
     if (sections.length < 2) return;
     if (hookName === "beforeTransform") {
@@ -1075,7 +1261,8 @@ var CustomImportScript = (() => {
   };
   var transformers = [
     transform,
-    ...PAGE_TEMPLATE.sections && PAGE_TEMPLATE.sections.length > 1 ? [transform2] : []
+    ...PAGE_TEMPLATE.sections && PAGE_TEMPLATE.sections.length > 1 ? [transform3] : [],
+    transform2
   ];
   function executeTransformers(hookName, element, payload) {
     const enhancedPayload = __spreadProps(__spreadValues({}, payload), { template: PAGE_TEMPLATE });

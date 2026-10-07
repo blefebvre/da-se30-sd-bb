@@ -1,0 +1,13 @@
+{
+  "status": "success",
+  "url": "https://bradescobank.com/en/investing-for-different-client-profiles/",
+  "path": "en/investing-for-different-client-profiles",
+  "timestamp": "2026-10-06T21:20:41.691Z",
+  "title": "Investing for Different Client Profiles – Bradesco Bank",
+  "template": "article-rich",
+  "blocks": [
+    "hero-article",
+    "cards-feature",
+    "cards-feature"
+  ]
+}

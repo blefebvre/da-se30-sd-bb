@@ -1,0 +1,12 @@
+{
+  "status": "success",
+  "url": "https://bradescobank.com/en/exploring-investment-products-in-the-u-s/",
+  "path": "en/exploring-investment-products-in-the-u-s",
+  "timestamp": "2026-10-06T21:20:26.778Z",
+  "title": "Exploring Investment Products in the U.S. – Bradesco Bank",
+  "template": "article-rich",
+  "blocks": [
+    "hero-article",
+    "accordion"
+  ]
+}

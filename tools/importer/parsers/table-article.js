@@ -822,9 +822,83 @@ function parseCalendar(element, { document, options }) {
   element.replaceWith(block);
 }
 
+/* ------------------------------------------------------------------------------------------
+ * Article-rich template (import-article-rich.js, template "article-rich"). Gated in parse():
+ * only runs when template === 'article-rich'. The matched element is the <table> itself
+ * (html widget table -> options ['lined'], text-editor table -> []). Header row from thead th
+ * (fallback: a first tr made of th), data rows from tbody td. Colspans are expanded, then
+ * every column that is empty in all body rows is dropped (the compounding table has an empty
+ * 3rd column under a colspan="2" header) — the output carries no colspan. Tables inside the
+ * calculator (.bdc-calc) are left untouched (the widget parser owns them).
+ * ---------------------------------------------------------------------------------------- */
+function articleRichCell(document, cell) {
+  if (!cell) return '';
+  const text = EL.norm(cell.textContent);
+  if (!text && !cell.querySelector('img')) return '';
+  const div = EL.clean(EL.make(document, 'div', cell.innerHTML));
+  div.querySelectorAll('p').forEach((p) => { if (!EL.norm(p.textContent) && !p.querySelector('img')) p.remove(); });
+  [...div.childNodes].forEach((n) => { if (n.nodeType === 3) n.textContent = n.textContent.replace(/[\s\u00a0]+/g, ' '); });
+  if (!div.children.length) return text;
+  // trim leading / trailing whitespace text nodes
+  while (div.firstChild && div.firstChild.nodeType === 3 && !EL.norm(div.firstChild.textContent)) div.firstChild.remove();
+  while (div.lastChild && div.lastChild.nodeType === 3 && !EL.norm(div.lastChild.textContent)) div.lastChild.remove();
+  return [...div.childNodes];
+}
+
+function articleRichExpand(tr) {
+  const out = [];
+  rowCells(tr).forEach((c) => {
+    out.push(c);
+    const span = parseInt(c.getAttribute('colspan') || '1', 10);
+    for (let i = 1; i < span; i += 1) out.push(null);
+  });
+  return out;
+}
+
+function parseArticleRich(element, { document, options }) {
+  const table = element.tagName === 'TABLE' ? element : element.querySelector('table');
+  if (!table || table.closest('.bdc-calc')) return;
+  const own = (tr) => tr.closest('table') === table;
+  const allRows = [...table.querySelectorAll('tr')].filter(own);
+  if (!allRows.length) return;
+
+  let headerRow = [...table.querySelectorAll('thead tr')].find(own) || null;
+  if (!headerRow && rowCells(allRows[0]).length && rowCells(allRows[0]).every((c) => c.tagName === 'TH')) {
+    headerRow = allRows[0];
+  }
+  const bodyRows = allRows.filter((tr) => tr !== headerRow && !(tr.parentElement && tr.parentElement.tagName === 'THEAD'));
+
+  const head = headerRow ? articleRichExpand(headerRow) : null;
+  const body = bodyRows.map(articleRichExpand).filter((r) => r.length);
+  const colCount = Math.max(head ? head.length : 0, ...body.map((r) => r.length));
+  if (!colCount) return;
+
+  const filled = (c) => !!c && (!!EL.norm(c.textContent) || !!c.querySelector('img'));
+  const keep = [];
+  for (let i = 0; i < colCount; i += 1) {
+    if (!body.length ? (head && filled(head[i])) : body.some((r) => filled(r[i]))) keep.push(i);
+  }
+  if (!keep.length) return;
+
+  const rows = [];
+  if (head) rows.push(keep.map((i) => articleRichCell(document, head[i])));
+  body.forEach((r) => {
+    if (!keep.some((i) => filled(r[i]))) return;
+    rows.push(keep.map((i) => articleRichCell(document, r[i])));
+  });
+  if (!rows.length) return;
+
+  const block = WebImporter.Blocks.createBlock(document, { name: EL.blockName('table-article', options), cells: rows });
+  element.replaceWith(block);
+}
+
 /* ---- entry point ---- */
 export default function parse(element, { document, options, basePath, template } = {}) {
   const opts = options || [];
+  if (template === 'article-rich') {
+    parseArticleRich(element, { document, options: opts, basePath: basePath || '' });
+    return;
+  }
   if (isInfoPage(element, template) && (opts.includes('notice') || opts.includes('calendar'))) {
     if (opts.includes('notice')) parseNotice(element, { document, options: opts });
     else parseCalendar(element, { document, options: opts });

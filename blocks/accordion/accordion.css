@@ -165,6 +165,7 @@
   border-radius: 0;
 }
 
+/* stylelint-disable-next-line no-descending-specificity */
 .accordion.icons .accordion-item-label {
   border-bottom-width: 0;
   padding: 16px 20px 20px 70px;
@@ -189,6 +190,7 @@
 }
 
 /* the chevron box (26px) overhangs the label line instead of growing the row */
+/* stylelint-disable-next-line no-descending-specificity */
 .accordion.icons .accordion-item-label::after {
   align-self: flex-start;
   margin-bottom: -10px;
@@ -296,5 +298,220 @@
 
   .accordion.icons .accordion-item-body ul {
     padding-left: 40px;
+  }
+}
+
+/* stylelint-disable no-descending-specificity -- faq overrides follow the shared rules */
+
+/* faq (FAQ pages, built by tabs (faq) in each panel): all closed, independent toggles;
+   white question bars 20px apart, 19.2px titles, line chevron (source svg, effective stroke 2) that rotates open,
+   answer below the bar under an inset shadow. Mobile (up to 768px): chevron below the title. */
+.accordion.faq {
+  --accordion-chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2'%3E%3Cpath d='M3 9l9 9 9-9' stroke-linecap='round'/%3E%3C/svg%3E");
+  --accordion-chevron-color: #000;
+  --accordion-shadow: none;
+  --accordion-open-bg: #fff;
+
+  gap: 20px;
+  margin: 0;
+  padding: 20px 0 0;
+}
+
+.accordion-wrapper:last-child > .accordion.faq {
+  padding-bottom: 0;
+}
+
+.accordion.faq .accordion-item {
+  border-radius: 0;
+  background-color: transparent;
+}
+
+/* static: the answer paints over the bar's shadow, as on the source */
+.accordion.faq .accordion-item-label,
+.accordion.faq .accordion-item[open] > .accordion-item-label {
+  position: static;
+  flex-direction: column;
+  align-items: flex-start;
+  border-bottom: 0;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 4px 10px rgb(0 0 0 / 25%);
+}
+
+.accordion.faq .accordion-item-title {
+  align-self: stretch;
+  margin-bottom: 20px;
+  padding-right: 25px;
+  color: var(--text-color);
+  font-size: 19.2px;
+  font-weight: 400;
+  line-height: 26.88px;
+}
+
+.accordion.faq .accordion-item-label::after {
+  flex: 0 0 auto;
+  width: 28px;
+  height: 28px;
+  mask: var(--accordion-chevron) center / 28px 28px no-repeat;
+  transition: transform 0.3s;
+}
+
+.accordion.faq .accordion-item[open] > .accordion-item-label::after {
+  mask-position: center;
+  transform: rotate(180deg);
+}
+
+.accordion.faq .accordion-item-body {
+  padding: 30px 20px;
+  background-color: #fff;
+  box-shadow: inset 0 14px 10px -10px rgb(0 0 0 / 25%);
+  color: #000;
+  font-size: 16px;
+  line-height: 26.4px;
+}
+
+.accordion.faq .accordion-item-body > *,
+.accordion.faq .accordion-item-body > :last-child {
+  margin: 0 0 24px;
+}
+
+/* the source slides the answer open (250ms) */
+@media (prefers-reduced-motion: no-preference) {
+  @supports selector(::details-content) {
+    .accordion.faq {
+      interpolate-size: allow-keywords;
+    }
+
+    .accordion.faq .accordion-item::details-content {
+      height: 0;
+      overflow: clip;
+      transition: height 0.25s, content-visibility 0.25s allow-discrete;
+    }
+
+    .accordion.faq .accordion-item[open]::details-content {
+      height: auto;
+    }
+  }
+}
+
+@media (width > 768px) {
+  .accordion.faq .accordion-item-label,
+  .accordion.faq .accordion-item[open] > .accordion-item-label {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .accordion.faq .accordion-item-title {
+    flex: 1 1 auto;
+    align-self: auto;
+    margin-bottom: 0;
+  }
+}
+
+/*
+ * article: rich blog post accordion (source: Elementor nested accordion on
+ * /en/exploring-investment-products-in-the-u-s). Flat grey rounded title bars,
+ * red 20px/28px titles and chevron, no panel box; body copy 16px/18px with
+ * grey sub-headings and 25px-indented item headings.
+ */
+.accordion.article {
+  --accordion-chevron-color: #cc092f;
+
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+}
+
+.accordion.article .accordion-item,
+.accordion.article .accordion-item[open] > .accordion-item-label {
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
+
+.accordion.article .accordion-item-label,
+.accordion.article .accordion-item[open] > .accordion-item-label {
+  gap: 10px;
+  border: 0;
+  border-radius: 20px;
+  padding: 10px 20px;
+  background-color: rgb(217 217 217 / 30%);
+}
+
+.accordion.article .accordion-item-title {
+  color: #cc092f;
+  font-size: 20px;
+  line-height: 33px;
+}
+
+.accordion.article .accordion-item-label::after {
+  flex-basis: 16px;
+  height: 18px;
+  mask-size: 16px 18px;
+  mask-position: center;
+}
+
+.accordion.article .accordion-item[open] > .accordion-item-label::after {
+  mask-position: center;
+}
+
+.accordion.article .accordion-item-body {
+  padding: 20px 0 0;
+  background: none;
+  font-size: 16px;
+  line-height: 26.4px;
+}
+
+.accordion.article .accordion-item-body > * {
+  margin: 0;
+}
+
+.accordion.article .accordion-item-body > :is(h2, h3, h4) {
+  margin: 40px 0 0;
+  color: var(--text-color);
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 18px;
+}
+
+.accordion.article .accordion-item-body > :is(h2, h3, h4) + * {
+  margin-top: 22px;
+}
+
+.accordion.article .accordion-item-body > :first-child {
+  margin-top: 0;
+}
+
+/* item headings and the copy under them sit 25px in */
+.accordion.article .accordion-item-body > h4,
+.accordion.article .accordion-item-body > h4 ~ :is(p, ul, ol) {
+  margin-left: 25px;
+}
+
+@media (width >= 768px) {
+  .accordion.article .accordion-item-title {
+    font-size: 28px;
+    line-height: 46.2px;
+  }
+
+  .accordion.article .accordion-item-label::after {
+    flex-basis: 30px;
+    height: 34px;
+    mask-size: 30px 34px;
+  }
+
+  .accordion.article .accordion-item-body {
+    font-size: 18px;
+    line-height: 29.7px;
+  }
+
+  .accordion.article .accordion-item-body > :is(h2, h3) {
+    font-size: 28px;
+    line-height: 28px;
+  }
+
+  .accordion.article .accordion-item-body > h4 {
+    font-size: 22px;
+    line-height: 22px;
   }
 }

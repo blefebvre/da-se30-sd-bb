@@ -1,0 +1,14 @@
+{
+  "status": "success",
+  "url": "https://bradescobank.com/en/investments-content/",
+  "path": "en/investments-content",
+  "timestamp": "2026-10-06T21:08:04.440Z",
+  "title": "Investments Content – Bradesco Bank",
+  "template": "listing",
+  "blocks": [
+    "hero-video",
+    "cards-feature",
+    "cards-feature",
+    "cards-audience"
+  ]
+}

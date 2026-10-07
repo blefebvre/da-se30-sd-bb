@@ -12,13 +12,15 @@
   "contentPattern": "one row per tab, 2 columns: [tab label | panel content]; fragments option: panel = single link to a fragment page (e.g. /en/careers/fragments/jobs); tiles option: panel = repeated image + h3 + p groups; vertical option: panel = image + paragraph(s)",
   "usage": {
     "pagesUsing": [
+      "/en/personal-bank/faq/index",
+      "/en/privacy-and-cookies/index",
       "https://bradescobank.com/en/careers/",
       "https://bradescobank.com/en/credit-card-signature-gold/",
       "https://bradescobank.com/en/real-estate/",
-      "/en/privacy-and-cookies/index"
+      "/en/personal-bank/investments/faq/index"
     ],
-    "reuseCount": 3,
-    "lastUsed": "2026-10-03"
+    "reuseCount": 5,
+    "lastUsed": "2026-10-05"
   },
   "options": [
     {
@@ -32,6 +34,10 @@
     {
       "class": "vertical",
       "label": "Vertical"
+    },
+    {
+      "class": "faq",
+      "label": "FAQ (category cards + accordion)"
     }
   ],
   "memberVariantIds": [

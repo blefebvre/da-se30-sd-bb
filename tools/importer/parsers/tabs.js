@@ -12,6 +12,14 @@
  *  - tiles (signature-gold nested tabs): panel = repeated [image, h3, p] groups; tile images
  *    are container CSS backgrounds (verified fallbacks for the hidden Visa Gold panel).
  *  - default: panel = the panel content.
+ *  - faq (template "faq-hub", FAQ shortcode root div.faq; also auto-detected from
+ *    .term-link[data-term-id] + .question-item): one row per category in slide order (deduped by
+ *    data-term-id, .swiper-slide-duplicate ignored) — [category icon <img> + <p>label |
+ *    per question: <h3>question</h3> + answer content (p/ul/links/br/inline kept; svg,
+ *    .cta-icon, .question-terms dropped; answer headings demoted to h4)]. Questions come from
+ *    .faq-term-panel[data-term-id] (injected by import-faq-hub.js onLoad); the active/default
+ *    category falls back to #faq_container. Category id = data-term-id, else class term-<id>.
+ *    .title-subterm -> <p><strong>.
  */
 const TILE_FALLBACK = {
   // credit-card-signature-gold, hidden "Visa Gold" panel (authoring-analysis.json)
@@ -87,6 +95,101 @@ function backgroundPanel(document, panel) {
   if (src) out.push(EL.bgImageItem(document, src).el);
   EL.collect(document, panel, { bgImages: true }).forEach((it) => { if (it.el) out.push(it.el); });
   return out;
+}
+
+/* ---- FAQ shortcode (div.faq, template "faq-hub") ---------------------------------------- */
+
+const isFaq = (element, options) => options.includes('faq')
+  || (!!element.querySelector('.term-link[data-term-id]') && !!element.querySelector('.question-item'));
+
+/** Category id: data-term-id, else the `term-<id>` class (scraped copies drop data-*). */
+const termId = (link) => link.getAttribute('data-term-id')
+  || ([...link.classList].map((c) => (c.match(/^term-(\d+)$/) || [])[1]).find(Boolean) || '');
+
+function absUrl(document, src) {
+  if (!src) return '';
+  try { return new URL(src, document.baseURI || 'https://bradescobank.com/').href; } catch (e) { return src; }
+}
+
+/** Categories in slide order: [{ id, label, icon, active }] (duplicate loop slides ignored). */
+function faqCategories(document, element) {
+  const seen = new Set();
+  const out = [];
+  element.querySelectorAll('.term-link').forEach((link) => {
+    const id = termId(link);
+    if (!id || seen.has(id) || link.closest('.swiper-slide-duplicate')) return;
+    seen.add(id);
+    const slide = link.closest('.swiper-slide');
+    const img = link.querySelector('img.slide-image') || link.querySelector('img');
+    out.push({
+      id,
+      label: EL.norm((link.querySelector('.slide-text') || link).textContent),
+      icon: img ? absUrl(document, EL.imgSrc(img)) : '',
+      active: !!((slide && slide.classList.contains('active')) || link.classList.contains('active')),
+    });
+  });
+  return out;
+}
+
+/** h3 question + answer content nodes for every .question-item (and .title-subterm) of a panel. */
+function faqPanel(document, panel) {
+  const out = [];
+  panel.querySelectorAll('.question-item, .title-subterm').forEach((node) => {
+    if (node.classList.contains('title-subterm')) {
+      if (node.closest('.question-item') || !EL.norm(node.textContent)) return;
+      const p = document.createElement('p');
+      const strong = document.createElement('strong');
+      strong.textContent = EL.norm(node.textContent);
+      p.append(strong);
+      out.push(p);
+      return;
+    }
+    const header = node.querySelector('.cta-header') || node;
+    const title = header.querySelector('.cta-title') || header.querySelector('h1, h2, h3, h4, h5, h6');
+    const question = EL.norm(title ? title.textContent : '');
+    if (!question) return;
+    const h3 = document.createElement('h3');
+    h3.textContent = question;
+    out.push(h3);
+    const answer = node.querySelector('.toggle-content');
+    if (!answer) return;
+    const clone = answer.cloneNode(true);
+    clone.querySelectorAll('svg, .cta-icon, .question-terms').forEach((n) => n.remove());
+    EL.collect(document, clone, { bgImages: false }).forEach((it) => {
+      if (!it.el) return;
+      // answer headings must not read as further questions
+      out.push(/^H[1-6]$/.test(it.el.tagName) ? EL.retag(document, it.el, 'h4') : it.el);
+    });
+  });
+  return out;
+}
+
+/** One row per category: [icon + label | h3 question + answer ...]. Returns false if the
+ *  element holds no FAQ categories (caller falls back to the generic tabs logic). */
+function parseFaq(element, { document, options }) {
+  const categories = faqCategories(document, element);
+  if (!categories.length) return false;
+  const panels = [...element.querySelectorAll('.faq-term-panel[data-term-id]')];
+  const defaultContainer = element.querySelector('[id="faq_container"]');
+  const defaultId = (categories.find((c) => c.active) || categories[0]).id;
+  const cells = categories.map((cat) => {
+    const label = [];
+    if (cat.icon) {
+      const img = document.createElement('img');
+      img.src = cat.icon;
+      img.alt = '';
+      label.push(img);
+    }
+    const p = document.createElement('p');
+    p.textContent = cat.label;
+    label.push(p);
+    let panel = panels.find((n) => n.getAttribute('data-term-id') === cat.id);
+    if (!panel && cat.id === defaultId) panel = defaultContainer;
+    return [label, panel ? faqPanel(document, panel) : ''];
+  });
+  const block = WebImporter.Blocks.createBlock(document, { name: EL.blockName('tabs', options), cells });
+  element.replaceWith(block);
+  return true;
 }
 
 function parseLanding(element, { document, options, basePath }) {
@@ -694,5 +797,7 @@ const EL = (() => {
 })();
 
 export default function parse(element, { document, options, basePath } = {}) {
-  parseLanding(element, { document, options: options || [], basePath: basePath || '' });
+  const opts = options || [];
+  if (isFaq(element, opts) && parseFaq(element, { document, options: opts })) return;
+  parseLanding(element, { document, options: opts, basePath: basePath || '' });
 }

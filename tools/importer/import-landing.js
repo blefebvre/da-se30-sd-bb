@@ -26,6 +26,7 @@ import heroBannerParser from './parsers/hero-banner.js';
 
 // TRANSFORMER IMPORTS (order matters: cleanup -> landing cleanup -> sections)
 import cleanupTransformer from './transformers/bradesco-cleanup.js';
+import linksTransformer from './transformers/bradesco-links.js';
 import landingTransformer from './transformers/bradesco-landing.js';
 import landingSectionsTransformer from './transformers/bradesco-landing-sections.js';
 
@@ -1453,7 +1454,7 @@ const INSTANCE_OPTIONS = {
   }
 };
 
-const transformers = [cleanupTransformer, landingTransformer, landingSectionsTransformer];
+const transformers = [cleanupTransformer, landingTransformer, landingSectionsTransformer, linksTransformer];
 
 function executeTransformers(hookName, element, payload) {
   const enhancedPayload = { ...payload, template: PAGE_TEMPLATE };

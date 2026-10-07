@@ -27,8 +27,15 @@ Single block table. Content: one row, one cell of content.
 | Divided (with `elevated`: rule under the title, gradient-dot bullets) | `divided` |
 | Highlight (with `elevated`: red bold titles, airy copy, stronger shadow) | `highlight` |
 | Gradient (with `elevated`: centred 282px tiles, red caps title with short rule, red-to-blue bottom edge) | `gradient` |
+| Featured (with `posts`: highlights grid, 1 large card spanning two rows + 2 small cards stacked right, 1044px wide 65/35; single full-bleed column on mobile) | `featured` |
+| List (with `posts`: one column of horizontal cards, image left half, title + uppercase byline right; stacked on mobile) | `list` |
+| Text (with `posts`: text-only cards with a red-to-blue left bar: date, title, excerpt, uppercase byline; 3 columns) | `text` |
+| Paged (n items per page with numbered page buttons below; e.g. `paged-9`) | `paged-<n>` |
 
 Content conventions: a paragraph holding only `<em>` text is a badge (e.g. "Coming soon");
+in `posts` the paragraphs before the title form a meta row (date left; an `<em>` category renders as an
+outlined pill with a red dot on the right), a paragraph after the title is the excerpt and a final
+"By <author>" paragraph is the byline;
 in `boxed` (without `elevated`) items without a heading render as compact key-fact boxes, and
 four plain boxes sit 2 x 2 on desktop.
 In `product` the item layout follows its content: benefit lines (p) without an h4 render as a

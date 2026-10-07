@@ -1,0 +1,12 @@
+{
+  "status": "success",
+  "url": "https://bradescobank.com/en/category/videos/",
+  "path": "en/category/videos",
+  "timestamp": "2026-10-07T14:12:00.847Z",
+  "title": "Videos – Bradesco Bank",
+  "template": "category-listing",
+  "blocks": [
+    "hero-banner",
+    "cards-feature"
+  ]
+}

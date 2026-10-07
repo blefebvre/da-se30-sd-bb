@@ -425,6 +425,131 @@ body.article main .default-content-wrapper h6 {
 }
 
 /*
+ * article-rich template (template: article, article-rich -> body.article.article-rich)
+ * Rich posts style their body headings per post: bright red by default,
+ * dark red with `theme: burgundy`. The first h2 repeats the post title.
+ */
+body.article-rich main .default-content-wrapper h2 {
+  margin-bottom: 20px;
+  color: #cc092f;
+  font-size: 22px;
+  line-height: 22px;
+}
+
+body.article-rich main .default-content-wrapper h2:not(:first-child) {
+  margin-top: 10.6px;
+}
+
+body.article-rich.burgundy main .default-content-wrapper h2 {
+  color: var(--brand-red-dark);
+  font-size: 25px;
+  line-height: 25px;
+}
+
+body.article-rich main > .section:not(.hero-article-container) > div:first-child h2:first-of-type {
+  font-size: 28px;
+  line-height: 28px;
+}
+
+body.article-rich main .default-content-wrapper img {
+  width: 100%;
+}
+
+/* author byline: last paragraph before the disclaimer section */
+body.article-rich main > .section:has(+ .section.disclaimer) > .default-content-wrapper:last-child > p:last-child {
+  line-height: 30px;
+}
+
+body.article-rich main > .section:has(+ .section.disclaimer) > div:last-child {
+  padding-bottom: 0;
+}
+
+/* disclaimer: 1px rule (15px above and below) then 14px small print */
+body.article-rich main > .section.disclaimer:not(.hero-article-container) > div:first-child {
+  padding-top: 0;
+}
+
+body.article-rich main > .section.disclaimer > .default-content-wrapper::before {
+  content: '';
+  display: block;
+  margin: 15px 0 38px;
+  border-top: 1px solid #000;
+}
+
+/* stylelint-disable-next-line no-descending-specificity -- never matches the byline rule's element */
+body.article-rich main > .section.disclaimer:not(.hero-article-container) > div:first-child > p:nth-child(n) {
+  margin: 0;
+  font-size: 14px;
+  line-height: 23.1px;
+}
+
+/* source widget spacing: 30px around card blocks (20px when they follow a heading) */
+body.article-rich main > .section > .cards-feature-wrapper {
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+
+body.article-rich main > .section > .default-content-wrapper:has(> h2:last-child) + .cards-feature-wrapper {
+  margin-top: 20px;
+}
+
+body.article-rich main .default-content-wrapper h3,
+body.article-rich main .default-content-wrapper h4 {
+  margin-bottom: 20px;
+  color: var(--text-color);
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 18px;
+}
+
+body.article-rich.burgundy main > .section:not(.hero-article-container) > div:first-child h2:first-of-type {
+  font-size: 28px;
+  line-height: 28px;
+}
+
+@media (width >= 768px) {
+  /* bright-red posts set body copy at 18px; burgundy posts keep the article 16px */
+  body.article-rich:not(.burgundy) main > .section:not(.disclaimer) .default-content-wrapper :is(p, li) {
+    font-size: 18px;
+    line-height: 29.7px;
+  }
+
+  body.article-rich main > .section:has(+ .section.disclaimer) > .default-content-wrapper:last-child > p:last-child {
+    font-size: 24px;
+  }
+
+  body.article-rich main .default-content-wrapper h2 {
+    font-size: 32px;
+    line-height: 32px;
+  }
+
+  body.article-rich.burgundy main .default-content-wrapper h2 {
+    font-size: 25px;
+    line-height: 25px;
+  }
+
+  body.article-rich main > .section:not(.hero-article-container) > div:first-child h2:first-of-type {
+    font-size: 40px;
+    line-height: 40px;
+  }
+
+  body.article-rich main .default-content-wrapper h3 {
+    font-size: 28px;
+    line-height: 28px;
+  }
+
+  body.article-rich main .default-content-wrapper h4 {
+    font-size: 22px;
+    line-height: 22px;
+  }
+
+  body.article-rich.burgundy main > .section:not(.hero-article-container) > div:first-child h2:first-of-type {
+    font-size: 28px;
+    line-height: 28px;
+  }
+}
+
+/*
  * landing + info-page templates (template metadata -> body.landing / body.info-page)
  * Source: Elementor landing pages; the informational/legal pages share the same
  * conventions, so the rules apply to both (:is() keeps the body.landing specificity).
@@ -710,6 +835,105 @@ body.article main .default-content-wrapper h6 {
   /* footnote rows after the block span the right column */
   :is(body.landing, body.info-page) main > .section.split > div:not(.default-content-wrapper) + .default-content-wrapper {
     grid-column: 2;
+  }
+}
+
+/*
+ * listing template (template metadata -> body.listing)
+ * Source: Elementor archive pages /en/investments-content/, /en/articles-archive/,
+ * /en/insights-archive/ and /en/investments-content/saved-articles/.
+ * Content column 1150px (x145 at 1440), 23px gutters on mobile.
+ * Intro headings: 20-24px, left aligned above a post grid; centred in a "fade" section.
+ * Section style: fade (white -> #f2f5f7 vertical gradient, investments-content Highlights).
+ * :where() keeps the wrapper rule at global specificity so full-bleed hero wrappers still win.
+ */
+:where(body.listing) main > .section > div {
+  box-sizing: border-box;
+  max-width: 1196px;
+  padding: 0 23px;
+}
+
+body.listing main > .section > .default-content-wrapper {
+  padding-top: 70px;
+  padding-bottom: 20px;
+  text-align: start;
+}
+
+body.listing main > .section > .default-content-wrapper h2 {
+  max-width: none;
+  margin: 0;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+body.listing main > .section.fade {
+  padding-bottom: 100px;
+  background-image: linear-gradient(180deg, #fff 0%, #f2f5f7 100%);
+}
+
+body.listing main > .section.fade > .default-content-wrapper {
+  padding-top: 42px;
+  padding-bottom: 47px;
+  text-align: center;
+}
+
+/* plain post grid (Latest Insights): 100px to the next section */
+body.listing main > .section > .cards-feature-wrapper > .cards-feature.posts:not(.featured, .list, .text) {
+  padding-bottom: 100px;
+}
+
+body.listing main > .section.fade > .default-content-wrapper h2 {
+  font-size: 22px;
+  line-height: 26px;
+}
+
+/* empty-state copy on its own (saved-articles; the bottom keeps the room of the
+   source's JS-only "Clear All Favorites" button) */
+body.listing main > .section > .default-content-wrapper:only-child {
+  padding-top: 97px;
+  padding-bottom: 217px;
+  text-align: center;
+}
+
+@media (width >= 900px) {
+  body.listing main > .section > .default-content-wrapper h2 {
+    font-size: 24px;
+    line-height: 24px;
+  }
+
+  body.listing main > .section.fade > .default-content-wrapper {
+    padding-top: 70px;
+    padding-bottom: 70px;
+  }
+
+  body.listing main > .section.fade > .default-content-wrapper h2 {
+    font-size: 28px;
+    line-height: 30px;
+  }
+}
+
+/*
+ * category-listing template (metadata "listing, category-listing" -> body.listing.category-listing)
+ * Source: Elementor archive /en/category/<slug>/ (hero = saved-articles banner, loop grid of
+ * Latest Insights cards). Grid 70px below the strip, 9 per page, 55px page buttons
+ * (current included), 50px from the pagination to the footer.
+ */
+body.category-listing main > .section > .cards-feature-wrapper:first-child > .cards-feature.posts {
+  padding-top: 70px;
+  padding-bottom: 50px;
+}
+
+body.category-listing .cards-feature.posts .cards-feature-page[aria-current='page'] {
+  width: 55px;
+  height: 55px;
+}
+
+@media (width >= 900px) {
+  /* strip = linha-degrade-desktop-1.jpg (1920x17, #cd092f to 12%, then to #3a388b),
+     background-size cover on a 19px row: 2146px wide, centred */
+  body.category-listing main > .section > .hero-banner-wrapper:has(> .hero-banner.compact.short)::after {
+    background: linear-gradient(90deg, #cd092f 12%, #3a388b 100%) center / max(100%, 2146px) 100%;
   }
 }
 

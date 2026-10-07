@@ -1,4 +1,7 @@
-const OPTION_CLASSES = ['more', 'premium', 'icons'];
+const OPTION_CLASSES = ['more', 'premium', 'icons', 'faq', 'article'];
+
+/** Options whose items all start closed. */
+const CLOSED_OPTIONS = ['premium', 'faq', 'article'];
 
 const DEFAULT_VISIBLE = 3;
 
@@ -16,7 +19,9 @@ function visibleCount(block) {
 
 /**
  * Accordion: one row per item, [label | answer rich text].
- * One item open at a time; the first item opens by default (all start closed with `premium`).
+ * One item open at a time; the first item opens by default (all start closed with `premium`
+ * and `article`).
+ * `faq`: all start closed and every question toggles independently.
  * With `more` only the first N items show until the "Show more" toggle reveals the rest.
  * @param {Element} block
  */
@@ -33,7 +38,8 @@ export default function decorate(block) {
 
     const details = document.createElement('details');
     details.className = 'accordion-item';
-    details.name = group;
+    // faq: questions open and close independently (several can be open at once)
+    if (!active.includes('faq')) details.name = group;
 
     const summary = document.createElement('summary');
     summary.className = 'accordion-item-label';
@@ -56,7 +62,7 @@ export default function decorate(block) {
     items.push(details);
   });
 
-  if (items.length && !active.includes('premium')) items[0].open = true;
+  if (items.length && !active.some((c) => CLOSED_OPTIONS.includes(c))) items[0].open = true;
 
   block.replaceChildren(...items);
 

@@ -4,7 +4,17 @@ const OPTION_CLASSES = [
   'boxed', 'elevated', 'overlap', 'posts', 'product', 'icon-left',
   'links', 'icons', 'carousel', 'circle', 'steps',
   'accent', 'divided', 'highlight', 'gradient',
+  'featured', 'list', 'text', 'slides', 'autoplay',
 ];
+
+/** `slides` + `autoplay`: delay between slides, as on the source carousel. */
+const AUTOPLAY_DELAY = 5000;
+
+/** `paged-<n>` option: show n items per page with numbered page buttons. */
+const PAGED_OPTION = /^paged-(\d+)$/;
+
+/** Post byline ("By Admin"). */
+const BYLINE = /^by\s+\S/i;
 
 /** Options whose single link should make the whole tile clickable. */
 const STRETCH_LINK_OPTIONS = ['links', 'posts'];
@@ -85,6 +95,24 @@ function buildItem(row, active) {
     }
   });
 
+  // posts: date / category badge before the title share a meta row; "By <author>" byline
+  if (active.includes('posts')) {
+    const heading = body.querySelector(':scope > :is(h2, h3, h4)');
+    const lead = heading ? [...body.children].slice(0, [...body.children].indexOf(heading))
+      .filter((el) => el.tagName === 'P') : [];
+    if (lead.length) {
+      const meta = document.createElement('div');
+      meta.className = 'cards-feature-meta';
+      lead[0].before(meta);
+      meta.append(...lead);
+    }
+    const last = body.lastElementChild;
+    if (heading && last && last !== heading && last.tagName === 'P'
+      && !last.querySelector('a') && BYLINE.test(last.textContent.trim())) {
+      last.classList.add('cards-feature-byline');
+    }
+  }
+
   // last link-only paragraph is the item CTA
   const cta = [...body.querySelectorAll(':scope > p')].reverse().find(isLinkOnly);
   if (cta) cta.classList.add('cards-feature-cta');
@@ -142,6 +170,156 @@ function buildCarousel(block, ul) {
 }
 
 /**
+ * `carousel slides`: one full-width slide at a time. Each slide shows a row of position
+ * bars under its image (its own bar highlighted; click to jump), prev/next arrows sit
+ * centred below, the viewport takes the active slide's height, and the last slide
+ * wraps to the first. `autoplay` advances every 5s, pausing on hover/focus and when
+ * the user prefers reduced motion.
+ * @param {Element} block
+ * @param {HTMLUListElement} ul
+ * @param {string[]} active option classes
+ */
+function buildSlides(block, ul, active) {
+  const slides = [...ul.children];
+  const viewport = document.createElement('div');
+  viewport.className = 'cards-feature-viewport';
+  viewport.append(ul);
+  let index = 0;
+
+  const go = (to) => {
+    index = (to + slides.length) % slides.length;
+    ul.style.transform = `translateX(${-100 * index}%)`;
+    viewport.style.height = `${slides[index].offsetHeight}px`;
+    slides.forEach((slide, i) => {
+      slide.setAttribute('aria-hidden', i === index ? 'false' : 'true');
+      slide.inert = i !== index;
+    });
+  };
+
+  slides.forEach((slide, i) => {
+    // intro row: heading beside its description (paragraphs up to the next heading/list)
+    const body = slide.querySelector('.cards-feature-body');
+    const heading = body && body.querySelector(':scope > :is(h2, h3)');
+    if (heading) {
+      const desc = [];
+      let el = heading.nextElementSibling;
+      while (el && el.tagName === 'P') {
+        desc.push(el);
+        el = el.nextElementSibling;
+      }
+      const intro = document.createElement('div');
+      intro.className = 'cards-feature-intro';
+      const text = document.createElement('div');
+      text.className = 'cards-feature-desc';
+      heading.before(intro);
+      text.append(...desc);
+      intro.append(heading, text);
+    }
+
+    slide.setAttribute('role', 'group');
+    slide.setAttribute('aria-roledescription', 'slide');
+    slide.setAttribute('aria-label', `${i + 1} of ${slides.length}`);
+    const bars = document.createElement('div');
+    bars.className = 'cards-feature-bars';
+    slides.forEach((target, j) => {
+      const bar = document.createElement('button');
+      bar.type = 'button';
+      bar.className = 'cards-feature-bar';
+      const label = target.querySelector('h2, h3, h4');
+      bar.setAttribute('aria-label', label ? label.textContent.trim() : `Slide ${j + 1}`);
+      if (j === i) bar.setAttribute('aria-current', 'true');
+      bar.addEventListener('click', () => go(j));
+      bars.append(bar);
+    });
+    const image = slide.querySelector('.cards-feature-image');
+    if (image) image.after(bars);
+    else slide.prepend(bars);
+  });
+
+  const nav = document.createElement('div');
+  nav.className = 'cards-feature-nav';
+  const prev = document.createElement('button');
+  prev.type = 'button';
+  prev.className = 'cards-feature-prev';
+  prev.setAttribute('aria-label', 'Previous slide');
+  const next = document.createElement('button');
+  next.type = 'button';
+  next.className = 'cards-feature-next';
+  next.setAttribute('aria-label', 'Next slide');
+  prev.addEventListener('click', () => go(index - 1));
+  next.addEventListener('click', () => go(index + 1));
+  nav.append(prev, next);
+
+  block.setAttribute('role', 'region');
+  block.setAttribute('aria-roledescription', 'carousel');
+  block.replaceChildren(viewport, nav);
+  go(0);
+  if (window.ResizeObserver) {
+    const observer = new ResizeObserver(() => go(index));
+    slides.forEach((slide) => observer.observe(slide));
+  }
+  window.addEventListener('resize', () => go(index));
+
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!active.includes('autoplay') || reduced || slides.length < 2) return;
+  let timer;
+  const stop = () => clearInterval(timer);
+  const start = () => {
+    stop();
+    timer = setInterval(() => go(index + 1), AUTOPLAY_DELAY);
+  };
+  block.addEventListener('mouseenter', stop);
+  block.addEventListener('mouseleave', start);
+  block.addEventListener('focusin', stop);
+  block.addEventListener('focusout', (e) => { if (!block.contains(e.relatedTarget)) start(); });
+  start();
+}
+
+/**
+ * Client-side pagination: `size` items per page, numbered page buttons below the list.
+ * @param {Element} block
+ * @param {HTMLUListElement} ul
+ * @param {number} size
+ */
+function buildPagination(block, ul, size) {
+  const items = [...ul.children];
+  const pages = Math.ceil(items.length / size);
+  if (pages < 2) return;
+
+  const nav = document.createElement('nav');
+  nav.className = 'cards-feature-pagination';
+  nav.setAttribute('aria-label', 'Pagination');
+  const buttons = [];
+
+  const show = (page, focus) => {
+    items.forEach((item, i) => {
+      item.hidden = Math.floor(i / size) !== page;
+    });
+    buttons.forEach((btn, i) => {
+      if (i === page) btn.setAttribute('aria-current', 'page');
+      else btn.removeAttribute('aria-current');
+    });
+    if (focus) {
+      if (block.getBoundingClientRect().top < 0) block.scrollIntoView({ behavior: 'smooth' });
+      buttons[page].focus({ preventScroll: true });
+    }
+  };
+
+  for (let i = 0; i < pages; i += 1) {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'cards-feature-page';
+    btn.textContent = `${i + 1}`;
+    btn.setAttribute('aria-label', `Page ${i + 1}`);
+    btn.addEventListener('click', () => show(i, true));
+    buttons.push(btn);
+  }
+  nav.append(...buttons);
+  block.append(nav);
+  show(0, false);
+}
+
+/**
  * Cards (Feature): repeated feature items.
  * Content model: one row per item, [icon/image | heading + text / list / link];
  * the image cell and the heading are optional.
@@ -157,6 +335,17 @@ export default function decorate(block) {
     if (li) ul.append(li);
   });
 
-  if (active.includes('carousel')) buildCarousel(block, ul);
-  else block.replaceChildren(ul);
+  if (active.includes('carousel') && active.includes('slides')) {
+    buildSlides(block, ul, active);
+    return;
+  }
+  if (active.includes('carousel')) {
+    buildCarousel(block, ul);
+    return;
+  }
+  block.replaceChildren(ul);
+
+  const paged = [...block.classList].map((c) => c.match(PAGED_OPTION)).find(Boolean);
+  const size = paged ? parseInt(paged[1], 10) : 0;
+  if (size > 0) buildPagination(block, ul, size);
 }

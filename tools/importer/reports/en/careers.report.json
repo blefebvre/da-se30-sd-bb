@@ -1,8 +1,17 @@
 {
-  "status": "failed",
-  "url": "https://bradescobank.com/en/careers/?fragment=internship",
+  "status": "success",
+  "url": "https://bradescobank.com/en/careers/",
   "path": "en/careers",
-  "timestamp": "2026-10-03T06:08:08.507Z",
-  "error": "page.goto: Target page, context or browser has been closed",
-  "errorStack": "page.goto: Target page, context or browser has been closed\n    at processUrl (/home/node/.excat-marketplaces/excat-marketplace/excat/skills/excat-content-import/scripts/run-bulk-import.js:599:20)\n    at async main (/home/node/.excat-marketplaces/excat-marketplace/excat/skills/excat-content-import/scripts/run-bulk-import.js:956:22)"
+  "timestamp": "2026-10-06T21:01:37.689Z",
+  "title": "Careers – Bradesco Bank",
+  "template": "landing",
+  "fragment": "",
+  "blocks": [
+    "hero-promo",
+    "hero-promo",
+    "columns-media",
+    "columns-media",
+    "tabs",
+    "hero-banner"
+  ]
 }

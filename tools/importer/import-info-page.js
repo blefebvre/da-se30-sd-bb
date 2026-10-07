@@ -29,6 +29,7 @@ import tableArticleParser from './parsers/table-article.js';
 
 // TRANSFORMER IMPORTS (order matters: cleanup -> info-page cleanup -> landing cleanup -> sections)
 import cleanupTransformer from './transformers/bradesco-cleanup.js';
+import linksTransformer from './transformers/bradesco-links.js';
 import infoPageTransformer from './transformers/bradesco-info-page.js';
 import landingTransformer from './transformers/bradesco-landing.js';
 import sectionsTransformer from './transformers/bradesco-landing-sections.js';
@@ -601,7 +602,9 @@ const INSTANCE_OPTIONS = {
 
 const BLOCK_ATTR = 'data-excat-block';
 
-const transformers = [cleanupTransformer, infoPageTransformer, landingTransformer, sectionsTransformer];
+const transformers = [
+  cleanupTransformer, infoPageTransformer, landingTransformer, sectionsTransformer, linksTransformer,
+];
 
 function executeTransformers(hookName, element, payload) {
   const enhancedPayload = { ...payload, template: PAGE_TEMPLATE };

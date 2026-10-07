@@ -223,9 +223,112 @@
         "https://bradescobank.com/en/the-power-of-compounding/"
       ],
       "representativeUrl": "https://bradescobank.com/en/exploring-investment-products-in-the-u-s/",
-      "description": "Single post built with rich Elementor layout (tabs/accordions/carousels/charts)",
-      "blocks": [],
-      "urlPattern": "/en/*"
+      "description": "Single post built with a rich Elementor layout inside the post content (nested accordion, carousel, grid boxes, HTML widgets, compound-interest calculator shortcode); same post chrome as \"article\"",
+      "blocks": [
+        {
+          "name": "hero-article",
+          "instances": [
+            ".elementor-location-single > .elementor-element-b710887"
+          ]
+        },
+        {
+          "name": "accordion",
+          "instances": [
+            ".elementor-widget-theme-post-content .elementor-widget-n-accordion"
+          ]
+        },
+        {
+          "name": "cards-feature",
+          "instances": [
+            ".elementor-widget-theme-post-content .elementor-widget-n-carousel",
+            ".elementor-widget-theme-post-content .e-con.e-grid:has(> .e-con-inner > .e-con)",
+            ".elementor-widget-theme-post-content .e-con.e-grid:has(> .e-con)",
+            ".elementor-widget-theme-post-content .elementor-widget-html:has(.compounding-steps)",
+            ".elementor-widget-theme-post-content .elementor-widget-html:has(.investment-options)"
+          ]
+        },
+        {
+          "name": "table-article",
+          "instances": [
+            ".elementor-widget-theme-post-content .elementor-widget-html table",
+            ".elementor-widget-theme-post-content .elementor-widget-text-editor table"
+          ]
+        },
+        {
+          "name": "compound-calculator",
+          "instances": [
+            ".elementor-widget-theme-post-content .elementor-widget-shortcode:has(.bdc-calc)"
+          ]
+        }
+      ],
+      "urlPattern": "/en/*",
+      "sections": [
+        {
+          "id": "1",
+          "name": "post-title-banner",
+          "selector": [
+            ".elementor-location-single > .elementor-element-b710887"
+          ],
+          "style": null,
+          "blocks": [
+            "hero-article"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "2",
+          "name": "decorative-gradient-line (dropped)",
+          "selector": [
+            ".elementor-location-single > .elementor-element-df751d4"
+          ],
+          "style": null,
+          "blocks": [],
+          "defaultContent": []
+        },
+        {
+          "id": "3",
+          "name": "blog-sub-menu (dropped as chrome)",
+          "selector": [
+            ".elementor-location-single > .bb-blog-menu"
+          ],
+          "style": null,
+          "blocks": [],
+          "defaultContent": []
+        },
+        {
+          "id": "4",
+          "name": "article-body",
+          "selector": [
+            ".elementor-location-single > .elementor-element-0fa6826"
+          ],
+          "style": null,
+          "blocks": [
+            "accordion",
+            "cards-feature",
+            "table-article",
+            "compound-calculator"
+          ],
+          "defaultContent": [
+            ".elementor-element-235adcb .elementor-shortcode",
+            ".elementor-widget-theme-post-content .elementor-widget-heading",
+            ".elementor-widget-theme-post-content .elementor-widget-text-editor",
+            ".elementor-widget-theme-post-content .elementor-widget-image"
+          ]
+        },
+        {
+          "id": "5",
+          "name": "disclaimer (post-content divider + small print)",
+          "selector": [
+            ".elementor-widget-theme-post-content .e-con:has(> .e-con-inner > .elementor-widget-divider)",
+            ".elementor-widget-theme-post-content .e-con:has(> .elementor-widget-divider)"
+          ],
+          "style": "disclaimer",
+          "blocks": [],
+          "defaultContent": [
+            ".elementor-widget-theme-post-content .e-con:has(> .e-con-inner > .elementor-widget-divider) .elementor-widget-text-editor"
+          ]
+        }
+      ]
     },
     {
       "name": "landing",
@@ -1900,8 +2003,145 @@
       ],
       "representativeUrl": "https://bradescobank.com/en/investments-content/",
       "description": "Article listing/archive (loop grid of post cards)",
-      "blocks": [],
-      "urlPattern": "/en/*"
+      "blocks": [
+        {
+          "name": "hero-video",
+          "instances": [
+            ".elementor-12376 .elementor-element-582fe00"
+          ]
+        },
+        {
+          "name": "hero-banner",
+          "instances": [
+            ".elementor-8560 .elementor-element-0a2dd9b",
+            ".elementor-8507 .elementor-element-055b7fa",
+            ".elementor-12632 .elementor-element-7d911c2"
+          ]
+        },
+        {
+          "name": "cards-feature",
+          "instances": [
+            ".elementor-12376 .elementor-element-557535a .custom-posts-grid",
+            ".elementor-12376 .elementor-element-08b96a1",
+            ".elementor-8560 .elementor-element-5f0fbb7",
+            ".elementor-8507 .elementor-element-9bbcacf"
+          ]
+        },
+        {
+          "name": "cards-audience",
+          "instances": [
+            ".elementor-12376 .elementor-element-84ac3c9"
+          ]
+        }
+      ],
+      "urlPattern": "/en/*",
+      "sections": [
+        {
+          "id": "listing-hero",
+          "name": "listing-hero",
+          "selector": [
+            ".elementor-12376 .elementor-element-582fe00",
+            ".elementor-8560 .elementor-element-0a2dd9b",
+            ".elementor-8507 .elementor-element-055b7fa",
+            ".elementor-12632 .elementor-element-7d911c2"
+          ],
+          "style": null,
+          "blocks": [
+            "hero-video",
+            "hero-banner"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "listing-strip",
+          "name": "listing-strip (decorative gradient/red strip under the hero, dropped)",
+          "selector": [
+            ".elementor-12376 .elementor-element-62594cb",
+            ".elementor-8560 .elementor-element-cf4cd2b",
+            ".elementor-8507 .elementor-element-68f1a2b",
+            ".elementor-12632 .elementor-element-62594cb"
+          ],
+          "style": null,
+          "blocks": [],
+          "defaultContent": []
+        },
+        {
+          "id": "listing-blog-menu",
+          "name": "listing-blog-menu (blog sub-menu: Home pill + Saved Articles, dropped as chrome)",
+          "selector": [
+            ".elementor-12376 .elementor-element-5be4d04",
+            ".elementor-12632 .elementor-element-0839dfe"
+          ],
+          "style": null,
+          "blocks": [],
+          "defaultContent": []
+        },
+        {
+          "id": "listing-highlights",
+          "name": "listing-highlights",
+          "selector": [
+            ".elementor-12376 .elementor-element-65b7b51"
+          ],
+          "style": "fade",
+          "blocks": [
+            "cards-feature"
+          ],
+          "defaultContent": [
+            ".elementor-12376 .elementor-element-c5e1a42"
+          ]
+        },
+        {
+          "id": "listing-latest",
+          "name": "listing-latest",
+          "selector": [
+            ".elementor-12376 .elementor-element-f7af171"
+          ],
+          "style": null,
+          "blocks": [
+            "cards-feature"
+          ],
+          "defaultContent": [
+            ".elementor-12376 .elementor-element-69c13d9"
+          ]
+        },
+        {
+          "id": "listing-categories",
+          "name": "listing-categories",
+          "selector": [
+            ".elementor-12376 .elementor-element-84ac3c9"
+          ],
+          "style": null,
+          "blocks": [
+            "cards-audience"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "listing-archive",
+          "name": "listing-archive",
+          "selector": [
+            ".elementor-8560 .elementor-element-18b7df7",
+            ".elementor-8507 .elementor-element-b348263"
+          ],
+          "style": null,
+          "blocks": [
+            "cards-feature"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "listing-favorites",
+          "name": "listing-favorites (saved-articles empty state)",
+          "selector": [
+            ".elementor-12632 .elementor-element-1deedd6"
+          ],
+          "style": null,
+          "blocks": [],
+          "defaultContent": [
+            ".elementor-12632 .elementor-element-1deedd6 .no-favorites"
+          ]
+        }
+      ]
     },
     {
       "name": "category-listing",
@@ -1912,8 +2152,79 @@
       ],
       "representativeUrl": "https://bradescobank.com/en/category/videos/",
       "description": "Blog category archive",
-      "blocks": [],
-      "urlPattern": "/en/*"
+      "blocks": [
+        {
+          "name": "hero-banner",
+          "instances": [
+            ".elementor-13031 .elementor-element-23b3058",
+            ".elementor-12641 .elementor-element-ef7e68f",
+            ".elementor-13035 .elementor-element-9644ee6"
+          ]
+        },
+        {
+          "name": "cards-feature",
+          "instances": [
+            ".elementor-13031 .elementor-element-82e923b",
+            ".elementor-12641 .elementor-element-82e923b",
+            ".elementor-13035 .elementor-element-82e923b"
+          ]
+        }
+      ],
+      "urlPattern": "/en/*",
+      "sections": [
+        {
+          "id": "category-hero",
+          "name": "category-hero",
+          "selector": [
+            ".elementor-13031 .elementor-element-23b3058",
+            ".elementor-12641 .elementor-element-ef7e68f",
+            ".elementor-13035 .elementor-element-9644ee6"
+          ],
+          "style": null,
+          "blocks": [
+            "hero-banner"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "category-strip",
+          "name": "category-strip (decorative gradient strip under the hero, dropped)",
+          "selector": [
+            ".elementor-13031 .elementor-element-545cf99",
+            ".elementor-12641 .elementor-element-21ce4a6",
+            ".elementor-13035 .elementor-element-21ce4a6"
+          ],
+          "style": null,
+          "blocks": [],
+          "defaultContent": []
+        },
+        {
+          "id": "category-blog-menu",
+          "name": "category-blog-menu (blog sub-menu: Home pill + Saved Articles, dropped as chrome)",
+          "selector": [
+            ".elementor-13031 .elementor-element-02cdc07",
+            ".elementor-12641 .elementor-element-0c3c125",
+            ".elementor-13035 .elementor-element-2d91cef"
+          ],
+          "style": null,
+          "blocks": [],
+          "defaultContent": []
+        },
+        {
+          "id": "category-posts",
+          "name": "category-posts",
+          "selector": [
+            ".elementor-13031 .elementor-element-0d46745",
+            ".elementor-12641 .elementor-element-0d46745",
+            ".elementor-13035 .elementor-element-0d46745"
+          ],
+          "style": null,
+          "blocks": [
+            "cards-feature"
+          ],
+          "defaultContent": []
+        }
+      ]
     },
     {
       "name": "faq-hub",
@@ -1923,8 +2234,63 @@
       ],
       "representativeUrl": "https://bradescobank.com/en/personal-bank/faq/",
       "description": "FAQ hub with category tabs and Q&A accordion",
-      "blocks": [],
-      "urlPattern": "/en/*"
+      "blocks": [
+        {
+          "name": "hero-banner",
+          "instances": [
+            ".elementor-12036 .elementor-element-937bd0f",
+            ".elementor-17691 .elementor-element-a5dc729"
+          ]
+        },
+        {
+          "name": "tabs",
+          "instances": [
+            ".elementor-12036 .elementor-element-8e9edbe .faq",
+            ".elementor-17691 .elementor-element-4fa91f0 .faq",
+            ".elementor-widget-shortcode .faq"
+          ]
+        }
+      ],
+      "urlPattern": "/en/*",
+      "sections": [
+        {
+          "id": "faq-hero",
+          "name": "faq-hero",
+          "selector": [
+            ".elementor-12036 .elementor-element-937bd0f",
+            ".elementor-17691 .elementor-element-a5dc729"
+          ],
+          "style": null,
+          "blocks": [
+            "hero-banner"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "faq-gradient-line",
+          "name": "faq-gradient-line (empty, dropped)",
+          "selector": [
+            ".elementor-12036 .elementor-element-a3b4bbf",
+            ".elementor-17691 .elementor-element-e54f8fd"
+          ],
+          "style": null,
+          "blocks": [],
+          "defaultContent": []
+        },
+        {
+          "id": "faq-categories",
+          "name": "faq-categories",
+          "selector": [
+            ".elementor-12036 .elementor-element-8e9edbe",
+            ".elementor-17691 .elementor-element-4fa91f0"
+          ],
+          "style": null,
+          "blocks": [
+            "tabs"
+          ],
+          "defaultContent": []
+        }
+      ]
     },
     {
       "name": "card-activation",

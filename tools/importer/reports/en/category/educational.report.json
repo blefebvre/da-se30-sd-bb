@@ -1,0 +1,12 @@
+{
+  "status": "success",
+  "url": "https://bradescobank.com/en/category/educational/",
+  "path": "en/category/educational",
+  "timestamp": "2026-10-07T14:11:19.201Z",
+  "title": "Educational – Bradesco Bank",
+  "template": "category-listing",
+  "blocks": [
+    "hero-banner",
+    "cards-feature"
+  ]
+}

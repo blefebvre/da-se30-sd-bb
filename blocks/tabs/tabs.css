@@ -450,3 +450,151 @@ main > .section.tabs-fragment-section[hidden] {
     font-size: 19px;
   }
 }
+
+/* stylelint-disable no-descending-specificity -- faq overrides follow the shared rules */
+
+/* ---------- faq: grey band of category cards, gradient bar, accordion (faq) panels ----------
+ * Values measured from bradescobank.com/en/personal-bank/faq/ (custom swiper + jQuery toggles).
+ * Mobile: one-card carousel (two from 640px) between round arrows; four cards from 768px.
+ * Wider than 768px: 950px column, no side padding.
+ */
+main > .section > .tabs-wrapper:has(> .tabs.faq) {
+  max-width: none;
+  padding: 0;
+}
+
+.tabs.faq {
+  --tabs-faq-arrow-next: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 14' fill='none' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M1.25 1.25L6.75 7l-5.5 5.75'/%3E%3C/svg%3E");
+  --tabs-faq-arrow-prev: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 14' fill='none' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6.75 1.25L1.25 7l5.5 5.75'/%3E%3C/svg%3E");
+  --tabs-faq-arrow-bg: linear-gradient(80deg, #cc092f, #3d3889);
+
+  padding: 0;
+}
+
+.tabs.faq .tabs-bar {
+  position: relative;
+  padding: 60px 80px;
+  background-color: #f6f6f6;
+}
+
+.tabs.faq .tabs-list {
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+
+/* the button is the card; its 15px/12px margins make up the 180px-high slide */
+.tabs.faq .tabs-tab {
+  display: flex;
+  flex: 0 0 calc(100% - 24px);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-width: 0;
+  min-height: 150px;
+  margin: 15px 12px;
+  border: 0;
+  padding: 30px 20px;
+  background-color: #fff;
+  box-shadow: 0 4px 10px rgb(0 0 0 / 25%);
+  color: var(--text-color);
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 22px;
+  letter-spacing: normal;
+  text-align: center;
+  text-transform: none;
+  opacity: 0.5;
+  scroll-snap-align: start;
+  scroll-margin-left: 12px;
+}
+
+.tabs.faq .tabs-tab[aria-selected="true"] {
+  background-color: #fff;
+  opacity: 1;
+}
+
+.tabs.faq .tabs-tab-icon {
+  display: block;
+  margin-bottom: 10px;
+  line-height: 0;
+}
+
+.tabs.faq .tabs-tab-icon img {
+  width: auto;
+  height: 32px;
+}
+
+.tabs.faq .tabs-tab-label {
+  display: block;
+}
+
+/* 40px gradient circles, centred 48.5px from the band edges */
+.tabs.faq .tabs-scroll {
+  position: absolute;
+  top: 50%;
+  z-index: 1;
+  width: 40px;
+  height: 40px;
+  margin: -20px 0 0;
+  border: 0;
+  border-radius: 50%;
+  padding: 0;
+  background: var(--tabs-faq-arrow-next) center / 8px 14px no-repeat, var(--tabs-faq-arrow-bg);
+  cursor: pointer;
+}
+
+.tabs.faq .tabs-scroll-prev {
+  left: 28.5px;
+  background-image: var(--tabs-faq-arrow-prev), var(--tabs-faq-arrow-bg);
+}
+
+.tabs.faq .tabs-scroll-next {
+  right: 28.5px;
+}
+
+.tabs.faq .tabs-scroll:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+/* gradient separator between the band and the questions */
+.tabs.faq .tabs-panels::before {
+  content: '';
+  display: block;
+  height: 20px;
+  background-image: linear-gradient(90deg, #cc092f 16.12%, #37398c 100%);
+}
+
+.tabs.faq .tabs-panel {
+  box-sizing: border-box;
+  max-width: 950px;
+  margin: 0 auto;
+  padding: 60px 30px 90px;
+}
+
+@media (width >= 640px) {
+  .tabs.faq .tabs-tab {
+    flex-basis: calc(50% - 24px);
+  }
+}
+
+@media (width >= 768px) {
+  .tabs.faq .tabs-tab {
+    flex-basis: calc(25% - 24px);
+  }
+
+  .tabs.faq .tabs-scroll {
+    display: none;
+  }
+}
+
+@media (width > 768px) {
+  .tabs.faq .tabs-bar {
+    padding: 60px max(0px, (100% - 950px) / 2);
+  }
+
+  .tabs.faq .tabs-panel {
+    padding: 60px 0 90px;
+  }
+}

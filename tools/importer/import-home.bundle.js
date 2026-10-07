@@ -2969,6 +2969,48 @@ var CustomImportScript = (() => {
     }
   }
 
+  // tools/importer/transformers/bradesco-links.js
+  var SOURCE_HOSTS = ["bradescobank.com", "www.bradescobank.com"];
+  var REDIRECTS = {
+    "/privacy-and-security.html": "/en/privacy-and-cookies",
+    "/opt-out-form.html": "/en/opt-out-form",
+    "/real-estate": "/en/real-estate",
+    "/help": "/en/help",
+    "/en/signature-gold": "/en/credit-card-signature-gold",
+    "/en/investments": "/en/personal-bank/investments",
+    "/certificate-of-deposit-bradesco": "/en/certificate-of-deposit-bradesco",
+    "/en/credit-card": "/en/credit-cards",
+    "/apex-fee-schedule": "https://bradescobank.com/wp-content/uploads/2026/01/APEX-Fee-Schedule-01.2026.pdf"
+  };
+  var KEEP_ABSOLUTE = /^\/(assets|wp-content|wp-admin|wp-includes|wp-json|feed)(\/|$)/;
+  function toSitePath(href) {
+    if (!href) return null;
+    let url;
+    try {
+      url = new URL(href, "https://bradescobank.com/");
+    } catch (e) {
+      return null;
+    }
+    if (!SOURCE_HOSTS.includes(url.hostname)) return null;
+    if (!/^https?:$/.test(url.protocol)) return null;
+    if (KEEP_ABSOLUTE.test(url.pathname)) return null;
+    let path = url.pathname.replace(/\/+$/, "") || "/";
+    if (REDIRECTS[path]) path = REDIRECTS[path];
+    if (/^https?:/.test(path)) return path;
+    if (path === "/en" || path === "/index") path = "/";
+    if (/^\/(pt|es)(\/|$)/.test(path)) return null;
+    return `${path}${url.search}${url.hash}`;
+  }
+  function transform2(hookName, element, payload) {
+    if (hookName !== "afterTransform") return;
+    element.querySelectorAll("a[href]").forEach((a) => {
+      const raw = a.getAttribute("href");
+      if (!raw || /^(#|mailto:|tel:|javascript:)/i.test(raw)) return;
+      const path = toSitePath(raw);
+      if (path) a.setAttribute("href", path);
+    });
+  }
+
   // tools/importer/transformers/bradesco-sections.js
   var SECTION_MARKER_ATTR = "data-excat-section-id";
   function querySection(root, selectors) {
@@ -2980,7 +3022,7 @@ var CustomImportScript = (() => {
     }
     return null;
   }
-  function transform2(hookName, element, payload) {
+  function transform3(hookName, element, payload) {
     const sections = payload && payload.template && payload.template.sections || [];
     if (sections.length < 2) return;
     if (hookName === "beforeTransform") {
@@ -3045,7 +3087,8 @@ var CustomImportScript = (() => {
   };
   var transformers = [
     transform,
-    ...PAGE_TEMPLATE.sections && PAGE_TEMPLATE.sections.length > 1 ? [transform2] : []
+    ...PAGE_TEMPLATE.sections && PAGE_TEMPLATE.sections.length > 1 ? [transform3] : [],
+    transform2
   ];
   function executeTransformers(hookName, element, payload) {
     const enhancedPayload = __spreadProps(__spreadValues({}, payload), { template: PAGE_TEMPLATE });

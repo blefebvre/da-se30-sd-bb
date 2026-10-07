@@ -30,10 +30,15 @@
       "/en/bradesco-lounge/index",
       "/en/other-disclosures/index",
       "/en/cra-public-file/index",
-      "/en/about-us/index"
+      "/en/about-us/index",
+      "/en/investments-content/index",
+      "/en/articles-archive/index",
+      "/en/insights-archive/index",
+      "/en/investing-for-different-client-profiles/index",
+      "/en/the-power-of-compounding/index"
     ],
-    "reuseCount": 17,
-    "lastUsed": "2026-10-03T00:00:00Z"
+    "reuseCount": 22,
+    "lastUsed": "2026-10-05T23:42:27.479488Z"
   },
   "options": [
     {
@@ -95,6 +100,22 @@
     {
       "class": "gradient",
       "label": "Gradient"
+    },
+    {
+      "class": "featured",
+      "label": "Featured"
+    },
+    {
+      "class": "list",
+      "label": "List"
+    },
+    {
+      "class": "text",
+      "label": "Text"
+    },
+    {
+      "class": "paged-<n>",
+      "label": "Paged"
     }
   ],
   "memberVariantIds": [

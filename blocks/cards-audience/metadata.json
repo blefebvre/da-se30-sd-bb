@@ -15,10 +15,11 @@
       "/en/personal-bank/index",
       "https://bradescobank.com/",
       "/en/private-bank/index",
-      "/en/corporate/index"
+      "/en/corporate/index",
+      "/en/investments-content/index"
     ],
-    "reuseCount": 3,
-    "lastUsed": "2026-10-02T17:01:59Z"
+    "reuseCount": 4,
+    "lastUsed": "2026-10-05T21:16:19Z"
   },
   "options": [
     {
@@ -28,6 +29,10 @@
     {
       "class": "compact",
       "label": "Compact"
+    },
+    {
+      "class": "promo",
+      "label": "Promo"
     }
   ],
   "memberVariantIds": [

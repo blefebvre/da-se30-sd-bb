@@ -1,0 +1,20 @@
+{
+  "variantName": "compound-calculator",
+  "baseBlock": "compound-calculator",
+  "canonicalModel": "standalone",
+  "visualCharacteristics": {
+    "colorScheme": "brand-red",
+    "density": "dense",
+    "purpose": "interactive-calculator",
+    "imagePattern": "background-image",
+    "structure": "form panel + results panel with year-by-year table"
+  },
+  "contentPattern": "key | value | label config rows (title, start, contribution, frequency, rate, years, max-years, disclaimer)",
+  "usage": {
+    "pagesUsing": ["https://bradescobank.com/en/the-power-of-compounding/"],
+    "reuseCount": 0,
+    "lastUsed": "2026-10-06"
+  },
+  "options": [],
+  "memberVariantIds": ["compound-calculator"]
+}

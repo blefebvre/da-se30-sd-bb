@@ -1651,3 +1651,763 @@
     margin: 0 -72px;
   }
 }
+
+/* ======================================================================
+ * Listing options (posts): featured, list, text, paged-<n>
+ * plus the posts meta row (date + category pill) and byline
+ * ==================================================================== */
+
+/* ---------- posts meta row: date left, category pill right ---------- */
+.cards-feature.posts .cards-feature-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.cards-feature.posts .cards-feature-meta > p {
+  margin: 0;
+}
+
+/* the date fills the row (the pill, if any, sits at the end) */
+.cards-feature.posts .cards-feature-meta > p:not(.cards-feature-badge) {
+  flex: 1 1 auto;
+}
+
+/* category pill: outlined, red dot, small spaced caps */
+.cards-feature.posts .cards-feature-meta p.cards-feature-badge {
+  position: relative;
+  align-self: flex-start;
+  margin: 0 0 12px auto;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  padding: 0 8px 0 25px;
+  color: var(--text-color);
+  font-size: 10px;
+  line-height: 21px;
+  letter-spacing: 1px;
+  text-align: start;
+  text-transform: uppercase;
+}
+
+.cards-feature.posts .cards-feature-meta p.cards-feature-badge::before {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: var(--cards-feature-red);
+}
+
+.cards-feature.posts .cards-feature-byline {
+  text-transform: uppercase;
+}
+
+/* posts with a category (latest insights): equal rows, 200px image, excerpt */
+.cards-feature.posts:not(.featured, .list, .text) .cards-feature-list:has(.cards-feature-badge) {
+  grid-auto-rows: 1fr;
+}
+
+.cards-feature.posts:not(.featured, .list, .text) .cards-feature-item:has(.cards-feature-badge) .cards-feature-image {
+  height: 200px;
+  aspect-ratio: auto;
+}
+
+.cards-feature.posts:not(.featured, .list, .text) .cards-feature-item:has(.cards-feature-badge) .cards-feature-body {
+  padding-bottom: 20px;
+}
+
+.cards-feature.posts:not(.featured, .list, .text) .cards-feature-item:has(.cards-feature-badge) .cards-feature-body > h3 {
+  padding-right: 20px;
+}
+
+.cards-feature.posts:not(.featured, .list, .text) .cards-feature-item:has(.cards-feature-badge) .cards-feature-body > h3 ~ p:not(.cards-feature-byline) {
+  padding-right: 40px;
+  font-size: 16px;
+  line-height: 22px;
+}
+
+/* ---------- featured (posts): 1 large card + 2 small stacked (full bleed on mobile) ---------- */
+.cards-feature.posts.featured {
+  padding-top: 15px;
+  padding-bottom: 0;
+}
+
+.cards-feature.posts.featured .cards-feature-list {
+  grid-template-columns: minmax(0, 1fr);
+  margin-inline: calc(50% - 50vw);
+}
+
+.cards-feature.posts.featured .cards-feature-item {
+  overflow: hidden;
+}
+
+.cards-feature.posts.featured .cards-feature-image {
+  position: relative;
+  height: 200px;
+  aspect-ratio: auto;
+}
+
+.cards-feature.posts.featured .cards-feature-image picture {
+  position: absolute;
+  inset: 0;
+}
+
+.cards-feature.posts.featured .cards-feature-body {
+  gap: 0;
+  padding: 18px;
+}
+
+.cards-feature.posts.featured .cards-feature-body > h3 {
+  margin-bottom: 12px;
+  font-size: 22px;
+  line-height: 28px;
+}
+
+.cards-feature.posts.featured .cards-feature-body > h3 ~ p:not(.cards-feature-byline) {
+  padding-right: 40px;
+  font-size: 15px;
+  line-height: 22px;
+}
+
+/* ---------- list (posts): one column of horizontal cards ---------- */
+.cards-feature.posts.list .cards-feature-list {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 50px;
+}
+
+.cards-feature.posts.list .cards-feature-item {
+  box-shadow: 2px 4px 10px -4px rgb(0 0 0 / 50%);
+}
+
+.cards-feature.posts.list .cards-feature-image {
+  position: relative;
+  height: 133px;
+  aspect-ratio: auto;
+}
+
+.cards-feature.posts.list .cards-feature-image picture {
+  position: absolute;
+  inset: 0;
+}
+
+.cards-feature.posts.list .cards-feature-body {
+  gap: 0;
+  padding: 14px 20px 0;
+}
+
+.cards-feature.posts.list .cards-feature-body > h3 {
+  font-size: 20px;
+  line-height: 24px;
+}
+
+.cards-feature.posts.list .cards-feature-body > .cards-feature-byline {
+  margin-top: 15px;
+  font-size: 15px;
+  line-height: 24px;
+}
+
+/* ---------- text (posts): text-only cards with a red-to-blue left bar ---------- */
+.cards-feature.posts.text .cards-feature-list {
+  grid-template-columns: minmax(0, 1fr);
+  grid-auto-rows: 1fr;
+  gap: 20px;
+}
+
+.cards-feature.posts.text .cards-feature-item {
+  box-shadow: 0 2px 9px -3px rgb(0 0 0 / 50%);
+}
+
+.cards-feature.posts.text .cards-feature-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  aspect-ratio: 11 / 229;
+  background-image: linear-gradient(0deg, #cc092f 16.1%, #37398c 100%);
+}
+
+.cards-feature.posts.text .cards-feature-body {
+  gap: 0;
+  padding: 0 0 0 30px;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.cards-feature.posts.text .cards-feature-meta {
+  margin-top: 20px;
+  font-size: 18px;
+  line-height: 29.7px;
+}
+
+.cards-feature.posts.text .cards-feature-body > h3 {
+  box-sizing: border-box;
+  min-height: 55px;
+  margin-top: 5px;
+  padding-bottom: 10px;
+  font-size: 20px;
+  line-height: 24px;
+}
+
+.cards-feature.posts.text .cards-feature-body > h3 ~ p {
+  margin-top: 5px;
+}
+
+.cards-feature.posts.text .cards-feature-body > .cards-feature-byline {
+  padding-bottom: 10px;
+  font-size: 14px;
+}
+
+/* ---------- paged-<n>: client-side pagination (items hidden per page) ---------- */
+.cards-feature .cards-feature-item[hidden] {
+  display: none;
+}
+
+.cards-feature .cards-feature-pagination {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 80px;
+}
+
+.cards-feature .cards-feature-page {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 55px;
+  height: 55px;
+  margin: 0;
+  border: 0;
+  border-radius: 50%;
+  padding: 0;
+  background: none;
+  color: var(--text-color);
+  font: inherit;
+  font-size: 24px;
+  line-height: 39.6px;
+  cursor: pointer;
+  transition: background-color 0.2s linear, color 0.2s linear;
+}
+
+.cards-feature .cards-feature-page[aria-current='page'] {
+  width: 40px;
+  height: 40px;
+}
+
+.cards-feature .cards-feature-page[aria-current='page'],
+.cards-feature .cards-feature-page:hover {
+  background-color: #ba0a29;
+  color: #fff;
+}
+
+.cards-feature.text .cards-feature-pagination {
+  gap: 33px;
+  margin-top: 39px;
+}
+
+/* archive spacing: the block opens / closes its section below the title banner */
+.cards-feature-wrapper:first-child > .cards-feature.posts.list {
+  padding-top: 80px;
+}
+
+.cards-feature-wrapper:last-child > .cards-feature.posts.list {
+  padding-bottom: 60px;
+}
+
+.cards-feature-wrapper:first-child > .cards-feature.posts.text {
+  padding-top: 65px;
+}
+
+.cards-feature-wrapper:last-child > .cards-feature.posts.text {
+  padding-bottom: 65px;
+}
+
+@media (width >= 900px) {
+  .cards-feature-wrapper:first-child > .cards-feature.posts.list {
+    padding-top: 90px;
+  }
+
+  .cards-feature-wrapper:last-child > .cards-feature.posts.list {
+    padding-bottom: 70px;
+  }
+
+  /* featured: 65 / 35 split, the first card spans both rows */
+  .cards-feature.posts.featured {
+    padding-top: 0;
+  }
+
+  .cards-feature.posts.featured .cards-feature-list {
+    grid-template-columns: 65fr 35fr;
+    grid-auto-rows: 1fr;
+    max-width: 1044px;
+    margin: 0 auto;
+  }
+
+  .cards-feature.posts.featured .cards-feature-item:first-child {
+    grid-row: span 2;
+  }
+
+  .cards-feature.posts.featured .cards-feature-image {
+    height: 150px;
+  }
+
+  .cards-feature.posts.featured .cards-feature-item:first-child .cards-feature-image {
+    height: 60%;
+  }
+
+  .cards-feature.posts.featured .cards-feature-item:first-child .cards-feature-body {
+    justify-content: center;
+    padding: 40px 40px 50px;
+  }
+
+  .cards-feature.posts.featured .cards-feature-item:first-child .cards-feature-meta {
+    position: relative;
+    top: -15px;
+  }
+
+  .cards-feature.posts.featured .cards-feature-item:first-child .cards-feature-body > h3 {
+    font-size: 30px;
+    line-height: 36px;
+  }
+
+  .cards-feature.posts.featured .cards-feature-item:first-child .cards-feature-body > h3 ~ p:not(.cards-feature-byline) {
+    font-size: 20px;
+    line-height: 26px;
+  }
+
+  /* list: image left half, copy right half; wider than the 1150px column */
+  .cards-feature.posts.list .cards-feature-list {
+    width: min(90vw - 20px, 1400px);
+    max-width: none;
+    margin: 0 calc((100% - min(90vw - 20px, 1400px)) / 2);
+  }
+
+  .cards-feature.posts.list .cards-feature-item {
+    flex-direction: row;
+    min-height: 263px;
+  }
+
+  .cards-feature.posts.list .cards-feature-image {
+    flex: 0 0 50%;
+    height: auto;
+  }
+
+  .cards-feature.posts.list .cards-feature-body {
+    flex: 0 0 50%;
+    box-sizing: border-box;
+    justify-content: center;
+    padding: 119px 0 0 30px;
+  }
+
+  .cards-feature.posts.list .cards-feature-body > h3 {
+    padding-right: calc((100% + 30px) * 0.2);
+    font-size: 26px;
+    line-height: 30px;
+  }
+
+  .cards-feature.posts.list .cards-feature-body > .cards-feature-byline {
+    margin-top: 40px;
+    font-size: 16px;
+    line-height: 30px;
+  }
+
+  /* text: three columns, wider than the 1150px column */
+  .cards-feature.posts.text .cards-feature-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 30px;
+    width: min(90vw, 1300px);
+    max-width: none;
+    margin: 0 calc((100% - min(90vw, 1300px)) / 2);
+  }
+
+  .cards-feature.posts.text .cards-feature-body {
+    padding-bottom: 30px;
+  }
+
+  .cards-feature.posts.text .cards-feature-body > h3 {
+    min-height: 70px;
+    margin-top: 30px;
+    padding: 0 calc((100% + 30px) * 0.2) 0 0;
+    font-size: 26px;
+    line-height: 30px;
+  }
+
+  .cards-feature.posts.text .cards-feature-body > h3 ~ p {
+    margin-top: 0;
+  }
+
+  .cards-feature.posts.text .cards-feature-body > h3 ~ p:not(.cards-feature-byline) {
+    padding-right: calc((100% + 30px) * 0.2);
+    font-size: 22px;
+    line-height: 30px;
+  }
+
+  .cards-feature.posts.text .cards-feature-body > .cards-feature-byline {
+    padding-bottom: 0;
+    font-size: 16px;
+    line-height: 20px;
+  }
+}
+
+/*
+ * steps + compact: vertical numbered list with small circles, no connector
+ * (source: .compounding-steps HTML widget on /en/the-power-of-compounding)
+ */
+.cards-feature.steps.compact .cards-feature-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: none;
+}
+
+.cards-feature.steps.compact .cards-feature-list::before,
+.cards-feature.steps.compact .cards-feature-item::after {
+  content: none;
+}
+
+.cards-feature.steps.compact .cards-feature-item {
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 0;
+  text-align: left;
+}
+
+.cards-feature.steps.compact .cards-feature-item::before {
+  width: 25px;
+  height: 25px;
+  background-color: #9e0b16;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.cards-feature.steps.compact .cards-feature-body {
+  color: #222;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+/*
+ * filled: solid red tiles with centred white text, 1 / 2 / 5 columns
+ * (source: .investment-options HTML widget on /en/the-power-of-compounding)
+ */
+.cards-feature.filled .cards-feature-list {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 15px;
+}
+
+.cards-feature.filled .cards-feature-item {
+  align-items: center;
+  justify-content: center;
+  min-height: 100px;
+  border-radius: 11px;
+  background-color: #a20d18;
+  box-shadow: 0 3px 3px rgb(0 0 0 / 22%);
+  color: #fff;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  line-height: 23.2px;
+  text-align: center;
+}
+
+.cards-feature.filled .cards-feature-body {
+  align-items: center;
+  justify-content: center;
+}
+
+.cards-feature.filled .cards-feature-body > * {
+  margin: 0;
+}
+
+@media (width >= 521px) {
+  .cards-feature.filled .cards-feature-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .cards-feature.filled .cards-feature-item {
+    min-height: 125px;
+  }
+}
+
+@media (width >= 768px) {
+  .cards-feature.steps.compact .cards-feature-list {
+    gap: 16px;
+  }
+
+  .cards-feature.steps.compact .cards-feature-item {
+    gap: 12px;
+  }
+
+  .cards-feature.steps.compact .cards-feature-item::before {
+    width: 27px;
+    height: 27px;
+    font-size: 14px;
+  }
+
+  .cards-feature.steps.compact .cards-feature-body {
+    line-height: 23.2px;
+  }
+}
+
+@media (width >= 901px) {
+  .cards-feature.filled .cards-feature-list {
+    grid-template-columns: repeat(5, minmax(130px, 1fr));
+    gap: 20px;
+  }
+}
+
+/*
+ * carousel + slides: one full-width slide at a time (source: Elementor nested carousel
+ * on /en/investing-for-different-client-profiles). Grey icon band, position bars,
+ * heading beside its description, gradient strategy rows, pale arrows centred below.
+ */
+.cards-feature.carousel.slides .cards-feature-viewport {
+  overflow: hidden;
+  transition: height 0.3s ease;
+}
+
+.cards-feature.carousel.slides .cards-feature-list {
+  display: flex;
+  gap: 0;
+  overflow: visible;
+  scroll-snap-type: none;
+  transition: transform 0.5s ease;
+}
+
+.cards-feature.carousel.slides .cards-feature-item {
+  flex: 0 0 100%;
+  align-self: flex-start;
+  gap: 20px;
+}
+
+.cards-feature.carousel.slides .cards-feature-image {
+  display: flex;
+  justify-content: center;
+  box-sizing: border-box;
+  height: 138px;
+  padding-top: 43px;
+  background-color: rgb(217 217 217 / 30%);
+}
+
+.cards-feature.carousel.slides .cards-feature-image img {
+  width: 45px;
+  height: 45px;
+  object-fit: contain;
+}
+
+.cards-feature.carousel.slides .cards-feature-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 21px;
+  box-sizing: border-box;
+  height: 26px;
+  padding-bottom: 7px;
+}
+
+.cards-feature.carousel.slides .cards-feature-bar {
+  flex: 1 1 0;
+  height: 8px;
+  margin: 0;
+  border: 0;
+  border-radius: 4.5px;
+  padding: 0;
+  background-color: #eee;
+  cursor: pointer;
+}
+
+.cards-feature.carousel.slides .cards-feature-bar[aria-current="true"] {
+  background-color: #cc092f;
+}
+
+.cards-feature.carousel.slides .cards-feature-bar:focus-visible {
+  outline: 2px solid #cc092f;
+  outline-offset: 2px;
+}
+
+.cards-feature.carousel.slides .cards-feature-body {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  color: var(--text-color);
+  font-size: 16px;
+  line-height: 26.4px;
+  text-align: left;
+}
+
+.cards-feature.carousel.slides .cards-feature-body > *,
+.cards-feature.carousel.slides .cards-feature-desc > * {
+  margin: 0;
+}
+
+.cards-feature.carousel.slides .cards-feature-intro {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.cards-feature.carousel.slides .cards-feature-intro > :is(h2, h3) {
+  margin: 0;
+  color: #cc092f;
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 22px;
+}
+
+.cards-feature.carousel.slides .cards-feature-body > h4 {
+  color: var(--text-color);
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 33px;
+}
+
+.cards-feature.carousel.slides .cards-feature-body > ul {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 0;
+  list-style: none;
+}
+
+.cards-feature.carousel.slides .cards-feature-body > ul > li {
+  min-height: 50px;
+  margin: 0;
+  background-image: linear-gradient(280deg, #fff 0%, #eee 80%);
+}
+
+.cards-feature.carousel.slides .cards-feature-nav {
+  justify-content: center;
+  gap: 94px;
+  margin-top: 20px;
+}
+
+.cards-feature.carousel.slides .cards-feature-nav button {
+  width: 45px;
+  height: 45px;
+  border-radius: 0;
+  color: rgb(237 237 237 / 90%);
+}
+
+.cards-feature.carousel.slides .cards-feature-nav button::before {
+  width: 18px;
+  height: 18px;
+  border-width: 5px;
+}
+
+@media (width >= 768px) {
+  .cards-feature.carousel.slides .cards-feature-bars {
+    gap: 50px;
+    padding-bottom: 6px;
+  }
+
+  .cards-feature.carousel.slides .cards-feature-bar {
+    height: 9px;
+  }
+
+  .cards-feature.carousel.slides .cards-feature-body {
+    font-size: 18px;
+    line-height: 29.7px;
+  }
+
+  .cards-feature.carousel.slides .cards-feature-image {
+    padding-top: 23px;
+  }
+
+  .cards-feature.carousel.slides .cards-feature-image img {
+    width: 85px;
+    height: 85px;
+  }
+
+  .cards-feature.carousel.slides .cards-feature-intro {
+    flex-direction: row;
+    min-height: 150px;
+  }
+
+  .cards-feature.carousel.slides .cards-feature-intro > :is(h2, h3) {
+    flex: 0 0 calc((100% - 20px) * 0.231);
+    font-size: 32px;
+    line-height: 32px;
+  }
+
+  .cards-feature.carousel.slides .cards-feature-desc {
+    flex: 1 1 0;
+  }
+
+  .cards-feature.carousel.slides .cards-feature-body > h4 {
+    font-size: 28px;
+    line-height: 46.2px;
+  }
+
+  .cards-feature.carousel.slides .cards-feature-nav {
+    gap: 60px;
+    margin-top: 40px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cards-feature.carousel.slides .cards-feature-viewport,
+  .cards-feature.carousel.slides .cards-feature-list {
+    transition: none;
+  }
+}
+
+/*
+ * centered (with elevated): text-only tiles centred in a soft-shadow box, rounded top
+ * corners; 1 column on mobile, 3 from 768px (source: Elementor grid on
+ * /en/investing-for-different-client-profiles)
+ */
+.cards-feature.elevated.centered .cards-feature-list {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.cards-feature.elevated.centered .cards-feature-item {
+  justify-content: center;
+  min-height: 123px;
+  border: 0;
+  border-radius: 20px 20px 0 0;
+  padding: 0;
+  background: none;
+  box-shadow: 0 0 10px rgb(0 0 0 / 50%);
+  text-align: center;
+}
+
+.cards-feature.elevated.centered .cards-feature-body {
+  align-items: center;
+  gap: 0;
+  color: var(--text-color);
+  font-size: 16px;
+  line-height: 30px;
+}
+
+.cards-feature.elevated.centered .cards-feature-body > * {
+  margin: 0;
+}
+
+.cards-feature.elevated.centered .cards-feature-body > p + p {
+  font-size: 14px;
+  line-height: 22px;
+}
+
+@media (width >= 768px) {
+  .cards-feature.elevated.centered .cards-feature-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .cards-feature.elevated.centered .cards-feature-body {
+    font-size: 24px;
+  }
+
+  .cards-feature.elevated.centered .cards-feature-body > p + p {
+    font-size: 18px;
+  }
+}

@@ -349,3 +349,70 @@ body.landing main > .section > .hero-video-wrapper:has(> .hero-video > .hero-vid
     max-width: 28%;
   }
 }
+
+/*
+ * ---------------------------------------------------------------------------
+ * listing template (body.listing) - static photo + H1 (source: /en/investments-content/).
+ * Fixed 765px tall, photo anchored top, copy bottom-left in an 86% wide column.
+ * body.listing and body.landing never co-occur, so the ordering lint does not apply.
+ * ---------------------------------------------------------------------------
+ */
+
+/* stylelint-disable no-descending-specificity */
+
+/* strip below: 19px; mobile red -> violet gradient (mob-linha-degrade-1.jpg) */
+body.listing main > .section > .hero-video-wrapper::after {
+  background: linear-gradient(90deg, #cc092f 108px, #37398c 1079px);
+}
+
+body.listing .hero-video {
+  min-height: 765px;
+}
+
+body.listing .hero-video .hero-video-media picture img {
+  object-position: 50% 0;
+}
+
+/* mobile: 6% gutters, 10px above and 30px below the title */
+body.listing .hero-video .hero-video-content {
+  padding: 10px 6% 30px;
+}
+
+body.listing .hero-video .hero-video-content h1,
+body.listing .hero-video .hero-video-content h1:last-child {
+  max-width: 86%;
+  margin: 0;
+  font-size: 22px;
+  line-height: 23px;
+}
+
+@media (width >= 900px) {
+  /* desktop strip: solid dark red, 1px overlap */
+  body.listing main > .section > .hero-video-wrapper::after {
+    position: relative;
+    margin-top: -1px;
+    background: var(--brand-red-dark);
+  }
+
+  body.listing .hero-video {
+    justify-content: flex-start;
+  }
+
+  /*
+   * boxed 90% (72px gutters at 1440), left column = 41.09% of (box - 20px gap)
+   * with 10px side padding; 10px + 10px above and 76px + 10px below the title
+   */
+  body.listing .hero-video .hero-video-content {
+    width: calc((min(90%, 1700px) - 20px) * 0.4109);
+    margin: 0 0 0 calc((100% - min(90%, 1700px)) / 2);
+    padding: 20px 10px 86px;
+  }
+
+  body.listing .hero-video .hero-video-content h1,
+  body.listing .hero-video .hero-video-content h1:last-child {
+    font-size: 40px;
+    line-height: 48px;
+  }
+}
+
+/* stylelint-enable no-descending-specificity */

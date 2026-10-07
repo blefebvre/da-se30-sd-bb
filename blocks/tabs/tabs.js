@@ -1,7 +1,9 @@
-import { createOptimizedPicture } from '../../scripts/aem.js';
+import {
+  buildBlock, createOptimizedPicture, decorateBlock, loadBlock,
+} from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
 
-const OPTION_CLASSES = ['fragments', 'tiles', 'vertical'];
+const OPTION_CLASSES = ['fragments', 'tiles', 'vertical', 'faq'];
 
 let tabsCount = 0;
 
@@ -82,6 +84,93 @@ function buildBackgroundPanel(panel) {
     while (panel.firstChild) content.append(panel.firstChild);
     panel.replaceChildren(content);
   }
+}
+
+/**
+ * faq: tab label = category icon + label text.
+ * @param {Element} button
+ * @param {Element} labelCell
+ */
+function buildIconLabel(button, labelCell) {
+  const pic = labelCell.querySelector('picture');
+  const icon = document.createElement('span');
+  icon.className = 'tabs-tab-icon';
+  if (pic) {
+    const img = pic.querySelector('img');
+    icon.append(img ? createOptimizedPicture(img.src, img.alt || '', false, [{ width: '96' }]) : pic);
+  }
+  const text = document.createElement('span');
+  text.className = 'tabs-tab-label';
+  text.textContent = labelCell.textContent.trim();
+  button.replaceChildren(...(pic ? [icon] : []), text);
+}
+
+/**
+ * faq: every h3 in the panel starts a question; the content up to the next h3 is its
+ * answer. The questions become an accordion (faq) block, content before the first
+ * question stays above it.
+ * @param {Element} panel
+ * @returns {Element|null} the accordion block, to be loaded
+ */
+function buildFaqAccordion(panel) {
+  const rows = [];
+  let answer = null;
+  [...panel.childNodes].forEach((node) => {
+    if (node.nodeType === Node.ELEMENT_NODE && node.tagName === 'H3') {
+      const label = document.createElement('div');
+      label.append(...node.childNodes);
+      answer = document.createElement('div');
+      rows.push([label, answer]);
+      node.remove();
+    } else if (answer) {
+      answer.append(node);
+    }
+  });
+  if (!rows.length) return null;
+  const accordion = buildBlock('accordion', rows.map(([q, a]) => [{ elems: [...q.childNodes] }, { elems: [...a.childNodes] }]));
+  accordion.classList.add('faq');
+  const wrapper = document.createElement('div');
+  wrapper.append(accordion);
+  panel.append(wrapper);
+  decorateBlock(accordion);
+  return accordion;
+}
+
+/**
+ * faq: the category cards scroll horizontally on small screens; prev/next arrows move
+ * the list by one card (like the source carousel), selection stays on click.
+ * @param {Element} tablist
+ * @returns {Element} the bar wrapping arrows + tab list
+ */
+function addScrollArrows(tablist) {
+  const nav = ['prev', 'next'].map((dir) => {
+    const arrow = document.createElement('button');
+    arrow.type = 'button';
+    arrow.className = `tabs-scroll tabs-scroll-${dir}`;
+    arrow.setAttribute('aria-label', dir === 'prev' ? 'Previous categories' : 'Next categories');
+    arrow.tabIndex = -1;
+    arrow.addEventListener('click', () => {
+      const card = tablist.querySelector('.tabs-tab');
+      const step = card ? card.getBoundingClientRect().width : tablist.clientWidth;
+      tablist.scrollBy({ left: dir === 'prev' ? -step : step, behavior: 'smooth' });
+    });
+    return arrow;
+  });
+  const update = () => {
+    const max = tablist.scrollWidth - tablist.clientWidth - 1;
+    nav[0].disabled = tablist.scrollLeft <= 0;
+    nav[1].disabled = tablist.scrollLeft >= max;
+  };
+  tablist.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update, { passive: true });
+  // the section is laid out after decoration: refresh once the list gets its real size
+  if (window.ResizeObserver) new ResizeObserver(update).observe(tablist);
+  const bar = document.createElement('div');
+  bar.className = 'tabs-bar';
+  tablist.replaceWith(bar);
+  bar.append(nav[0], tablist, nav[1]);
+  requestAnimationFrame(update);
+  return bar;
 }
 
 /*
@@ -165,7 +254,8 @@ function loadPanelFragment(panel, panelEls, host) {
 /**
  * Tabs: one authored row per tab, [tab label | panel content].
  * Options: fragments (panel = link to a fragment page), tiles (panel images become a
- * photo tile grid), vertical (tab list on the left, panel image as background).
+ * photo tile grid), vertical (tab list on the left, panel image as background),
+ * faq (icon + label category cards; each panel's h3 questions become an accordion (faq)).
  * @param {Element} block
  */
 export default async function decorate(block) {
@@ -183,6 +273,7 @@ export default async function decorate(block) {
 
   const buttons = [];
   const panelEls = [];
+  const accordions = [];
 
   [...block.children].forEach((row) => {
     const cells = [...row.children];
@@ -202,6 +293,7 @@ export default async function decorate(block) {
     const labelSource = labelCell.querySelector('p') && labelCell.children.length === 1
       ? labelCell.firstElementChild : labelCell;
     button.innerHTML = labelSource.innerHTML.trim() || `Tab ${index + 1}`;
+    if (active.includes('faq')) buildIconLabel(button, labelCell);
 
     const panel = document.createElement('div');
     panel.className = 'tabs-panel';
@@ -222,6 +314,10 @@ export default async function decorate(block) {
     if (active.includes('tiles')) buildTiles(panel);
     else if (active.includes('vertical')) buildBackgroundPanel(panel);
     else if (!active.includes('fragments')) optimizePictures(panel, '1200');
+    if (active.includes('faq')) {
+      const accordion = buildFaqAccordion(panel);
+      if (accordion) accordions.push(accordion);
+    }
 
     buttons.push(button);
     panelEls.push(panel);
@@ -267,6 +363,10 @@ export default async function decorate(block) {
 
   block.replaceChildren(tablist, panels);
   if (!buttons.length) return;
+  if (active.includes('faq')) {
+    addScrollArrows(tablist);
+    await Promise.all(accordions.map((accordion) => loadBlock(accordion)));
+  }
   if (isFragments) {
     // fragments buildAutoBlocks already inlined: move them next to the block's section
     panelEls.forEach((panel) => {
