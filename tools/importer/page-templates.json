@@ -2301,8 +2301,81 @@
       ],
       "representativeUrl": "https://bradescobank.com/en/visa-gold-activation/",
       "description": "Credit card activation instructions page",
-      "blocks": [],
-      "urlPattern": "/en/*"
+      "blocks": [
+        {
+          "name": "hero-banner",
+          "instances": [
+            ".elementor-21581 .elementor-element-2ee2b11",
+            ".elementor-20373 .elementor-element-2ee2b11",
+            ".elementor-21555 .elementor-element-2ee2b11"
+          ]
+        },
+        {
+          "name": "cards-feature",
+          "instances": [
+            ".elementor-21581 .elementor-element-9b0cd4c",
+            ".elementor-20373 .elementor-element-9b0cd4c",
+            ".elementor-21555 .elementor-element-9b0cd4c"
+          ]
+        },
+        {
+          "name": "columns-media",
+          "instances": [
+            ".elementor-21581 .elementor-element-8685a5c",
+            ".elementor-20373 .elementor-element-8685a5c",
+            ".elementor-21555 .elementor-element-8685a5c"
+          ]
+        }
+      ],
+      "urlPattern": "/en/*",
+      "sections": [
+        {
+          "id": "card-activation-1",
+          "name": "hero",
+          "selector": [
+            ".elementor-21581 .elementor-element-2ee2b11",
+            ".elementor-20373 .elementor-element-2ee2b11",
+            ".elementor-21555 .elementor-element-2ee2b11"
+          ],
+          "style": null,
+          "blocks": [
+            "hero-banner"
+          ],
+          "defaultContent": []
+        },
+        {
+          "id": "card-activation-2",
+          "name": "activation-steps",
+          "selector": [
+            ".elementor-21581 .elementor-element-9feccb9",
+            ".elementor-20373 .elementor-element-9feccb9",
+            ".elementor-21555 .elementor-element-9feccb9"
+          ],
+          "style": null,
+          "blocks": [
+            "cards-feature"
+          ],
+          "defaultContent": [
+            ".elementor-21581 .elementor-element-55cb8fe h2",
+            ".elementor-20373 .elementor-element-55cb8fe h2",
+            ".elementor-21555 .elementor-element-55cb8fe h2"
+          ]
+        },
+        {
+          "id": "card-activation-3",
+          "name": "card-agreements",
+          "selector": [
+            ".elementor-21581 .elementor-element-8685a5c",
+            ".elementor-20373 .elementor-element-8685a5c",
+            ".elementor-21555 .elementor-element-8685a5c"
+          ],
+          "style": null,
+          "blocks": [
+            "columns-media"
+          ],
+          "defaultContent": []
+        }
+      ]
     },
     {
       "name": "job-posting",

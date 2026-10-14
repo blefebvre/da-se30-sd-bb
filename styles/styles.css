@@ -937,6 +937,232 @@ body.category-listing .cards-feature.posts .cards-feature-page[aria-current='pag
   }
 }
 
+/*
+ * card-activation template (metadata "landing, card-activation" -> body.landing.card-activation)
+ * Source: Elementor credit card activation pages (/en/visa-*-activation/): 736px card hero
+ * (sentence-case light title, solid 19px strip), centred intro, cards-feature "screens" step
+ * tiles, card agreements band (image | 30px copy + grey pill link).
+ */
+
+/* mobile: card 255px from the top, copy flows 20px below it (longer copy grows the hero) */
+body.card-activation .hero-banner.right {
+  min-height: 565px;
+  padding: 255px 0 25px;
+}
+
+body.card-activation .hero-banner.right .hero-banner-figure {
+  position: static;
+  width: 240px;
+  margin: 0 auto;
+  transform: none;
+}
+
+body.card-activation .hero-banner.right .hero-banner-content {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+body.card-activation .hero-banner.right .hero-banner-text {
+  gap: 14px;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0 40px;
+}
+
+body.card-activation .hero-banner.right .hero-banner-text h1 {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 400;
+  line-height: 35px;
+  letter-spacing: normal;
+  text-transform: none;
+}
+
+body.card-activation .hero-banner.right .hero-banner-text p {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 300;
+  line-height: 25px;
+}
+
+/* strip: 19px red -> violet gradient on mobile (hero-banner default), solid red from 900px */
+body.card-activation main > .section > .hero-banner-wrapper:has(> .hero-banner.right)::after {
+  height: 19px;
+  margin-top: -1px;
+  background: linear-gradient(90deg, #cc092f 108px, #37398c 1079px);
+}
+
+/* "Start enjoying your card in just 7 steps" intro */
+body.card-activation main > .section > .default-content-wrapper:has(+ .cards-feature-wrapper) {
+  padding: 50px;
+}
+
+body.card-activation main > .section > .default-content-wrapper:has(+ .cards-feature-wrapper) h2 {
+  margin: 0 auto;
+  color: #535353;
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 29px;
+}
+
+/* card agreements band: image (65% of its column) | copy + grey pill link */
+body.card-activation main > .section > .columns-media-wrapper {
+  padding: 0;
+}
+
+body.card-activation .columns-media {
+  padding: 50px 20px 80px;
+}
+
+body.card-activation .columns-media .columns-media-row > .columns-media-image {
+  display: flex;
+  padding: 0;
+  justify-content: center;
+}
+
+body.card-activation .columns-media .columns-media-image picture {
+  width: 65%;
+}
+
+body.card-activation .columns-media .columns-media-row > .columns-media-text {
+  padding: 0 3px;
+}
+
+body.card-activation .columns-media .columns-media-text h2 {
+  margin: 0 0 17px;
+  color: #575757;
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 35px;
+}
+
+body.card-activation .columns-media .columns-media-text p {
+  line-height: 1;
+}
+
+body.card-activation .columns-media .columns-media-text a:any-link {
+  display: inline-block;
+  border-radius: 41px;
+  padding: 10px 30px;
+  background-color: #a9a9a9;
+  color: #fff;
+  font-size: 16px;
+  line-height: 16px;
+  letter-spacing: 1.3px;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+body.card-activation .columns-media .columns-media-text a:hover {
+  background-color: #8f8f8f;
+}
+
+@media (width >= 900px) {
+  body.card-activation .hero-banner.right {
+    min-height: 736px;
+    padding: 0;
+  }
+
+  body.card-activation .hero-banner.right .hero-banner-figure {
+    position: absolute;
+    top: 50%;
+    width: min(403px, 28%);
+    margin: 0;
+    transform: translate(-50%, -50%);
+  }
+
+  body.card-activation .hero-banner.right .hero-banner-content {
+    flex-direction: row;
+    justify-content: flex-start;
+    max-width: none;
+    padding: 0 0 0 66.5%;
+  }
+
+  body.card-activation .hero-banner.right .hero-banner-text {
+    width: min(410px, 28.5vw);
+    max-width: none;
+    padding: 0;
+  }
+
+  body.card-activation .hero-banner.right .hero-banner-text h1 {
+    max-width: none;
+    font-size: 45px;
+    font-weight: 300;
+    line-height: 50px;
+  }
+
+  body.card-activation .hero-banner.right .hero-banner-text p {
+    font-size: 28px;
+    line-height: 33px;
+  }
+
+  body.card-activation main > .section > .hero-banner-wrapper:has(> .hero-banner.right)::after {
+    background: #cc092f;
+  }
+
+  body.card-activation main > .section > .default-content-wrapper:has(+ .cards-feature-wrapper) {
+    padding: 75px 30px 82px;
+  }
+
+  body.card-activation main > .section > .default-content-wrapper:has(+ .cards-feature-wrapper) h2 {
+    max-width: none;
+    font-size: 32px;
+    line-height: 37px;
+  }
+
+  body.card-activation .columns-media .columns-media-row {
+    grid-template-columns: minmax(0, 700fr) minmax(0, 680fr);
+    gap: 20px;
+    align-items: center;
+    min-height: 0;
+  }
+
+  body.card-activation .columns-media .columns-media-row > .columns-media-image {
+    align-self: center;
+    padding: 10px;
+  }
+
+  body.card-activation .columns-media .columns-media-row > .columns-media-text {
+    padding: 0 0 0 30px;
+  }
+
+  body.card-activation .columns-media .columns-media-text h2 {
+    font-size: 30px;
+    line-height: 35px;
+  }
+
+  body.card-activation .columns-media .columns-media-text a:any-link {
+    padding: 12px 25px;
+    font-size: 18px;
+    line-height: 18px;
+  }
+}
+
+/* card-activation hero copy: laptop (<= 1366px) and tablet (<= 1024px) source sizes */
+@media (1025px <= width <= 1366px) {
+  body.card-activation .hero-banner.right .hero-banner-text h1 {
+    font-size: 32px;
+    line-height: 40px;
+  }
+
+  body.card-activation .hero-banner.right .hero-banner-text p {
+    font-size: 23px;
+    line-height: 28px;
+  }
+}
+
+@media (900px <= width <= 1024px) {
+  body.card-activation .hero-banner.right .hero-banner-text h1 {
+    font-size: 23px;
+    line-height: 28px;
+  }
+
+  body.card-activation .hero-banner.right .hero-banner-text p {
+    font-size: 16px;
+    line-height: 23px;
+  }
+}
+
 /* stylelint-enable no-descending-specificity */
 
 /* section metadata */

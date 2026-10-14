@@ -27,20 +27,40 @@ function removeAndPrune(el, block) {
 export default function decorate(block) {
   const active = [...block.classList].filter((c) => OPTION_CLASSES.includes(c));
 
-  const pictures = [...block.querySelectorAll('picture')];
+  // optional mobile background: a second image in an image-only first row (followed by
+  // the copy row) replaces the background below 900px
+  const firstRow = block.children.length > 1 ? block.children[0] : null;
+  const firstRowPictures = firstRow && !firstRow.textContent.trim()
+    ? [...firstRow.querySelectorAll('picture')] : [];
+  const mobileBackground = firstRowPictures.length === 2 ? firstRowPictures[1] : null;
+  const pictures = [...block.querySelectorAll('picture')].filter((pic) => pic !== mobileBackground);
   const [background, ...foreground] = pictures;
 
   const media = document.createElement('div');
   media.className = 'hero-banner-media';
   if (background) {
     const img = background.querySelector('img');
-    media.append(img
-      ? createOptimizedPicture(img.src, img.alt || '', true, [
+    const mobileImg = mobileBackground && mobileBackground.querySelector('img');
+    let picture;
+    if (img && mobileImg) {
+      picture = createOptimizedPicture(mobileImg.src, img.alt || '', true, [{ width: '900' }]);
+      const desktop = createOptimizedPicture(img.src, img.alt || '', true, [
+        { media: '(min-width: 900px)', width: '2000' },
+        { width: '2000' },
+      ]);
+      picture.prepend(...desktop.querySelectorAll('source[media]'));
+      block.classList.add('has-mobile-image');
+    } else if (img) {
+      picture = createOptimizedPicture(img.src, img.alt || '', true, [
         { media: '(min-width: 900px)', width: '2000' },
         { width: '900' },
-      ])
-      : background.cloneNode(true));
+      ]);
+    } else {
+      picture = background.cloneNode(true);
+    }
+    media.append(picture);
     removeAndPrune(background, block);
+    if (mobileBackground) removeAndPrune(mobileBackground, block);
   } else {
     block.classList.add('no-image');
   }

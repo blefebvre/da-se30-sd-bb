@@ -35,10 +35,11 @@
       "/en/articles-archive/index",
       "/en/insights-archive/index",
       "/en/investing-for-different-client-profiles/index",
-      "/en/the-power-of-compounding/index"
+      "/en/the-power-of-compounding/index",
+      "/en/visa-gold-activation/index"
     ],
-    "reuseCount": 22,
-    "lastUsed": "2026-10-05T23:42:27.479488Z"
+    "reuseCount": 23,
+    "lastUsed": "2026-10-07T14:22:34.750Z"
   },
   "options": [
     {
@@ -116,6 +117,10 @@
     {
       "class": "paged-<n>",
       "label": "Paged"
+    },
+    {
+      "class": "screens",
+      "label": "Screens"
     }
   ],
   "memberVariantIds": [

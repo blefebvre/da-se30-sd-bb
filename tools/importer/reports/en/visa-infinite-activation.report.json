@@ -1,0 +1,13 @@
+{
+  "status": "success",
+  "url": "https://bradescobank.com/en/visa-infinite-activation/",
+  "path": "en/visa-infinite-activation",
+  "timestamp": "2026-10-07T14:47:44.501Z",
+  "title": "Infinite Activation – Bradesco Bank",
+  "template": "card-activation",
+  "blocks": [
+    "hero-banner",
+    "cards-feature",
+    "columns-media"
+  ]
+}

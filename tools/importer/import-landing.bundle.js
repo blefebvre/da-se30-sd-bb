@@ -1480,9 +1480,13 @@ var CustomImportScript = (() => {
     }
     return { imageEl, body };
   }
+  function screenItems(element) {
+    const inner = element.querySelector(":scope > .e-con-inner") || element;
+    return [...inner.children].filter((c) => EL3.isCon(c) && EL3.hasContent(c));
+  }
   function parseLanding3(element, { document, options }) {
     EL3.unlazy(document);
-    const items = cardItems(element);
+    const items = options.includes("screens") ? screenItems(element) : cardItems(element);
     const rows = items.map((item) => cardBody(document, item, options)).filter((r) => r.body.length || r.imageEl);
     const ctaHost = element.nextElementSibling && element.nextElementSibling.matches(".elementor-element-9e81d46") ? element.nextElementSibling : null;
     if (ctaHost && element.matches(".elementor-element-9c6aacd")) {
@@ -7071,7 +7075,15 @@ var CustomImportScript = (() => {
       const img = document.createElement("img");
       img.src = bg;
       img.alt = "";
-      cells.push([img]);
+      const background = [img];
+      const mobileBg = element.getAttribute("data-excat-mobile-bg");
+      if (mobileBg && mobileBg !== bg) {
+        const mobileImg = document.createElement("img");
+        mobileImg.src = mobileBg;
+        mobileImg.alt = "";
+        background.push(mobileImg);
+      }
+      cells.push([background]);
     }
     cells.push([[...images, ...copy]]);
     const block = WebImporter.Blocks.createBlock(document, { name: EL10.blockName("hero-banner", options), cells });

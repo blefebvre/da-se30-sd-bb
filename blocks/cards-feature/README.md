@@ -31,6 +31,7 @@ Single block table. Content: one row, one cell of content.
 | List (with `posts`: one column of horizontal cards, image left half, title + uppercase byline right; stacked on mobile) | `list` |
 | Text (with `posts`: text-only cards with a red-to-blue left bar: date, title, excerpt, uppercase byline; 3 columns) | `text` |
 | Paged (n items per page with numbered page buttons below; e.g. `paged-9`) | `paged-<n>` |
+| Screens (numbered step tiles for app walkthroughs: dark-red title bar with a CSS-counter number, title and optional white pill link above a grey panel with the centred screenshot; 1 column full-bleed on mobile, 2 columns from 1081px, an odd last item spans the row as a red panel / screenshot split) | `screens` |
 
 Content conventions: a paragraph holding only `<em>` text is a badge (e.g. "Coming soon");
 in `posts` the paragraphs before the title form a meta row (date left; an `<em>` category renders as an

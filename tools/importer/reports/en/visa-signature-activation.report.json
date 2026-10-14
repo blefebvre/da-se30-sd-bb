@@ -1,0 +1,13 @@
+{
+  "status": "success",
+  "url": "https://bradescobank.com/en/visa-signature-activation/",
+  "path": "en/visa-signature-activation",
+  "timestamp": "2026-10-07T14:47:54.545Z",
+  "title": "Signature Activation – Bradesco Bank",
+  "template": "card-activation",
+  "blocks": [
+    "hero-banner",
+    "cards-feature",
+    "columns-media"
+  ]
+}

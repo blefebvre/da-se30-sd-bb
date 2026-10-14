@@ -1,0 +1,13 @@
+{
+  "status": "success",
+  "url": "https://bradescobank.com/en/visa-gold-activation/",
+  "path": "en/visa-gold-activation",
+  "timestamp": "2026-10-07T14:47:34.330Z",
+  "title": "Gold Activation – Bradesco Bank",
+  "template": "card-activation",
+  "blocks": [
+    "hero-banner",
+    "cards-feature",
+    "columns-media"
+  ]
+}

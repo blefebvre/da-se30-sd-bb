@@ -8,6 +8,9 @@ Model: `standalone`
 
 Single block table. Content: one row, one cell of content.
 
+Optional mobile background: when the first row holds only images and contains two of them,
+the first is the background from 900px up and the second replaces it on smaller screens.
+
 ## Supported variations
 
 | Variation | Option class |

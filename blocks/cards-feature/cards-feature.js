@@ -4,7 +4,7 @@ const OPTION_CLASSES = [
   'boxed', 'elevated', 'overlap', 'posts', 'product', 'icon-left',
   'links', 'icons', 'carousel', 'circle', 'steps',
   'accent', 'divided', 'highlight', 'gradient',
-  'featured', 'list', 'text', 'slides', 'autoplay',
+  'featured', 'list', 'text', 'slides', 'autoplay', 'screens',
 ];
 
 /** `slides` + `autoplay`: delay between slides, as on the source carousel. */

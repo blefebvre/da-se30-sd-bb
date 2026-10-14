@@ -2411,3 +2411,182 @@
     font-size: 18px;
   }
 }
+
+/* ---------- screens: numbered step tiles with app screenshots (card activation) ----------
+   Each item: dark-red title bar (CSS counter "1." + title + optional white pill link) above
+   a #f6f6f6 panel with the centred screenshot. Full-bleed single column on mobile, 10px
+   gutters from 768px, two 5px-apart columns (1280px) from 1081px; an odd last item spans
+   both columns as a red panel | screenshot split. */
+main > .section > .cards-feature-wrapper:has(> .cards-feature.screens) {
+  max-width: 1300px;
+  padding: 0;
+}
+
+.cards-feature.screens {
+  --cards-feature-gap: 0;
+  --cards-feature-screens-red: #900f15;
+
+  padding: 0;
+}
+
+.cards-feature.screens .cards-feature-list {
+  grid-template-columns: minmax(0, 1fr);
+  counter-reset: cards-feature-screen;
+}
+
+.cards-feature.screens .cards-feature-item {
+  gap: 0;
+  background-color: #f6f6f6;
+  counter-increment: cards-feature-screen;
+}
+
+.cards-feature.screens .cards-feature-body {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-content: center;
+  align-items: center;
+  order: -1;
+  flex: 0 0 auto;
+  gap: 0 20px;
+  box-sizing: border-box;
+  min-height: 84px;
+  padding: 10px 10px 10px 25px;
+  background-color: var(--cards-feature-screens-red);
+  color: #fff;
+}
+
+.cards-feature.screens .cards-feature-body::before {
+  content: counter(cards-feature-screen) '.';
+  grid-row: 1 / span 2;
+  min-width: 56px;
+  font-size: 64px;
+  line-height: 64px;
+}
+
+.cards-feature.screens .cards-feature-body h3 {
+  grid-column: 2;
+  max-width: 202px;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 28px;
+}
+
+.cards-feature.screens .cards-feature-body p.cards-feature-cta {
+  grid-column: 2;
+  justify-self: start;
+  margin: 0;
+  padding: 0;
+}
+
+.cards-feature.screens .cards-feature-cta a:any-link {
+  display: inline-block;
+  border-radius: 41px;
+  padding: 10px 15px;
+  background-color: #fff;
+  color: var(--cards-feature-screens-red);
+  font-size: 16px;
+  line-height: 16px;
+  letter-spacing: 1.3px;
+  text-decoration: none;
+}
+
+.cards-feature.screens .cards-feature-cta a:hover {
+  background-color: #f6f6f6;
+}
+
+.cards-feature.screens .cards-feature-image {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+}
+
+.cards-feature.screens .cards-feature-image img {
+  width: auto;
+  max-width: min(100%, 198px);
+  max-height: 390px;
+}
+
+/* final step: screenshot on a 10px panel */
+.cards-feature.screens .cards-feature-item:last-child:nth-child(odd) .cards-feature-image {
+  padding: 10px;
+}
+
+@media (width >= 768px) {
+  main > .section > .cards-feature-wrapper:has(> .cards-feature.screens) {
+    padding: 0 10px;
+  }
+
+  .cards-feature.screens .cards-feature-body {
+    min-height: 120px;
+  }
+
+  .cards-feature.screens .cards-feature-body::before {
+    font-size: 100px;
+    line-height: 100px;
+  }
+
+  .cards-feature.screens .cards-feature-body h3 {
+    max-width: 506px;
+    font-size: 26px;
+    line-height: 28px;
+  }
+
+  .cards-feature.screens .cards-feature-body p.cards-feature-cta {
+    margin-top: 20px;
+  }
+
+  .cards-feature.screens .cards-feature-cta a:any-link {
+    padding: 12px 25px;
+    font-size: 18px;
+    line-height: 18px;
+  }
+}
+
+@media (width >= 1081px) {
+  .cards-feature.screens {
+    padding-bottom: 10px;
+  }
+
+  .cards-feature.screens .cards-feature-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px 10px;
+  }
+
+  .cards-feature.screens .cards-feature-body {
+    grid-template-columns: auto minmax(0, 347px) auto;
+    justify-content: start;
+  }
+
+  .cards-feature.screens .cards-feature-body::before {
+    grid-row: auto;
+    min-width: 0;
+  }
+
+  .cards-feature.screens .cards-feature-body h3 {
+    max-width: none;
+  }
+
+  .cards-feature.screens .cards-feature-body p.cards-feature-cta {
+    grid-column: 3;
+    margin-top: 0;
+  }
+
+  /* odd last step spans the row: red panel (number + title centred) | screenshot */
+  .cards-feature.screens .cards-feature-item:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    flex-direction: row;
+    min-height: 410px;
+  }
+
+  .cards-feature.screens .cards-feature-item:last-child:nth-child(odd) > * {
+    flex: 0 0 50%;
+    box-sizing: border-box;
+  }
+
+  .cards-feature.screens .cards-feature-item:last-child:nth-child(odd) .cards-feature-body {
+    justify-content: center;
+  }
+}

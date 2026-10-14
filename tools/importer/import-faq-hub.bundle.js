@@ -103,7 +103,15 @@ var CustomImportScript = (() => {
       const img = document.createElement("img");
       img.src = bg;
       img.alt = "";
-      cells.push([img]);
+      const background = [img];
+      const mobileBg = element.getAttribute("data-excat-mobile-bg");
+      if (mobileBg && mobileBg !== bg) {
+        const mobileImg = document.createElement("img");
+        mobileImg.src = mobileBg;
+        mobileImg.alt = "";
+        background.push(mobileImg);
+      }
+      cells.push([background]);
     }
     cells.push([[...images, ...copy]]);
     const block = WebImporter.Blocks.createBlock(document, { name: EL.blockName("hero-banner", options), cells });

@@ -17,6 +17,8 @@
  *    merged into their card and that container is removed.
  *  - zelle steps: step numbers are CSS (.circulo-numero html widgets are dropped).
  *  - posts: [featured image (link dropped) | date, linked H3 title].
+ *  - screens (card-activation): one item per direct child container (step tiles), step
+ *    numbers are CSS (the transformer drops the "1." headings).
  */
 const NO_TITLE_PROMOTION = ['icons', 'circle', 'steps', 'links', 'posts', 'carousel'];
 const BADGE = /^\(?\s*coming soon\s*\)?$/i;
@@ -91,9 +93,17 @@ function cardBody(document, item, options) {
   return { imageEl, body };
 }
 
+/** screens (card-activation steps): every direct child container of the instance is one
+ *  step tile ([red title bar + optional button] + [screenshot]); tiles differ in shape
+ *  (step 1 has a button), so same-shape grouping does not apply. */
+function screenItems(element) {
+  const inner = element.querySelector(':scope > .e-con-inner') || element;
+  return [...inner.children].filter((c) => EL.isCon(c) && EL.hasContent(c));
+}
+
 function parseLanding(element, { document, options }) {
   EL.unlazy(document);
-  const items = cardItems(element);
+  const items = options.includes('screens') ? screenItems(element) : cardItems(element);
   const rows = items.map((item) => cardBody(document, item, options)).filter((r) => r.body.length || r.imageEl);
 
   // credit-cards: CTAs in the next sibling container, matched by index
